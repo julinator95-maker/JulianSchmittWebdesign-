@@ -1,61 +1,70 @@
 import { motion, useReducedMotion } from 'motion/react'
-import { waLink, CITY } from '../config'
-import WhatsAppIcon from './WhatsAppIcon'
+import {
+  ContainerScroll,
+  ContainerSticky,
+  ContainerAnimated,
+  ContainerInset,
+  HeroVideo,
+} from './ui/animated-video-on-scroll'
 import WindBackground from './WindBackground'
+import WhatsAppIcon from './WhatsAppIcon'
+import { waLink, CITY } from '../config'
 
-const HEADLINE = ['Frischer', 'Wind', 'für', 'Ihren', 'digitalen', 'Auftritt.']
+const HEADLINE_WORDS = ['Frischer', 'Wind', 'für', 'Ihren', 'digitalen', 'Auftritt.']
+
+// TODO: Ersetze diese URL mit eigenem Video (z.B. Screen-Recording einer Website oder Trier-Aufnahme)
+const VIDEO_SRC =
+  'https://videos.pexels.com/video-files/3045163/3045163-uhd_2560_1440_25fps.mp4'
 
 export default function Hero() {
   const reduce = useReducedMotion()
 
   const wordVariants = {
-    hidden: { opacity: 0, y: 28, filter: 'blur(12px)' },
+    hidden: { opacity: 0, y: 24, filter: 'blur(10px)' },
     show: (i) => ({
       opacity: 1,
       y: 0,
       filter: 'blur(0px)',
-      transition: { delay: 0.15 + i * 0.09, duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+      transition: { delay: 0.1 + i * 0.08, duration: 0.65, ease: [0.22, 1, 0.36, 1] },
     }),
   }
 
   return (
-    <section
-      id="hero"
-      className="relative min-h-svh bg-night overflow-hidden flex items-center"
-    >
-      <WindBackground />
+    <ContainerScroll id="hero" className="h-[320vh]">
+      <ContainerSticky className="overflow-hidden bg-night text-white">
+        {/* Wind-Hintergrund */}
+        <WindBackground />
 
-      {/* Vignette / Grund-Verlauf */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-night pointer-events-none" />
+        {/* Vignette */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-night" />
 
-      {/* Text */}
-      <div className="relative z-20 w-full max-w-6xl mx-auto px-6 md:px-12 py-28">
-        <div className="max-w-xl md:max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center gap-2.5 mb-7"
+        <div className="relative z-20 flex min-h-svh flex-col items-center justify-start px-6 pb-10 pt-28 md:px-12">
+          {/* Badge */}
+          <ContainerAnimated
+            inputRange={[0, 0.4]}
+            outputRange={[20, 0]}
+            className="mb-8 flex items-center gap-2.5"
           >
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-accent-bright opacity-75 animate-ping" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-bright opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-bright" />
             </span>
-            <span className="text-accent-bright text-xs font-medium tracking-[0.25em] uppercase">
+            <span className="text-xs font-medium tracking-[0.25em] text-accent-bright uppercase">
               Webdesign aus {CITY}
             </span>
-          </motion.div>
+          </ContainerAnimated>
 
-          <h1 className="text-white text-[2.75rem] leading-[1.02] sm:text-6xl md:text-7xl lg:text-[5.5rem] font-light tracking-tight mb-8">
-            {HEADLINE.map((word, i) => (
+          {/* Headline */}
+          <h1 className="mb-6 max-w-3xl text-center text-[2.6rem] font-light leading-[1.05] tracking-tight sm:text-6xl md:text-7xl lg:text-[5.25rem]">
+            {HEADLINE_WORDS.map((word, i) => (
               <motion.span
                 key={i}
                 custom={i}
                 variants={wordVariants}
                 initial="hidden"
                 animate="show"
-                className={`inline-block mr-[0.25em] ${
-                  word === 'Wind' ? 'text-accent-bright font-normal italic' : ''
+                className={`mr-[0.22em] inline-block ${
+                  word === 'Wind' ? 'font-normal italic text-accent-bright' : ''
                 }`}
               >
                 {word}
@@ -63,27 +72,47 @@ export default function Hero() {
             ))}
           </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.7 }}
-            className="text-white/55 text-base md:text-lg font-light leading-relaxed max-w-lg mb-10"
+          {/* Subtext */}
+          <ContainerAnimated
+            inputRange={[0, 0.5]}
+            outputRange={[30, 0]}
+            className="mb-10 max-w-md text-center"
           >
-            Schnelle, edle Websites für Handwerker, Winzer, Gastro & Friseure —
-            schlüsselfertig übergeben, wie ein neu gebautes Haus.
-          </motion.p>
+            <p className="text-base font-light leading-relaxed text-white/55 md:text-lg">
+              Schnelle, edle Websites für Handwerker, Winzer, Gastro & Friseure —
+              schlüsselfertig übergeben, wie ein neu gebautes Haus.
+            </p>
+          </ContainerAnimated>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.1, duration: 0.7 }}
-            className="flex flex-wrap items-center gap-4"
+          {/* Video mit Scroll-Expansion */}
+          <ContainerInset
+            className="w-full max-w-4xl"
+            insetYRange={[12, 0]}
+            insetXRange={[8, 0]}
+            roundednessRange={[24, 8]}
+          >
+            <div className="relative w-full overflow-hidden rounded-lg bg-accent-deep/40 aspect-video">
+              <HeroVideo
+                src={VIDEO_SRC}
+                className="w-full h-full object-cover opacity-80"
+              />
+              {/* Weinroter Overlay-Tint */}
+              <div className="absolute inset-0 bg-gradient-to-t from-accent-deep/60 via-transparent to-transparent" />
+            </div>
+          </ContainerInset>
+
+          {/* CTA */}
+          <ContainerAnimated
+            inputRange={[0, 0.7]}
+            outputRange={[-40, 0]}
+            transition={{ delay: 0.3 }}
+            className="mt-8 flex flex-col items-center gap-4 sm:flex-row"
           >
             <a
               href={waLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-3 bg-accent text-white px-7 py-4 text-sm font-semibold tracking-wide hover:bg-accent-bright transition-colors rounded-sm"
+              className="group inline-flex items-center gap-3 bg-accent px-7 py-4 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-accent-bright rounded-sm"
             >
               <WhatsAppIcon className="w-5 h-5" />
               Kostenlos anfragen
@@ -91,28 +120,28 @@ export default function Hero() {
             </a>
             <a
               href="#leistungen"
-              className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-light px-2 py-4 transition-colors"
+              className="px-2 py-4 text-sm font-light text-white/60 transition-colors hover:text-white"
             >
-              Pakete &amp; Preise ansehen
+              Pakete & Preise ansehen
             </a>
-          </motion.div>
+          </ContainerAnimated>
         </div>
-      </div>
 
-      {/* Scroll-Hinweis */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 1 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
-      >
-        <span className="text-white/30 text-[0.65rem] tracking-[0.3em] uppercase">Scrollen</span>
-        <motion.span
-          className="block w-px h-8 bg-gradient-to-b from-white/40 to-transparent"
-          animate={reduce ? {} : { scaleY: [0.4, 1, 0.4], originY: 0 }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </motion.div>
-    </section>
+        {/* Scroll-Indikator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.8, duration: 1 }}
+          className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2"
+        >
+          <span className="text-[0.65rem] tracking-[0.3em] text-white/30 uppercase">Scrollen</span>
+          <motion.span
+            className="block h-8 w-px bg-gradient-to-b from-white/40 to-transparent"
+            animate={reduce ? {} : { scaleY: [0.4, 1, 0.4], originY: 0 }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </motion.div>
+      </ContainerSticky>
+    </ContainerScroll>
   )
 }
