@@ -4,17 +4,14 @@ import {
   ContainerSticky,
   ContainerAnimated,
   ContainerInset,
-  HeroVideo,
+  HeroImage,
 } from './ui/animated-video-on-scroll'
 import WindBackground from './WindBackground'
 import WhatsAppIcon from './WhatsAppIcon'
 import { waLink, CITY } from '../config'
+import julianHero from '../assets/julian-hero.webp'
 
 const HEADLINE_WORDS = ['Frischer', 'Wind', 'für', 'Ihren', 'digitalen', 'Auftritt.']
-
-// TODO: Ersetze diese URL mit eigenem Video (z.B. Screen-Recording einer Website oder Trier-Aufnahme)
-const VIDEO_SRC =
-  'https://videos.pexels.com/video-files/3045163/3045163-uhd_2560_1440_25fps.mp4'
 
 export default function Hero() {
   const reduce = useReducedMotion()
@@ -84,21 +81,19 @@ export default function Hero() {
             </p>
           </ContainerAnimated>
 
-          {/* Video mit Scroll-Expansion */}
+          {/* Bild mit Scroll-Expansion */}
           <ContainerInset
-            className="w-full max-w-4xl"
+            className="w-full max-w-sm md:max-w-md"
             insetYRange={[12, 0]}
             insetXRange={[8, 0]}
-            roundednessRange={[24, 8]}
+            roundednessRange={[400, 8]}
           >
-            <div className="relative w-full overflow-hidden rounded-lg bg-accent-deep/40 aspect-video">
-              <HeroVideo
-                src={VIDEO_SRC}
-                className="w-full h-full object-cover opacity-80"
-              />
-              {/* Weinroter Overlay-Tint */}
-              <div className="absolute inset-0 bg-gradient-to-t from-accent-deep/60 via-transparent to-transparent" />
-            </div>
+            <HeroImage
+              src={julianHero}
+              alt="Julian Schmitt, Webdesigner aus Trier"
+              className="w-full h-auto object-cover"
+              draggable="false"
+            />
           </ContainerInset>
 
           {/* CTA */}
