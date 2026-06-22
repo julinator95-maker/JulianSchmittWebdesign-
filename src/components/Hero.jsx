@@ -1,55 +1,140 @@
-import { WA_NUMBER, WA_MSG } from '../config'
+import { motion, useReducedMotion } from 'motion/react'
+import { waLink, CITY } from '../config'
 import WhatsAppIcon from './WhatsAppIcon'
+import WindBackground from './WindBackground'
+import julian from '../assets/julian-cutout.webp'
+
+const HEADLINE = ['Frischer', 'Wind', 'für', 'Ihren', 'digitalen', 'Auftritt.']
 
 export default function Hero() {
-  const waHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MSG)}`
+  const reduce = useReducedMotion()
+
+  const wordVariants = {
+    hidden: { opacity: 0, y: 28, filter: 'blur(12px)' },
+    show: (i) => ({
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: { delay: 0.15 + i * 0.09, duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    }),
+  }
 
   return (
     <section
       id="hero"
-      className="min-h-svh bg-dark flex flex-col justify-center px-6 md:px-12 pt-24 pb-20 relative overflow-hidden"
+      className="relative min-h-svh bg-[#0b0b0d] overflow-hidden flex items-center"
     >
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[60vw] h-[60vw] max-w-2xl max-h-2xl rounded-full bg-accent/8 blur-3xl translate-x-1/3 -translate-y-1/4" />
-        <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] max-w-xl max-h-xl rounded-full bg-accent/5 blur-3xl -translate-x-1/4 translate-y-1/4" />
+      <WindBackground />
+
+      {/* Vignette / Grund-Verlauf */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#0b0b0d] pointer-events-none" />
+
+      {/* Schwebendes Porträt */}
+      <motion.div
+        className="absolute z-10 right-0 bottom-0 w-[72%] max-w-md md:max-w-lg
+                   md:right-[4%] md:bottom-0 lg:right-[8%]
+                   [mask-image:linear-gradient(to_left,black_55%,transparent)] md:[mask-image:none]"
+        initial={{ opacity: 0, scale: 1.04 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 }}
+      >
+        {/* Glow hinter dem Porträt */}
+        <div className="absolute inset-x-6 top-10 bottom-0 rounded-full bg-emerald-500/15 blur-3xl" />
+        <motion.img
+          src={julian}
+          alt="Julian Schmitt, Webdesigner aus Trier"
+          className="relative w-full h-auto select-none drop-shadow-2xl"
+          draggable="false"
+          animate={reduce ? {} : { y: [0, -14, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      </motion.div>
+
+      {/* Text */}
+      <div className="relative z-20 w-full max-w-6xl mx-auto px-6 md:px-12 py-28">
+        <div className="max-w-xl md:max-w-2xl">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center gap-2.5 mb-7"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
+            <span className="text-emerald-300/90 text-xs font-medium tracking-[0.25em] uppercase">
+              Webdesign aus {CITY}
+            </span>
+          </motion.div>
+
+          <h1 className="text-white text-[2.75rem] leading-[1.02] sm:text-6xl md:text-7xl lg:text-[5.25rem] font-light tracking-tight mb-8">
+            {HEADLINE.map((word, i) => (
+              <motion.span
+                key={i}
+                custom={i}
+                variants={wordVariants}
+                initial="hidden"
+                animate="show"
+                className={`inline-block mr-[0.25em] ${
+                  word === 'Wind' ? 'text-emerald-400 font-normal italic' : ''
+                }`}
+              >
+                {word}
+              </motion.span>
+            ))}
+          </h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.7 }}
+            className="text-white/55 text-base md:text-lg font-light leading-relaxed max-w-md mb-10"
+          >
+            Schnelle, edle Websites für Handwerker, Winzer, Gastro & Friseure —
+            schlüsselfertig übergeben, wie ein neu gebautes Haus.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 0.7 }}
+            className="flex flex-wrap items-center gap-4"
+          >
+            <a
+              href={waLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-3 bg-emerald-500 text-[#0b0b0d] px-7 py-4 text-sm font-semibold tracking-wide hover:bg-emerald-400 transition-colors rounded-sm"
+            >
+              <WhatsAppIcon className="w-5 h-5" />
+              Kostenlos anfragen
+              <span className="transition-transform group-hover:translate-x-1">→</span>
+            </a>
+            <a
+              href="#leistungen"
+              className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-light px-2 py-4 transition-colors"
+            >
+              Pakete &amp; Preise ansehen
+            </a>
+          </motion.div>
+        </div>
       </div>
 
-      <div className="relative max-w-6xl mx-auto w-full">
-        <div className="flex items-center gap-2.5 mb-10">
-          <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-          <span className="text-accent text-xs font-medium tracking-[0.2em] uppercase">
-            Trier · Rheinland-Pfalz
-          </span>
-        </div>
-
-        <h1 className="text-ivory text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light leading-[1.05] tracking-tight mb-8 max-w-2xl">
-          Webdesign,
-          <br />
-          das wirkt.
-        </h1>
-
-        <p className="text-ivory/50 text-base md:text-lg font-light leading-relaxed mb-12 max-w-md">
-          Klare, schnelle Websites für Handwerker, Winzer, Restaurants und
-          Friseure. Solo geführt, direkt aus Trier.
-        </p>
-
-        <a
-          href={waHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-3 bg-accent text-ivory px-7 py-4 text-sm font-medium tracking-wide hover:bg-accent/90 active:bg-accent/80 transition-colors"
-        >
-          <WhatsAppIcon className="w-5 h-5" />
-          Kostenlos anfragen
-        </a>
-
-        <div className="absolute bottom-10 left-0 md:hidden w-full flex items-center justify-center">
-          <div className="flex flex-col items-center gap-1.5 opacity-30">
-            <span className="text-ivory text-xs tracking-widest uppercase">Scrollen</span>
-            <div className="w-px h-8 bg-ivory/40" />
-          </div>
-        </div>
-      </div>
+      {/* Scroll-Hinweis */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 1 }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+      >
+        <span className="text-white/30 text-[0.65rem] tracking-[0.3em] uppercase">Scrollen</span>
+        <motion.span
+          className="block w-px h-8 bg-gradient-to-b from-white/40 to-transparent"
+          animate={reduce ? {} : { scaleY: [0.4, 1, 0.4], originY: 0 }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      </motion.div>
     </section>
   )
 }
