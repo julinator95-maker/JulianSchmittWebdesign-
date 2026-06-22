@@ -112,3 +112,17 @@ export const ContainerInset = React.forwardRef(
   }
 )
 ContainerInset.displayName = 'ContainerInset'
+
+export const HeroImage = React.forwardRef(({ style, className, ...props }, ref) => {
+  const { scrollYProgress } = useContainerScrollContext()
+  const scale = useTransform(scrollYProgress, [0, 0.8], [0.7, 1])
+  return (
+    <motion.img
+      ref={ref}
+      className={cn('relative z-10 size-auto max-h-full max-w-full', className)}
+      style={{ scale, ...style }}
+      {...props}
+    />
+  )
+})
+HeroImage.displayName = 'HeroImage'
