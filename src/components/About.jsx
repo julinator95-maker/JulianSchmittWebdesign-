@@ -1,4 +1,4 @@
-import julian from '../assets/julian-duotone.webp'
+import julian from '../assets/julian-about.webp'
 
 export default function About() {
   return (
@@ -9,12 +9,11 @@ export default function About() {
           {/* Foto */}
           <div className="order-1">
             <div className="relative">
-              {/* Weinroter Akzentstreifen links */}
-              <div className="absolute -left-4 top-8 bottom-8 w-1 bg-accent" />
+              <div className="absolute -left-4 top-8 bottom-8 w-1 bg-accent rounded-full" />
               <img
                 src={julian}
                 alt="Julian Schmitt, Webdesigner aus Trier"
-                className="w-full max-w-sm mx-auto md:mx-0 rounded-sm grayscale-0"
+                className="w-full max-w-sm mx-auto md:mx-0 rounded-sm shadow-lg"
                 loading="lazy"
                 draggable="false"
               />
