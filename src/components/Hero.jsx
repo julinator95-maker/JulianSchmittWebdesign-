@@ -2,7 +2,6 @@ import { motion, useReducedMotion } from 'motion/react'
 import { waLink, CITY } from '../config'
 import WhatsAppIcon from './WhatsAppIcon'
 import WindBackground from './WindBackground'
-import julian from '../assets/julian-cutout.webp'
 
 const HEADLINE = ['Frischer', 'Wind', 'für', 'Ihren', 'digitalen', 'Auftritt.']
 
@@ -22,37 +21,16 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-svh bg-[#0b0b0d] overflow-hidden flex items-center"
+      className="relative min-h-svh bg-night overflow-hidden flex items-center"
     >
       <WindBackground />
 
       {/* Vignette / Grund-Verlauf */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#0b0b0d] pointer-events-none" />
-
-      {/* Schwebendes Porträt */}
-      <motion.div
-        className="absolute z-10 right-0 bottom-0 w-[72%] max-w-md md:max-w-lg
-                   md:right-[4%] md:bottom-0 lg:right-[8%]
-                   [mask-image:linear-gradient(to_left,black_55%,transparent)] md:[mask-image:none]"
-        initial={{ opacity: 0, scale: 1.04 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.1, ease: 'easeOut', delay: 0.2 }}
-      >
-        {/* Glow hinter dem Porträt */}
-        <div className="absolute inset-x-6 top-10 bottom-0 rounded-full bg-emerald-500/15 blur-3xl" />
-        <motion.img
-          src={julian}
-          alt="Julian Schmitt, Webdesigner aus Trier"
-          className="relative w-full h-auto select-none drop-shadow-2xl"
-          draggable="false"
-          animate={reduce ? {} : { y: [0, -14, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      </motion.div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-night pointer-events-none" />
 
       {/* Text */}
       <div className="relative z-20 w-full max-w-6xl mx-auto px-6 md:px-12 py-28">
-        <div className="max-w-xl md:max-w-2xl">
+        <div className="max-w-xl md:max-w-3xl">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -60,15 +38,15 @@ export default function Hero() {
             className="flex items-center gap-2.5 mb-7"
           >
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              <span className="absolute inline-flex h-full w-full rounded-full bg-accent-bright opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-bright" />
             </span>
-            <span className="text-emerald-300/90 text-xs font-medium tracking-[0.25em] uppercase">
+            <span className="text-accent-bright text-xs font-medium tracking-[0.25em] uppercase">
               Webdesign aus {CITY}
             </span>
           </motion.div>
 
-          <h1 className="text-white text-[2.75rem] leading-[1.02] sm:text-6xl md:text-7xl lg:text-[5.25rem] font-light tracking-tight mb-8">
+          <h1 className="text-white text-[2.75rem] leading-[1.02] sm:text-6xl md:text-7xl lg:text-[5.5rem] font-light tracking-tight mb-8">
             {HEADLINE.map((word, i) => (
               <motion.span
                 key={i}
@@ -77,7 +55,7 @@ export default function Hero() {
                 initial="hidden"
                 animate="show"
                 className={`inline-block mr-[0.25em] ${
-                  word === 'Wind' ? 'text-emerald-400 font-normal italic' : ''
+                  word === 'Wind' ? 'text-accent-bright font-normal italic' : ''
                 }`}
               >
                 {word}
@@ -89,7 +67,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 0.7 }}
-            className="text-white/55 text-base md:text-lg font-light leading-relaxed max-w-md mb-10"
+            className="text-white/55 text-base md:text-lg font-light leading-relaxed max-w-lg mb-10"
           >
             Schnelle, edle Websites für Handwerker, Winzer, Gastro & Friseure —
             schlüsselfertig übergeben, wie ein neu gebautes Haus.
@@ -105,7 +83,7 @@ export default function Hero() {
               href={waLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-3 bg-emerald-500 text-[#0b0b0d] px-7 py-4 text-sm font-semibold tracking-wide hover:bg-emerald-400 transition-colors rounded-sm"
+              className="group inline-flex items-center gap-3 bg-accent text-white px-7 py-4 text-sm font-semibold tracking-wide hover:bg-accent-bright transition-colors rounded-sm"
             >
               <WhatsAppIcon className="w-5 h-5" />
               Kostenlos anfragen

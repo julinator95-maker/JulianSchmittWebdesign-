@@ -6,8 +6,12 @@
   --color-stone: #F0ECE7;
   --color-muted: #78716C;
   --color-border: #E2DDD7;
-  --color-accent: #2B5747;
-  --color-dark: #111110;
+
+  /* Akzent: Weinrot/Bordeaux – abgeleitet aus Julians Hemd */
+  --color-accent: #8A2E38;
+  --color-accent-bright: #B14552;
+  --color-accent-deep: #3A181E;
+  --color-night: #0E0A0B;
 
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }

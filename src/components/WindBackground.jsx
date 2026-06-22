@@ -28,22 +28,22 @@ export default function WindBackground({ className = '' }) {
       className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
       aria-hidden="true"
     >
-      {/* Aurora-Schleier */}
+      {/* Aurora-Schleier (Weinrot) */}
       <motion.div
         className="absolute -top-1/3 -right-1/4 w-[70vw] h-[70vw] max-w-3xl max-h-3xl rounded-full blur-3xl"
-        style={{ background: 'radial-gradient(circle, rgba(43,87,71,0.45), transparent 65%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(177,69,82,0.40), transparent 65%)' }}
         animate={reduce ? {} : { x: [0, -60, 30, 0], y: [0, 40, -30, 0], scale: [1, 1.15, 0.95, 1] }}
         transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
         className="absolute top-1/4 -left-1/4 w-[60vw] h-[60vw] max-w-2xl max-h-2xl rounded-full blur-3xl"
-        style={{ background: 'radial-gradient(circle, rgba(58,120,98,0.30), transparent 65%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(138,46,56,0.34), transparent 65%)' }}
         animate={reduce ? {} : { x: [0, 80, -20, 0], y: [0, -50, 40, 0], scale: [1, 0.9, 1.1, 1] }}
         transition={{ duration: 32, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
         className="absolute bottom-0 right-1/3 w-[50vw] h-[50vw] max-w-xl max-h-xl rounded-full blur-3xl"
-        style={{ background: 'radial-gradient(circle, rgba(43,87,71,0.25), transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(58,24,30,0.55), transparent 70%)' }}
         animate={reduce ? {} : { x: [0, -40, 50, 0], y: [0, 30, -20, 0] }}
         transition={{ duration: 38, repeat: Infinity, ease: 'easeInOut' }}
       />
@@ -58,7 +58,7 @@ export default function WindBackground({ className = '' }) {
               top: s.top,
               height: s.h,
               background:
-                'linear-gradient(90deg, transparent, rgba(180,210,198,0.55), transparent)',
+                'linear-gradient(90deg, transparent, rgba(228,196,200,0.55), transparent)',
               opacity: s.opacity,
             }}
             initial={{ x: '-50vw' }}
@@ -72,7 +72,7 @@ export default function WindBackground({ className = '' }) {
         particles.map((p, i) => (
           <motion.span
             key={i}
-            className="absolute rounded-full bg-emerald-200/40"
+            className="absolute rounded-full bg-rose-200/40"
             style={{ left: p.left, top: p.top, width: p.size, height: p.size }}
             animate={{ x: [0, p.drift, 0], y: [0, -p.drift * 0.6, 0], opacity: [0, 0.7, 0] }}
             transition={{ duration: p.dur, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}

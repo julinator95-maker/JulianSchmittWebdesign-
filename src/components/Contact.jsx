@@ -6,7 +6,7 @@ export default function Contact() {
   const mailHref = `mailto:${EMAIL}`
 
   return (
-    <section id="kontakt" className="bg-dark py-24 md:py-32 px-6 md:px-12">
+    <section id="kontakt" className="bg-night py-24 md:py-32 px-6 md:px-12">
       <div className="max-w-6xl mx-auto">
         <div className="max-w-lg">
           <p className="text-accent text-xs font-medium tracking-[0.2em] uppercase mb-6">
