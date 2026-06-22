@@ -57,8 +57,8 @@ export default function Nav() {
           rel="noopener noreferrer"
           className={`hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-300 ${
             scrolled
-              ? 'bg-accent text-ivory hover:bg-accent/90'
-              : 'bg-ivory/10 text-ivory hover:bg-ivory/20 border border-ivory/20'
+              ? 'bg-accent text-ivory hover:bg-accent-bright'
+              : 'bg-white/10 text-ivory hover:bg-white/20 border border-white/20'
           }`}
         >
           <WhatsAppIcon className="w-4 h-4" />
