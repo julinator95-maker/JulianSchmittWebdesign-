@@ -35,7 +35,7 @@ export default function Hero() {
         {/* Vignette */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-night" />
 
-        <div className="relative z-20 flex min-h-svh flex-col items-center justify-start px-6 pb-10 pt-28 md:px-12">
+        <div className="relative z-20 flex min-h-svh flex-col items-center justify-start px-6 pb-28 pt-28 md:px-12">
           {/* Badge */}
           <ContainerAnimated
             inputRange={[0, 0.4]}
