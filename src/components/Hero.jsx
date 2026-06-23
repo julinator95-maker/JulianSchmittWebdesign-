@@ -1,10 +1,17 @@
 import { useRef } from 'react'
-import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react'
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+  useReducedMotion,
+} from 'motion/react'
 import WindBackground from './WindBackground'
 import WhatsAppIcon from './WhatsAppIcon'
 import Magnetic from './fx/Magnetic'
 import { waLink, CITY } from '../config'
-import julianHero from '../assets/julian-hero.webp'
+import julianPortrait from '../assets/julian-portrait.webp'
 
 const HEADLINE_WORDS = ['Frischer', 'Wind', 'für', 'Ihren', 'digitalen', 'Auftritt.']
 
@@ -16,12 +23,23 @@ export default function Hero() {
     target: ref,
     offset: ['start start', 'end start'],
   })
-
-  // Sanfter Parallax/Scale beim Wegscrollen – kein Sticky, daher kein Overlap.
-  const imgY = useTransform(scrollYProgress, [0, 1], [0, -50])
-  const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.12])
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, 60])
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 70])
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
+  const portraitScale = useTransform(scrollYProgress, [0, 1], [1, 1.06])
+
+  // Sanfte Maus-Neigung der Portrait-Karte
+  const tiltX = useSpring(useMotionValue(0), { stiffness: 120, damping: 14 })
+  const tiltY = useSpring(useMotionValue(0), { stiffness: 120, damping: 14 })
+  const onCardMove = (e) => {
+    if (reduce) return
+    const r = e.currentTarget.getBoundingClientRect()
+    tiltY.set(((e.clientX - (r.left + r.width / 2)) / r.width) * 12)
+    tiltX.set((-(e.clientY - (r.top + r.height / 2)) / r.height) * 12)
+  }
+  const onCardLeave = () => {
+    tiltX.set(0)
+    tiltY.set(0)
+  }
 
   const wordVariants = {
     hidden: { opacity: 0, y: 24, filter: 'blur(10px)' },
@@ -39,10 +57,7 @@ export default function Hero() {
       ref={ref}
       className="relative min-h-svh w-full overflow-hidden bg-night text-white"
     >
-      {/* Wind-Hintergrund */}
       <WindBackground />
-
-      {/* Vignette */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-night" />
 
       <motion.div
@@ -66,7 +81,7 @@ export default function Hero() {
         </motion.div>
 
         {/* Headline */}
-        <h1 className="mb-5 max-w-3xl text-center text-[2.4rem] font-light leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+        <h1 className="mb-6 max-w-3xl text-center text-[2.4rem] font-light leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
           {HEADLINE_WORDS.map((word, i) => (
             <motion.span
               key={i}
@@ -88,42 +103,63 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.7 }}
-          className="mb-9 max-w-md text-center text-sm font-light leading-relaxed text-white/55 md:text-base"
+          className="mb-10 max-w-md text-center text-sm font-light leading-relaxed text-white/55 md:text-base"
         >
           Schnelle, edle Websites für Handwerker, Winzer, Gastro & Friseure —
           schlüsselfertig übergeben, wie ein neu gebautes Haus.
         </motion.p>
 
-        {/* Bild mit Clip-Reveal + Scroll-Scale */}
+        {/* Portrait-Karte mit rotierender Aura + Schweben */}
         <motion.div
-          style={reduce ? undefined : { y: imgY, scale: imgScale }}
-          className="w-full max-w-[240px] sm:max-w-[280px]"
+          style={reduce ? undefined : { scale: portraitScale }}
+          className="relative"
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ delay: 0.45, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         >
-          <motion.img
-            src={julianHero}
-            alt="Julian Schmitt, Webdesigner aus Trier"
-            draggable="false"
-            className="h-auto w-full object-cover"
-            initial={
-              reduce
-                ? false
-                : { clipPath: 'inset(6% 10% 6% 10% round 180px)', opacity: 0.5, scale: 0.92 }
-            }
-            animate={
-              reduce
-                ? false
-                : { clipPath: 'inset(0% 0% 0% 0% round 10px)', opacity: 1, scale: 1 }
-            }
-            transition={{ delay: 0.5, duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-          />
+          {/* Rotierende Aura */}
+          {!reduce && (
+            <motion.div
+              aria-hidden="true"
+              className="absolute -inset-6 rounded-[2rem] blur-2xl"
+              style={{
+                background:
+                  'conic-gradient(from 0deg, rgba(177,69,82,0.55), rgba(58,24,30,0.1), rgba(138,46,56,0.55), rgba(58,24,30,0.1), rgba(177,69,82,0.55))',
+              }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+            />
+          )}
+
+          {/* Schwebende, neigbare Karte */}
+          <motion.div
+            onMouseMove={onCardMove}
+            onMouseLeave={onCardLeave}
+            style={reduce ? undefined : { rotateX: tiltX, rotateY: tiltY, transformPerspective: 900 }}
+            animate={reduce ? undefined : { y: [0, -10, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+            className="relative w-[230px] sm:w-[270px]"
+          >
+            <motion.img
+              src={julianPortrait}
+              alt="Julian Schmitt, Webdesigner aus Trier"
+              draggable="false"
+              className="w-full h-auto rounded-2xl ring-1 ring-white/10 shadow-2xl shadow-black/50"
+              initial={reduce ? false : { clipPath: 'inset(8% round 1rem)' }}
+              animate={reduce ? false : { clipPath: 'inset(0% round 1rem)' }}
+              transition={{ delay: 0.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            />
+            {/* Glanz-Schimmer über der Karte */}
+            <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-tr from-transparent via-white/5 to-white/15" />
+          </motion.div>
         </motion.div>
 
         {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.7 }}
-          className="mt-9 flex flex-col items-center gap-4 sm:flex-row"
+          transition={{ delay: 0.95, duration: 0.7 }}
+          className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
         >
           <Magnetic>
             <a
