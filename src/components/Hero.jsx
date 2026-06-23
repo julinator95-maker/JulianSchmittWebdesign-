@@ -8,6 +8,7 @@ import {
 } from './ui/animated-video-on-scroll'
 import WindBackground from './WindBackground'
 import WhatsAppIcon from './WhatsAppIcon'
+import Magnetic from './fx/Magnetic'
 import { waLink, CITY } from '../config'
 import julianHero from '../assets/julian-hero.webp'
 
@@ -103,16 +104,19 @@ export default function Hero() {
             transition={{ delay: 0.3 }}
             className="mt-8 flex flex-col items-center gap-4 sm:flex-row"
           >
-            <a
-              href={waLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-3 bg-accent px-7 py-4 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-accent-bright rounded-sm"
-            >
-              <WhatsAppIcon className="w-5 h-5" />
-              Kostenlos anfragen
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </a>
+            <Magnetic>
+              <a
+                href={waLink()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative inline-flex items-center gap-3 overflow-hidden bg-accent px-7 py-4 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-accent-bright rounded-sm"
+              >
+                <WhatsAppIcon className="w-5 h-5" />
+                <span className="relative z-10">Kostenlos anfragen</span>
+                <span className="relative z-10 transition-transform group-hover:translate-x-1">→</span>
+                <span className="pointer-events-none absolute inset-0 -translate-x-full skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
+              </a>
+            </Magnetic>
             <a
               href="#leistungen"
               className="px-2 py-4 text-sm font-light text-white/60 transition-colors hover:text-white"
