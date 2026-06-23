@@ -36,7 +36,7 @@ export default function About() {
 
           {/* Right: Dark stat panel */}
           <motion.div
-            className="bg-night h-full min-h-[340px] p-10 flex flex-col justify-between gap-0"
+            className="bg-accent-deep h-full min-h-[340px] p-10 flex flex-col justify-between gap-0"
             initial={{ opacity: 0, y: 32 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
