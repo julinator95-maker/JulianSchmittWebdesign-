@@ -10,10 +10,13 @@ import {
 import WindBackground from './WindBackground'
 import WhatsAppIcon from './WhatsAppIcon'
 import Magnetic from './fx/Magnetic'
+import VaporizeWord from './fx/VaporizeWord'
 import { waLink, CITY } from '../config'
 import julianPortrait from '../assets/julian-portrait.webp'
 
-const HEADLINE_WORDS = ['Frischer', 'Wind', 'für', 'Ihren', 'digitalen', 'Auftritt.']
+const PRE_WORDS = ['Frischer']
+const POST_WORDS = ['für', 'Ihren', 'digitalen', 'Auftritt.']
+const VAPOR_WORDS = ['Wind', 'Look', 'Style', 'Schwung']
 
 export default function Hero() {
   const reduce = useReducedMotion()
@@ -81,21 +84,43 @@ export default function Hero() {
         </motion.div>
 
         {/* Headline */}
-        <h1 className="mb-6 max-w-3xl text-center text-[2.4rem] font-light leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-          {HEADLINE_WORDS.map((word, i) => (
-            <motion.span
-              key={i}
-              custom={i}
-              variants={wordVariants}
-              initial="hidden"
-              animate="show"
-              className={`mr-[0.22em] inline-block ${
-                word === 'Wind' ? 'font-normal italic text-accent-bright' : ''
-              }`}
-            >
-              {word}
-            </motion.span>
-          ))}
+        <h1 className="mb-6 max-w-3xl text-center text-[2.4rem] font-light leading-[1.08] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <span className="block">
+            {PRE_WORDS.map((word, i) => (
+              <motion.span
+                key={word}
+                custom={i}
+                variants={wordVariants}
+                initial="hidden"
+                animate="show"
+                className="mr-[0.22em] inline-block"
+              >
+                {word}
+              </motion.span>
+            ))}
+          </span>
+
+          {/* Auflösendes Wort: Wind → Look → Style → Schwung */}
+          {reduce ? (
+            <span className="block font-normal italic text-accent-bright">Wind</span>
+          ) : (
+            <VaporizeWord words={VAPOR_WORDS} />
+          )}
+
+          <span className="block">
+            {POST_WORDS.map((word, i) => (
+              <motion.span
+                key={word}
+                custom={i + 1}
+                variants={wordVariants}
+                initial="hidden"
+                animate="show"
+                className="mr-[0.22em] inline-block"
+              >
+                {word}
+              </motion.span>
+            ))}
+          </span>
         </h1>
 
         {/* Subtext */}

@@ -1,90 +1,80 @@
-import { useEffect, useState } from 'react'
-import { useReducedMotion } from 'motion/react'
+import {
+  Wrench,
+  Wine,
+  UtensilsCrossed,
+  Scissors,
+  Coffee,
+  Grape,
+  Croissant,
+  Sparkles,
+  Store,
+  Users,
+} from 'lucide-react'
+import Reveal from './fx/Reveal'
 import Marquee from './fx/Marquee'
-import VaporizeTextCycle, { Tag } from './fx/VaporizeText'
 
-const ROW1 = ['Handwerker', 'Winzer', 'Gastronomie', 'Friseure', 'Restaurants', 'Weingüter']
-const ROW2 = ['Cafés', 'Bäckereien', 'Kosmetik', 'Hofläden', 'Metzgereien', 'Vereine']
+const ROW1 = [
+  { icon: Wrench, label: 'Handwerker' },
+  { icon: Wine, label: 'Winzer' },
+  { icon: UtensilsCrossed, label: 'Restaurants' },
+  { icon: Scissors, label: 'Friseure' },
+  { icon: Coffee, label: 'Cafés' },
+]
 
-const PROMISES = ['Schnell.', 'Edel.', 'Schlüsselfertig.']
+const ROW2 = [
+  { icon: Grape, label: 'Weingüter' },
+  { icon: Croissant, label: 'Bäckereien' },
+  { icon: Sparkles, label: 'Kosmetik' },
+  { icon: Store, label: 'Hofläden' },
+  { icon: Users, label: 'Vereine' },
+]
 
-function Dot() {
-  return <span className="mx-7 h-2 w-2 shrink-0 rounded-full bg-accent-bright md:mx-12" />
-}
-
-function Word({ children, outline = false }) {
+function Chip({ icon: Icon, label }) {
   return (
-    <span
-      className="text-4xl font-light tracking-tight md:text-6xl"
-      style={
-        outline
-          ? { color: 'transparent', WebkitTextStroke: '1px rgba(249,247,244,0.28)' }
-          : { color: 'rgba(249,247,244,0.92)' }
-      }
-    >
-      {children}
-    </span>
+    <div className="mx-2.5 flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-6 py-3.5 backdrop-blur-sm transition-colors hover:border-accent-bright/40">
+      <Icon className="h-5 w-5 shrink-0 text-accent-bright" strokeWidth={1.5} aria-hidden="true" />
+      <span className="whitespace-nowrap text-lg font-light text-ivory/85 md:text-xl">
+        {label}
+      </span>
+    </div>
   )
 }
 
-function buildRow(words, outline) {
-  return words.flatMap((w, i) => [
-    <Word key={`w-${i}`} outline={outline}>
-      {w}
-    </Word>,
-    <Dot key={`d-${i}`} />,
-  ])
+function buildRow(items) {
+  return items.map((it, i) => <Chip key={i} icon={it.icon} label={it.label} />)
 }
 
 export default function AudienceStrip() {
-  const reduce = useReducedMotion()
-  const [fontSize, setFontSize] = useState('72px')
-
-  useEffect(() => {
-    const update = () => setFontSize(window.innerWidth < 640 ? '44px' : '80px')
-    update()
-    window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
-  }, [])
-
   return (
     <section className="relative overflow-hidden bg-night py-20 md:py-28">
-      <div className="mx-auto mb-10 max-w-6xl px-6 md:px-12">
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent-bright">
-          Frischer Wind für die Region Trier
-        </p>
-      </div>
-
-      {/* Auflösende Headline – die Versprechen "verwehen" wie Wind */}
-      <div className="mb-16 flex h-28 w-full items-center justify-center px-6 md:h-40">
-        {reduce ? (
-          <h2 className="text-center text-4xl font-light tracking-tight text-ivory md:text-7xl">
-            Schnell. Edel. Schlüsselfertig.
+      <div className="mx-auto mb-12 max-w-6xl px-6 md:px-12">
+        <Reveal>
+          <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-accent-bright">
+            Für wen ich baue
+          </p>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <h2 className="max-w-2xl text-3xl font-light leading-snug tracking-tight text-ivory md:text-4xl">
+            Für die Betriebe, die Trier ausmachen.
           </h2>
-        ) : (
-          <VaporizeTextCycle
-            texts={PROMISES}
-            font={{ fontFamily: 'Inter, sans-serif', fontSize, fontWeight: 300 }}
-            color="rgb(249, 247, 244)"
-            spread={4}
-            density={6}
-            animation={{ vaporizeDuration: 2, fadeInDuration: 1, waitDuration: 0.8 }}
-            direction="left-to-right"
-            alignment="center"
-            tag={Tag.H2}
-          />
-        )}
+        </Reveal>
+        <Reveal delay={0.16}>
+          <p className="mt-5 max-w-xl text-base font-light leading-relaxed text-ivory/50">
+            Vom Weingut an der Mosel bis zum Friseursalon in der Altstadt — ich baue
+            Websites, die zu lokalen Betrieben passen und bei echten Kunden ankommen.
+          </p>
+        </Reveal>
       </div>
 
-      {/* Zielgruppen-Laufbänder */}
-      <div className="space-y-5 md:space-y-7">
-        <Marquee items={buildRow(ROW1, false)} direction="left" duration={34} />
-        <Marquee items={buildRow(ROW2, true)} direction="right" duration={40} />
+      {/* Gewerke als Icon-Chips */}
+      <div className="space-y-4">
+        <Marquee items={buildRow(ROW1)} direction="left" duration={32} />
+        <Marquee items={buildRow(ROW2)} direction="right" duration={36} />
       </div>
 
       {/* Sanfte Kanten links/rechts */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-night to-transparent md:w-40" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-night to-transparent md:w-40" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-night to-transparent md:w-32" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-night to-transparent md:w-32" />
     </section>
   )
 }
