@@ -27,7 +27,7 @@ export default function Hero() {
   }
 
   return (
-    <ContainerScroll id="hero" className="h-[320vh]">
+    <ContainerScroll id="hero" className="h-[150vh]">
       <ContainerSticky className="overflow-hidden bg-night text-white">
         {/* Wind-Hintergrund */}
         <WindBackground />
