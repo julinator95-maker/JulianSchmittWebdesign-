@@ -10,7 +10,7 @@ import {
 import WindBackground from './WindBackground'
 import WhatsAppIcon from './WhatsAppIcon'
 import Magnetic from './fx/Magnetic'
-import VaporizeWord from './fx/VaporizeWord'
+import CyclingWord from './fx/CyclingWord'
 import { waLink, CITY } from '../config'
 import julianPortrait from '../assets/julian-portrait.webp'
 
@@ -100,12 +100,10 @@ export default function Hero() {
             ))}
           </span>
 
-          {/* Auflösendes Wort: Wind → Look → Style → Schwung */}
-          {reduce ? (
-            <span className="block font-normal italic text-accent-bright">Wind</span>
-          ) : (
-            <VaporizeWord words={VAPOR_WORDS} />
-          )}
+          {/* Wind-Dissolve: Wind → Look → Style → Schwung */}
+          <span className="block font-normal italic text-accent-bright">
+            <CyclingWord words={VAPOR_WORDS} />
+          </span>
 
           <span className="block">
             {POST_WORDS.map((word, i) => (
