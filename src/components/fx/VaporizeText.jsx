@@ -605,7 +605,7 @@ const updateParticles = (
         particle.x += particle.velocityX * deltaTime * 20
         particle.y += particle.velocityY * deltaTime * 10
 
-        const baseFadeRate = 0.25
+        const baseFadeRate = 0.75
         const durationBasedFadeRate = baseFadeRate * (2000 / VAPORIZE_DURATION)
 
         particle.opacity = Math.max(0, particle.opacity - deltaTime * durationBasedFadeRate)
