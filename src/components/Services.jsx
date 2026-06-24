@@ -234,7 +234,7 @@ function HausmeisterCard({ tier, index }) {
                 tier.highlight ? 'text-ivory/50' : 'text-muted'
               }`}
             >
-              pro Monat, monatlich kündbar
+              pro Monat · 12 Monate Laufzeit
             </div>
           </div>
 
@@ -329,7 +329,7 @@ export default function Services() {
 
         <Reveal delay={0.1}>
           <p className="mt-6 text-muted text-xs font-light text-center">
-            Alle Betreuungspakete sind monatlich kündbar. Keine Vertragslaufzeit, kein Risiko.
+            Alle Betreuungspakete laufen 12 Monate.
           </p>
         </Reveal>
 

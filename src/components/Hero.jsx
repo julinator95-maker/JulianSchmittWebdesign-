@@ -204,21 +204,21 @@ export default function Hero() {
             Pakete & Preise ansehen
           </a>
         </motion.div>
-      </motion.div>
 
-      {/* Scroll-Indikator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 1 }}
-        className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2"
-      >
-        <span className="text-[0.65rem] tracking-[0.3em] text-white/30 uppercase">Scrollen</span>
-        <motion.span
-          className="block h-8 w-px bg-gradient-to-b from-white/40 to-transparent"
-          animate={reduce ? {} : { scaleY: [0.4, 1, 0.4], originY: 0 }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-        />
+        {/* Scroll-Indikator — innerhalb der parallax-div, bewegt sich mit contentY/Opacity */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.6, duration: 1 }}
+          className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2"
+        >
+          <span className="text-[0.65rem] tracking-[0.3em] text-white/30 uppercase">Scrollen</span>
+          <motion.span
+            className="block h-8 w-px bg-gradient-to-b from-white/40 to-transparent"
+            animate={reduce ? {} : { scaleY: [0.4, 1, 0.4], originY: 0 }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </motion.div>
       </motion.div>
     </section>
   )

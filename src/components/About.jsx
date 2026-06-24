@@ -10,17 +10,23 @@ const STATS = [
 
 const panelContainer = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } },
+  visible: { transition: { staggerChildren: 0.18, delayChildren: 0.1 } },
 }
-const panelItem = {
-  hidden: { opacity: 0, y: 20, filter: 'blur(6px)' },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+
+const panelItemVariants = [
+  {
+    hidden: { opacity: 0, x: -40, filter: 'blur(8px)' },
+    visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } },
   },
-}
+  {
+    hidden: { opacity: 0, x: 40, filter: 'blur(8px)' },
+    visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } },
+  },
+  {
+    hidden: { opacity: 0, y: 40, filter: 'blur(8px)' },
+    visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } },
+  },
+]
 
 export default function About() {
   const reduce = useReducedMotion()
@@ -65,28 +71,43 @@ export default function About() {
             </div>
           </div>
 
-          {/* Rechts: dunkles Stat-Panel */}
+          {/* Rechts: dunkles Stat-Panel — schwebt + Lichtschimmer */}
           <motion.div
-            className="bg-accent-deep h-full min-h-[340px] p-10 flex flex-col justify-between"
-            variants={panelContainer}
-            initial={reduce ? false : 'hidden'}
-            whileInView="visible"
-            viewport={{ once: true, margin: '-12%' }}
+            animate={reduce ? undefined : { y: [0, -8, 0] }}
+            transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
           >
-            {STATS.map(({ value, label }, i) => (
-              <motion.div
-                key={value}
-                variants={reduce ? undefined : panelItem}
-                className={`py-7 ${i !== 0 ? 'border-t border-white/10' : ''}`}
-              >
-                <div className="text-3xl font-light italic text-accent-bright mb-2">
-                  {value}
-                </div>
-                <div className="text-white/45 text-sm font-light leading-relaxed">
-                  {label}
-                </div>
-              </motion.div>
-            ))}
+            <motion.div
+              className="bg-accent-deep h-full min-h-[340px] p-10 flex flex-col justify-between relative overflow-hidden"
+              variants={panelContainer}
+              initial={reduce ? false : 'hidden'}
+              whileInView="visible"
+              viewport={{ once: true, margin: '-12%' }}
+            >
+              {!reduce && (
+                <motion.div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-y-0 w-[60%]"
+                  style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)' }}
+                  initial={{ x: '-100%' }}
+                  animate={{ x: '250%' }}
+                  transition={{ duration: 3.5, delay: 2.5, repeat: Infinity, repeatDelay: 6, ease: 'easeInOut' }}
+                />
+              )}
+              {STATS.map(({ value, label }, i) => (
+                <motion.div
+                  key={value}
+                  variants={reduce ? undefined : panelItemVariants[i]}
+                  className={`py-7 ${i !== 0 ? 'border-t border-white/10' : ''}`}
+                >
+                  <div className="text-3xl font-light italic text-accent-bright mb-2">
+                    {value}
+                  </div>
+                  <div className="text-white/45 text-sm font-light leading-relaxed">
+                    {label}
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </motion.div>
 
         </div>
