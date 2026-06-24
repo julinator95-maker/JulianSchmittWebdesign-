@@ -158,7 +158,8 @@ export default function VaporizeTextCycle({
     let waitTimeout = null
 
     const animate = (currentTime) => {
-      const deltaTime = (currentTime - lastTime) / 1000
+      // Cap at ~2 frames to prevent animation jumps after React re-renders
+      const deltaTime = Math.min((currentTime - lastTime) / 1000, 0.05)
       lastTime = currentTime
 
       const canvas = canvasRef.current
