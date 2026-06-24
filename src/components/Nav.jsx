@@ -39,6 +39,7 @@ export default function Nav() {
         <nav className="hidden md:flex items-center gap-8">
           {[
             ['#ueber-mich', 'Über mich'],
+            ['#prozess', 'Prozess'],
             ['#leistungen', 'Leistungen'],
             ['#kontakt', 'Kontakt'],
           ].map(([href, label]) => (
