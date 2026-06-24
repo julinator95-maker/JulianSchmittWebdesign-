@@ -24,15 +24,15 @@ export default function VaporizeWord({ words, color = 'rgb(177, 69, 82)' }) {
 
   return (
     <span
-      style={{ display: 'block', width: '100%', height: Math.round(fontSize * 1.32) }}
+      style={{ display: 'block', width: '100%', height: Math.round(fontSize * 2.0) }}
     >
       <VaporizeTextCycle
         texts={words}
         font={{ fontFamily: 'Inter, sans-serif', fontSize: `${fontSize}px`, fontWeight: 'italic 400' }}
         color={color}
-        spread={3}
-        density={6}
-        animation={{ vaporizeDuration: 1.6, fadeInDuration: 0.9, waitDuration: 1.6 }}
+        spread={5}
+        density={8}
+        animation={{ vaporizeDuration: 2.8, fadeInDuration: 1.3, waitDuration: 2.2 }}
         direction="left-to-right"
         alignment="center"
         tag={Tag.P}
