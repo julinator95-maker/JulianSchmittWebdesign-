@@ -135,6 +135,8 @@ export default function VaporizeTextCycle({
   useEffect(() => {
     if (isInView) {
       const startAnimationTimeout = setTimeout(() => {
+        vaporizeProgressRef.current = 0
+        fadeOpacityRef.current = 0
         setAnim('vaporizing')
       }, 0)
       return () => clearTimeout(startAnimationTimeout)
