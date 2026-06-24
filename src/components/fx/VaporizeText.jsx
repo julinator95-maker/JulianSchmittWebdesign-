@@ -437,8 +437,7 @@ const renderCanvas = ({
   const color = parseColor(framerProps.color ?? 'rgb(153, 153, 153)')
 
   let textX
-  // Text sits at 72% height so particles have room to drift upward
-  const textY = canvas.height * 0.72
+  const textY = canvas.height / 2
   const currentText = framerProps.texts[currentTextIndex] || 'Next.js'
 
   if (framerProps.alignment === 'center') {
@@ -565,36 +564,49 @@ const updateParticles = (
 
     if (shouldVaporize) {
       if (particle.speed === 0) {
-        // Wind bias: mostly upward (-Y) with lateral spread, slight forward lean
-        // In canvas coords: up = -Y = angle near -PI/2 (or 3PI/2)
-        const baseAngle = -Math.PI / 2  // straight up
-        const spread = Math.PI * 0.9    // ±81° spread → fan shape
-        particle.angle = baseAngle + (Math.random() - 0.5) * spread
-        particle.speed = (Math.random() * 1.2 + 0.6) * MULTIPLIED_VAPORIZE_SPREAD
+        particle.angle = Math.random() * Math.PI * 2
+        particle.speed = (Math.random() * 1 + 0.5) * MULTIPLIED_VAPORIZE_SPREAD
         particle.velocityX = Math.cos(particle.angle) * particle.speed
         particle.velocityY = Math.sin(particle.angle) * particle.speed
-        // ~20% dissolve instantly, rest drift as vapor
         particle.shouldFadeQuickly = Math.random() > density
       }
 
       if (particle.shouldFadeQuickly) {
-        particle.opacity = Math.max(0, particle.opacity - deltaTime * 3.5)
+        particle.opacity = Math.max(0, particle.opacity - deltaTime)
       } else {
-        // Simple air-resistance only — no pull-back toward origin
-        const damping = 0.975
-        particle.velocityX *= damping
-        particle.velocityY *= damping
+        const dx = particle.originalX - particle.x
+        const dy = particle.originalY - particle.y
+        const distanceFromOrigin = Math.sqrt(dx * dx + dy * dy)
 
-        // Slight turbulence so particles don't all travel on the same path
-        const turbulence = MULTIPLIED_VAPORIZE_SPREAD * 0.4
-        particle.velocityX += (Math.random() - 0.5) * turbulence * deltaTime * 10
-        particle.velocityY += (Math.random() - 0.5) * turbulence * deltaTime * 10
+        const dampingFactor = Math.max(
+          0.95,
+          1 - distanceFromOrigin / (100 * MULTIPLIED_VAPORIZE_SPREAD)
+        )
 
-        particle.x += particle.velocityX * deltaTime * 22
-        particle.y += particle.velocityY * deltaTime * 22
+        const randomSpread = MULTIPLIED_VAPORIZE_SPREAD * 3
+        const spreadX = (Math.random() - 0.5) * randomSpread
+        const spreadY = (Math.random() - 0.5) * randomSpread
 
-        const baseFadeRate = 0.22
+        particle.velocityX = (particle.velocityX + spreadX + dx * 0.002) * dampingFactor
+        particle.velocityY = (particle.velocityY + spreadY + dy * 0.002) * dampingFactor
+
+        const maxVelocity = MULTIPLIED_VAPORIZE_SPREAD * 2
+        const currentVelocity = Math.sqrt(
+          particle.velocityX * particle.velocityX + particle.velocityY * particle.velocityY
+        )
+
+        if (currentVelocity > maxVelocity) {
+          const scale = maxVelocity / currentVelocity
+          particle.velocityX *= scale
+          particle.velocityY *= scale
+        }
+
+        particle.x += particle.velocityX * deltaTime * 20
+        particle.y += particle.velocityY * deltaTime * 10
+
+        const baseFadeRate = 0.25
         const durationBasedFadeRate = baseFadeRate * (2000 / VAPORIZE_DURATION)
+
         particle.opacity = Math.max(0, particle.opacity - deltaTime * durationBasedFadeRate)
       }
 
