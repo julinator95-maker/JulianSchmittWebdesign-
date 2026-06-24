@@ -192,15 +192,13 @@ export default function VaporizeTextCycle({
               ? textBoundaries.left + (textBoundaries.width * progress) / 100
               : textBoundaries.right - (textBoundaries.width * progress) / 100
 
-          const allVaporized = memoizedUpdateParticles(
-            particlesRef.current,
-            vaporizeX,
-            deltaTime
-          )
+          memoizedUpdateParticles(particlesRef.current, vaporizeX, deltaTime)
           memoizedRenderParticles(ctx, particlesRef.current)
 
-          if (vaporizeProgressRef.current >= 100 && allVaporized) {
-            // Transition exactly once — ref prevents stale re-entry
+          // Transition as soon as the wave has swept all pixels — don't wait
+          // for every last particle to reach opacity 0 (that takes 2-4s extra
+          // and is what causes the "stuck at 85%" stall).
+          if (vaporizeProgressRef.current >= 100) {
             setCurrentTextIndex((prevIndex) => (prevIndex + 1) % texts.length)
             setAnim('fadingIn')
             fadeOpacityRef.current = 0
