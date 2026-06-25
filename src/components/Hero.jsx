@@ -12,7 +12,7 @@ import WhatsAppIcon from './WhatsAppIcon'
 import Magnetic from './fx/Magnetic'
 import VaporizeWord from './fx/VaporizeWord'
 import { waLink, CITY } from '../config'
-import julianPortrait from '../assets/julian-portrait.webp'
+import julianPortrait from '../assets/julian-white.webp'
 
 const PRE_WORDS = ['Frischer']
 const POST_WORDS = ['für', 'Ihren', 'digitalen', 'Auftritt.']
@@ -161,19 +161,26 @@ export default function Hero() {
             style={reduce ? undefined : { rotateX: tiltX, rotateY: tiltY, transformPerspective: 900 }}
             animate={reduce ? undefined : { y: [0, -10, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-            className="relative w-[230px] sm:w-[270px]"
+            className="relative w-[230px] sm:w-[270px] rounded-2xl overflow-hidden shadow-2xl shadow-black/50"
           >
             <motion.img
               src={julianPortrait}
               alt="Julian Schmitt, Webdesigner aus Trier"
               draggable="false"
-              className="w-full h-auto rounded-2xl ring-1 ring-white/10 shadow-2xl shadow-black/50 object-top"
+              className="w-full h-auto block"
               initial={reduce ? false : { clipPath: 'inset(8% round 1rem)' }}
               animate={reduce ? false : { clipPath: 'inset(0% round 1rem)' }}
               transition={{ delay: 0.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
             />
-            {/* Glanz-Schimmer über der Karte */}
-            <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-tr from-transparent via-white/5 to-white/15" />
+            {/* Vignette: weißer Bereich um Julian → Akzentrot an den Rändern */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  'radial-gradient(ellipse at 50% 42%, transparent 35%, rgba(138,46,56,0.55) 62%, rgba(100,28,36,0.88) 82%, rgba(58,14,18,0.97) 100%)',
+              }}
+            />
           </motion.div>
         </motion.div>
 
