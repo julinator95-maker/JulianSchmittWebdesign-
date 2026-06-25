@@ -1,11 +1,5 @@
-import { useRef, useState } from 'react'
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValueEvent,
-  useReducedMotion,
-} from 'motion/react'
+import { useRef } from 'react'
+import { motion, useInView, useReducedMotion } from 'motion/react'
 import Reveal from './fx/Reveal'
 import SplitWords from './fx/SplitWords'
 
@@ -32,153 +26,94 @@ const STEPS = [
   },
 ]
 
-// Per-step opacity/y timing within scrollYProgress [0, 1]
-const TIMING = [
-  { op: [0, 0.05, 0.21, 0.26], y: [0, 0.06, 0.21, 0.27] },
-  { op: [0.24, 0.29, 0.46, 0.51], y: [0.24, 0.30, 0.46, 0.52] },
-  { op: [0.49, 0.54, 0.71, 0.76], y: [0.49, 0.55, 0.71, 0.77] },
-  { op: [0.74, 0.79, 1.0], y: [0.74, 0.80, 1.0] }, // last step stays
-]
-
-function StepCard({ step, index, scrollYProgress }) {
-  const t = TIMING[index]
-  const isLast = index === STEPS.length - 1
-
-  const opacity = useTransform(
-    scrollYProgress,
-    t.op,
-    isLast ? [0, 1, 1] : [0, 1, 1, 0]
-  )
-  const y = useTransform(
-    scrollYProgress,
-    t.y,
-    isLast ? [60, 0, 0] : [60, 0, 0, -40]
-  )
+function Step({ step, index }) {
+  const ref = useRef(null)
+  const reduce = useReducedMotion()
+  const inView = useInView(ref, { once: true, margin: '-8%' })
 
   return (
-    <motion.div
-      style={{ opacity, y }}
-      className="absolute inset-0 flex items-center px-6 md:px-20"
-    >
-      <div className="w-full max-w-5xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-8 md:gap-0">
-        {/* Content */}
-        <div className="md:max-w-xl">
-          <p className="text-accent text-xs font-medium tracking-[0.3em] uppercase mb-5 md:mb-8">
-            {step.num} — {step.title}
-          </p>
-          <h3 className="text-ink text-5xl sm:text-6xl md:text-[5.5rem] font-extralight leading-[0.95] tracking-tight mb-6 md:mb-8">
-            {step.title}
-          </h3>
-          <p className="text-muted text-base md:text-lg font-light leading-relaxed max-w-md">
-            {step.desc}
-          </p>
-        </div>
+    <div ref={ref} className="relative overflow-hidden">
+      {/* Static border base */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-border" />
+      {/* Accent line draws in on enter */}
+      <motion.div
+        aria-hidden="true"
+        className="absolute top-0 left-0 h-px bg-accent"
+        style={{ width: '100%', originX: 0 }}
+        initial={reduce ? false : { scaleX: 0 }}
+        animate={inView ? { scaleX: 1 } : {}}
+        transition={{ duration: 0.9, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+      />
 
-        {/* Ghost number */}
-        <div
-          aria-hidden="true"
-          className="hidden md:block text-[18rem] font-black italic leading-none select-none tabular-nums text-ink/[0.04] shrink-0"
+      {/* Ghost number */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 select-none tabular-nums leading-none font-black italic text-ink/[0.035]"
+        style={{ fontSize: 'clamp(8rem, 22vw, 20rem)' }}
+      >
+        {step.num}
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 py-12 md:py-16 grid md:grid-cols-[6rem_1fr] gap-6 md:gap-16 items-start">
+        {/* Step number label */}
+        <motion.p
+          className="text-accent text-xs font-medium tracking-[0.3em] uppercase pt-2"
+          initial={reduce ? false : { opacity: 0, x: -16 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
         >
           {step.num}
-        </div>
-      </div>
-    </motion.div>
-  )
-}
+        </motion.p>
 
-// Simple fallback for reduced-motion
-function ReducedProcess() {
-  return (
-    <section id="prozess" className="bg-ivory py-24 md:py-32 px-6 md:px-12">
-      <div className="max-w-6xl mx-auto">
-        <Reveal>
-          <p className="text-accent text-xs font-medium tracking-[0.2em] uppercase mb-6">
-            Wie ich arbeite
-          </p>
-        </Reveal>
-        <h2 className="text-ink text-3xl md:text-4xl font-light leading-snug tracking-tight mb-16">
-          <SplitWords text="Vier Schritte." className="block" />
-          <SplitWords text="Kein Overhead." className="block" delay={0.12} />
-        </h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          {STEPS.map(({ num, title, desc }) => (
-            <div key={num} className="border-t border-border pt-6">
-              <p className="text-accent text-sm font-medium mb-2">{num}</p>
-              <h3 className="text-ink text-xl font-light mb-3">{title}</h3>
-              <p className="text-muted text-sm font-light leading-relaxed">{desc}</p>
-            </div>
-          ))}
+        {/* Title + description */}
+        <div>
+          <motion.h3
+            className="text-ink font-extralight leading-[0.92] tracking-tight mb-5"
+            style={{ fontSize: 'clamp(2.8rem, 7vw, 5.5rem)' }}
+            initial={reduce ? false : { opacity: 0, y: 28 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {step.title}
+          </motion.h3>
+          <motion.p
+            className="text-muted text-base font-light leading-relaxed max-w-lg"
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {step.desc}
+          </motion.p>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
 
 export default function Process() {
-  const sectionRef = useRef(null)
-  const reduce = useReducedMotion()
-  const [activeStep, setActiveStep] = useState(0)
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
-  })
-
-  useMotionValueEvent(scrollYProgress, 'change', (v) => {
-    setActiveStep(Math.min(3, Math.floor(v * 4)))
-  })
-
-  if (reduce) return <ReducedProcess />
-
   return (
-    <section
-      ref={sectionRef}
-      id="prozess"
-      className="relative"
-      style={{ height: '300vh' }}
-    >
-      <div className="sticky top-0 h-screen bg-ivory overflow-hidden">
-
-        {/* Label oben links */}
-        <div className="absolute top-8 md:top-10 left-6 md:left-20 z-10">
-          <p className="text-accent text-[0.6rem] font-medium tracking-[0.3em] uppercase">
-            Wie ich arbeite
-          </p>
+    <section id="prozess" className="bg-ivory py-24 md:py-32 px-6 md:px-20">
+      <div className="max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="mb-16 md:mb-20">
+          <Reveal>
+            <p className="text-accent text-xs font-medium tracking-[0.2em] uppercase mb-6">
+              Wie ich arbeite
+            </p>
+          </Reveal>
+          <h2 className="text-ink text-3xl md:text-4xl font-light leading-snug tracking-tight">
+            <SplitWords text="Vier Schritte." className="block" />
+            <SplitWords text="Kein Overhead." className="block" delay={0.12} />
+          </h2>
         </div>
 
-        {/* Schritt-Zähler oben rechts */}
-        <div className="absolute top-8 md:top-10 right-6 md:right-20 z-10">
-          <p className="text-ink/25 text-[0.6rem] font-light tracking-[0.25em] tabular-nums">
-            0{activeStep + 1} / 04
-          </p>
-        </div>
-
-        {/* Step cards — übereinandergelegt, scroll-getrieben */}
-        <div className="absolute inset-0">
+        {/* Steps */}
+        <div>
           {STEPS.map((step, i) => (
-            <StepCard
-              key={step.num}
-              step={step}
-              index={i}
-              scrollYProgress={scrollYProgress}
-            />
+            <Step key={step.num} step={step} index={i} />
           ))}
-        </div>
-
-        {/* Fortschritts-Dots unten Mitte */}
-        <div className="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2.5">
-          {STEPS.map((_, i) => (
-            <motion.div
-              key={i}
-              className="rounded-full bg-accent"
-              animate={{
-                width: i === activeStep ? 28 : 6,
-                height: 6,
-                opacity: i === activeStep ? 1 : 0.2,
-              }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            />
-          ))}
+          <div className="h-px bg-border" />
         </div>
       </div>
     </section>
