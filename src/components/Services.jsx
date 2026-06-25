@@ -108,9 +108,9 @@ function PackageCard({ pkg, index }) {
         glow={pkg.highlight ? 'rgba(255,255,255,0.12)' : 'rgba(177,69,82,0.18)'}
       >
         <div
-          className={`relative flex h-full flex-col p-7 md:p-8 ${
+          className={`relative flex h-full flex-col p-5 md:p-6 ${
             pkg.highlight
-              ? 'bg-accent text-ivory shadow-xl shadow-accent/20'
+              ? 'bg-accent text-ivory'
               : 'bg-ivory text-ink border border-border'
           }`}
         >
@@ -195,9 +195,9 @@ function HausmeisterCard({ tier, index }) {
         glow={tier.highlight ? 'rgba(177,69,82,0.30)' : 'rgba(177,69,82,0.18)'}
       >
         <div
-          className={`relative flex h-full flex-col p-7 md:p-8 ${
+          className={`relative flex h-full flex-col p-5 md:p-6 ${
             tier.highlight
-              ? 'bg-accent-deep text-ivory shadow-xl shadow-black/30'
+              ? 'bg-accent-deep text-ivory'
               : 'bg-ivory text-ink border border-border'
           }`}
         >

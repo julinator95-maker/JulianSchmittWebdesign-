@@ -8,7 +8,6 @@ import {
   useReducedMotion,
 } from 'motion/react'
 
-// 3D-Neigung auf Mausbewegung plus mitlaufender Lichtschein im Inneren.
 export default function TiltCard({
   children,
   className = '',
@@ -19,19 +18,23 @@ export default function TiltCard({
   const ref = useRef(null)
   const px = useMotionValue(0.5)
   const py = useMotionValue(0.5)
+  const active = useMotionValue(0)
 
-  const rotateX = useSpring(useTransform(py, [0, 1], [max, -max]), {
-    stiffness: 150,
-    damping: 18,
-  })
-  const rotateY = useSpring(useTransform(px, [0, 1], [-max, max]), {
-    stiffness: 150,
-    damping: 18,
-  })
+  const springCfg = { stiffness: 150, damping: 18 }
+
+  const rotateX = useSpring(useTransform(py, [0, 1], [max, -max]), springCfg)
+  const rotateY = useSpring(useTransform(px, [0, 1], [-max, max]), springCfg)
+  const scale    = useSpring(useTransform(active, [0, 1], [1, 1.025]), springCfg)
+
+  // Shadow shifts opposite to tilt — brighter when lifted
+  const shadowX  = useTransform(rotateY, [-max, max], [10, -10])
+  const shadowY  = useTransform(rotateX, [-max, max], [-10, 10])
+  const shadowO  = useTransform(active, [0, 1], [0.08, 0.22])
+  const boxShadow = useMotionTemplate`${shadowX}px ${shadowY}px 38px rgba(0,0,0,${shadowO}), 0 2px 8px rgba(0,0,0,0.06)`
 
   const gx = useTransform(px, (v) => `${v * 100}%`)
   const gy = useTransform(py, (v) => `${v * 100}%`)
-  const glowBg = useMotionTemplate`radial-gradient(380px circle at ${gx} ${gy}, ${glow}, transparent 60%)`
+  const glowBg = useMotionTemplate`radial-gradient(340px circle at ${gx} ${gy}, ${glow}, transparent 60%)`
 
   if (reduce) return <div className={className}>{children}</div>
 
@@ -40,19 +43,23 @@ export default function TiltCard({
     px.set((clientX - r.left) / r.width)
     py.set((clientY - r.top) / r.height)
   }
-  const reset = () => { px.set(0.5); py.set(0.5) }
+  const enter = () => active.set(1)
+  const reset = () => { px.set(0.5); py.set(0.5); active.set(0) }
 
-  const onMouseMove = (e) => updatePos(e.clientX, e.clientY)
-  const onTouchMove = (e) => updatePos(e.touches[0].clientX, e.touches[0].clientY)
+  const onMouseMove  = (e) => updatePos(e.clientX, e.clientY)
+  const onTouchMove  = (e) => updatePos(e.touches[0].clientX, e.touches[0].clientY)
+  const onTouchStart = () => enter()
 
   return (
     <motion.div
       ref={ref}
       onMouseMove={onMouseMove}
+      onMouseEnter={enter}
       onMouseLeave={reset}
+      onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={reset}
-      style={{ rotateX, rotateY, transformPerspective: 900 }}
+      style={{ rotateX, rotateY, scale, transformPerspective: 900, boxShadow }}
       className={`relative ${className}`}
     >
       {children}
