@@ -61,7 +61,7 @@ export default function VaporizeTextCycle({
 
   const globalDpr = useMemo(() => {
     if (typeof window !== 'undefined') {
-      return window.devicePixelRatio * 2 || 1
+      return Math.min(window.devicePixelRatio || 1, 2)
     }
     return 1
   }, [])
@@ -213,12 +213,9 @@ export default function VaporizeTextCycle({
           ctx.save()
           ctx.scale(globalDpr, globalDpr)
           particlesRef.current.forEach((particle) => {
-            particle.x = particle.originalX
-            particle.y = particle.originalY
             const opacity = Math.min(fadeOpacityRef.current, 1) * particle.originalAlpha
-            const color = particle.color.replace(/[\d.]+\)$/, `${opacity})`)
-            ctx.fillStyle = color
-            ctx.fillRect(particle.x / globalDpr, particle.y / globalDpr, 1, 1)
+            ctx.fillStyle = `rgba(${particle.r},${particle.g},${particle.b},${opacity})`
+            ctx.fillRect(particle.originalX / globalDpr, particle.originalY / globalDpr, 1, 1)
           })
           ctx.restore()
 
@@ -527,7 +524,9 @@ const createParticles = (ctx, canvas, text, textX, textY, font, color, alignment
           y,
           originalX: x,
           originalY: y,
-          color: `rgba(${data[index]}, ${data[index + 1]}, ${data[index + 2]}, ${originalAlpha})`,
+          r: data[index],
+          g: data[index + 1],
+          b: data[index + 2],
           opacity: originalAlpha,
           originalAlpha,
           velocityX: 0,
@@ -628,8 +627,7 @@ const renderParticles = (ctx, particles, globalDpr) => {
 
   particles.forEach((particle) => {
     if (particle.opacity > 0) {
-      const color = particle.color.replace(/[\d.]+\)$/, `${particle.opacity})`)
-      ctx.fillStyle = color
+      ctx.fillStyle = `rgba(${particle.r},${particle.g},${particle.b},${particle.opacity})`
       ctx.fillRect(particle.x / globalDpr, particle.y / globalDpr, 1, 1)
     }
   })

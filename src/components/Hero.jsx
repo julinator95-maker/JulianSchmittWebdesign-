@@ -1,7 +1,6 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef } from 'react'
 import {
   motion,
-  AnimatePresence,
   useScroll,
   useTransform,
   useMotionValue,
@@ -11,6 +10,7 @@ import {
 import WindBackground from './WindBackground'
 import WhatsAppIcon from './WhatsAppIcon'
 import Magnetic from './fx/Magnetic'
+import VaporizeWord from './fx/VaporizeWord'
 import { waLink, CITY } from '../config'
 import julianPortrait from '../assets/julian-white.webp'
 
@@ -43,12 +43,6 @@ export default function Hero() {
     tiltX.set(0)
     tiltY.set(0)
   }
-
-  const [wordIdx, setWordIdx] = useState(0)
-  useEffect(() => {
-    const id = setInterval(() => setWordIdx(i => (i + 1) % VAPOR_WORDS.length), 2800)
-    return () => clearInterval(id)
-  }, [])
 
   const wordVariants = {
     hidden: { opacity: 0, y: 24, filter: 'blur(10px)' },
@@ -106,23 +100,9 @@ export default function Hero() {
             ))}
           </span>
 
-          {/* Smooth word cycling */}
-          <span className="block font-normal italic text-accent-bright" style={{ minHeight: '1.08em' }}>
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={wordIdx}
-                className="inline-block"
-                initial={{ opacity: 0, y: 28, filter: 'blur(8px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)',
-                  transition: { duration: 0.55, delay: wordIdx === 0 ? 0.22 : 0, ease: [0.22, 1, 0.36, 1] }
-                }}
-                exit={{ opacity: 0, y: -20, filter: 'blur(6px)',
-                  transition: { duration: 0.38, ease: [0.4, 0, 1, 1] }
-                }}
-              >
-                {VAPOR_WORDS[wordIdx]}
-              </motion.span>
-            </AnimatePresence>
+          {/* Wind-Dissolve: Wind → Look → Style → Schwung */}
+          <span className="block font-normal italic text-accent-bright">
+            <VaporizeWord words={VAPOR_WORDS} />
           </span>
 
           <span className="block">
