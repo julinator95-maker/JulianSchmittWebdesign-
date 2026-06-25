@@ -58,7 +58,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={ref}
-      className="relative min-h-svh w-full overflow-hidden bg-night text-white"
+      className="relative min-h-svh w-full overflow-x-hidden bg-night text-white"
     >
       <WindBackground />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-night" />
@@ -167,7 +167,7 @@ export default function Hero() {
               src={julianPortrait}
               alt="Julian Schmitt, Webdesigner aus Trier"
               draggable="false"
-              className="w-full h-auto rounded-2xl ring-1 ring-white/10 shadow-2xl shadow-black/50"
+              className="w-full h-auto rounded-2xl ring-1 ring-white/10 shadow-2xl shadow-black/50 object-top"
               initial={reduce ? false : { clipPath: 'inset(8% round 1rem)' }}
               animate={reduce ? false : { clipPath: 'inset(0% round 1rem)' }}
               transition={{ delay: 0.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
