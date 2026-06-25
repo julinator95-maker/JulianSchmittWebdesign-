@@ -35,21 +35,23 @@ export default function TiltCard({
 
   if (reduce) return <div className={className}>{children}</div>
 
-  const onMove = (e) => {
+  const updatePos = (clientX, clientY) => {
     const r = ref.current.getBoundingClientRect()
-    px.set((e.clientX - r.left) / r.width)
-    py.set((e.clientY - r.top) / r.height)
+    px.set((clientX - r.left) / r.width)
+    py.set((clientY - r.top) / r.height)
   }
-  const onLeave = () => {
-    px.set(0.5)
-    py.set(0.5)
-  }
+  const reset = () => { px.set(0.5); py.set(0.5) }
+
+  const onMouseMove = (e) => updatePos(e.clientX, e.clientY)
+  const onTouchMove = (e) => updatePos(e.touches[0].clientX, e.touches[0].clientY)
 
   return (
     <motion.div
       ref={ref}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
+      onMouseMove={onMouseMove}
+      onMouseLeave={reset}
+      onTouchMove={onTouchMove}
+      onTouchEnd={reset}
       style={{ rotateX, rotateY, transformPerspective: 900 }}
       className={`relative ${className}`}
     >
