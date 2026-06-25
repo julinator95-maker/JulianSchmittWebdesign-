@@ -2,7 +2,6 @@ import Nav from './components/Nav'
 import Hero from './components/Hero'
 import StatsStrip from './components/StatsStrip'
 import About from './components/About'
-import TextStrip from './components/TextStrip'
 import AudienceStrip from './components/AudienceStrip'
 import Process from './components/Process'
 import Services from './components/Services'
@@ -24,8 +23,7 @@ export default function App() {
         <Hero />
         <StatsStrip />
         <About />
-        <TextStrip />
-        <AudienceStrip />
+<AudienceStrip />
         <Process />
         <Services />
         <FAQ />

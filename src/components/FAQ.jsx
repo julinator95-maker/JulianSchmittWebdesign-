@@ -10,7 +10,7 @@ const FAQS = [
   },
   {
     q: 'Wie lange dauert die Umsetzung?',
-    a: 'Das Konzept liegt innerhalb von 7 Tagen vor. Die fertige Website ist in der Regel nach 2–3 Wochen online. Keine monatelange Wartezeit wie bei Agenturen — ich arbeite fokussiert und liefere pünktlich.',
+    a: 'Das Konzept liegt innerhalb von 7 Tagen vor. Vom ersten Gespräch bis zur fertigen Website vergehen maximal 2 Wochen. Keine monatelange Wartezeit wie bei Agenturen — ich arbeite fokussiert und liefere pünktlich.',
   },
   {
     q: 'Brauche ich technisches Wissen?',
