@@ -33,8 +33,8 @@ export default function Nav() {
             scrolled ? 'text-ink' : 'text-ivory/80'
           }`}
         >
-          Julian Schmitt
-        </a>
+          Julian Schmitt Webdesign
+</a>
 
         <nav className="hidden md:flex items-center gap-8">
           {[
