@@ -29,12 +29,13 @@ export default function Nav() {
       <div className="max-w-6xl mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
         <a
           href="#hero"
-          className={`text-sm font-medium tracking-widest uppercase transition-colors duration-300 ${
+          className={`flex flex-col items-center leading-none gap-1 transition-colors duration-300 ${
             scrolled ? 'text-ink' : 'text-ivory/80'
           }`}
         >
-          Julian Schmitt Webdesign
-</a>
+          <span className="text-sm font-medium tracking-widest uppercase">Julian Schmitt</span>
+          <span className="text-[0.5rem] font-light tracking-[0.38em] uppercase">Webdesign</span>
+        </a>
 
         <nav className="hidden md:flex items-center gap-8">
           {[
