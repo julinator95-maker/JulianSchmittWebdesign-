@@ -1,12 +1,11 @@
 import { motion, useMotionValue, useSpring, useReducedMotion } from 'motion/react'
 
-// Magnetischer Hover: das Element zieht sich sanft zum Mauszeiger.
-export default function Magnetic({ children, strength = 0.35, className = '' }) {
+export default function Magnetic({ children, strength = 0.25, className = '' }) {
   const reduce = useReducedMotion()
   const x = useMotionValue(0)
   const y = useMotionValue(0)
-  const sx = useSpring(x, { stiffness: 220, damping: 15, mass: 0.5 })
-  const sy = useSpring(y, { stiffness: 220, damping: 15, mass: 0.5 })
+  const sx = useSpring(x, { stiffness: 120, damping: 22, mass: 0.5 })
+  const sy = useSpring(y, { stiffness: 120, damping: 22, mass: 0.5 })
 
   if (reduce) return <span className={className}>{children}</span>
 

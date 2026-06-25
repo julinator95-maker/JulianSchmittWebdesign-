@@ -30,12 +30,13 @@ function Step({ step, index }) {
   const ref = useRef(null)
   const reduce = useReducedMotion()
   const inView = useInView(ref, { once: true, margin: '-8%' })
+  const isLast = index === STEPS.length - 1
 
   return (
     <div ref={ref} className="relative overflow-hidden">
-      {/* Static border base */}
+      {/* Static border base — top */}
       <div className="absolute top-0 left-0 right-0 h-px bg-border" />
-      {/* Accent line draws in on enter */}
+      {/* Accent line draws in on enter — top */}
       <motion.div
         aria-hidden="true"
         className="absolute top-0 left-0 h-px bg-accent"
@@ -44,6 +45,20 @@ function Step({ step, index }) {
         animate={inView ? { scaleX: 1 } : {}}
         transition={{ duration: 0.9, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
       />
+      {/* Last step: also draw a line at the bottom */}
+      {isLast && (
+        <>
+          <div className="absolute bottom-0 left-0 right-0 h-px bg-border" />
+          <motion.div
+            aria-hidden="true"
+            className="absolute bottom-0 left-0 h-px bg-accent"
+            style={{ width: '100%', originX: 0 }}
+            initial={reduce ? false : { scaleX: 0 }}
+            animate={inView ? { scaleX: 1 } : {}}
+            transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </>
+      )}
 
       {/* Ghost number */}
       <div
@@ -113,7 +128,6 @@ export default function Process() {
           {STEPS.map((step, i) => (
             <Step key={step.num} step={step} index={i} />
           ))}
-          <div className="h-px bg-border" />
         </div>
       </div>
     </section>
