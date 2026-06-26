@@ -509,8 +509,10 @@ const createParticles = (ctx, canvas, text, textX, textY, font, color, alignment
 
   const baseDPR = 3
   const currentDPR = canvas.width / parseInt(canvas.style.width)
-  const baseSampleRate = Math.max(1, Math.round(currentDPR / baseDPR))
-  const sampleRate = Math.max(1, Math.round(baseSampleRate))
+  // Sample at ~1 particle per CSS pixel. On a 2x canvas that means stepping
+  // 2 device-pixels at a time → 4x fewer particles than per-device-pixel
+  // sampling, which is the single biggest perf lever for the render loop.
+  const sampleRate = Math.max(1, Math.round(currentDPR))
 
   for (let y = 0; y < canvas.height; y += sampleRate) {
     for (let x = 0; x < canvas.width; x += sampleRate) {
