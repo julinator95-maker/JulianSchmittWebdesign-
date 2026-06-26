@@ -36,6 +36,7 @@ export default function VaporizeWord({ words, color = 'rgb(177, 69, 82)' }) {
         transform: 'translateY(-50%)',
         height: canvasH,
         pointerEvents: 'none',
+        filter: 'blur(0.8px)',
       }}>
         <VaporizeTextCycle
           texts={words}

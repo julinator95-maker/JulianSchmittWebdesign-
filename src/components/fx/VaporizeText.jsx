@@ -215,7 +215,7 @@ export default function VaporizeTextCycle({
           particlesRef.current.forEach((particle) => {
             const opacity = Math.min(fadeOpacityRef.current, 1) * particle.originalAlpha
             ctx.fillStyle = `rgba(${particle.r},${particle.g},${particle.b},${opacity})`
-            ctx.fillRect(particle.originalX / globalDpr, particle.originalY / globalDpr, 1, 1)
+            ctx.fillRect(particle.originalX / globalDpr, particle.originalY / globalDpr, 1.5, 1.5)
           })
           ctx.restore()
 
@@ -591,8 +591,8 @@ const updateParticles = (
       particle.x += particle.velocityX * deltaTime * 20
       particle.y += particle.velocityY * deltaTime * 10
 
-      // Slower fade rate → longer visible trails
-      const fadeRate = 0.5 * (2000 / VAPORIZE_DURATION)
+      // Slow fade → long smoky trails
+      const fadeRate = 0.28 * (2000 / VAPORIZE_DURATION)
       particle.opacity = Math.max(0, particle.opacity - deltaTime * fadeRate)
 
       if (particle.opacity > 0.01) {
@@ -613,7 +613,7 @@ const renderParticles = (ctx, particles, globalDpr) => {
   particles.forEach((particle) => {
     if (particle.opacity > 0) {
       ctx.fillStyle = `rgba(${particle.r},${particle.g},${particle.b},${particle.opacity})`
-      ctx.fillRect(particle.x / globalDpr, particle.y / globalDpr, 1, 1)
+      ctx.fillRect(particle.x / globalDpr, particle.y / globalDpr, 1.5, 1.5)
     }
   })
 
