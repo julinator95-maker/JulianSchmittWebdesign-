@@ -507,12 +507,10 @@ const createParticles = (ctx, canvas, text, textX, textY, font, color, alignment
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
   const data = imageData.data
 
-  const baseDPR = 3
   const currentDPR = canvas.width / parseInt(canvas.style.width)
-  // Sample at ~1 particle per CSS pixel. On a 2x canvas that means stepping
-  // 2 device-pixels at a time → 4x fewer particles than per-device-pixel
-  // sampling, which is the single biggest perf lever for the render loop.
-  const sampleRate = Math.max(1, Math.round(currentDPR))
+  // 1 particle per device pixel → dense fill matching 21st.dev quality.
+  // Regex removal + DPR cap keep this fast enough.
+  const sampleRate = 1
 
   for (let y = 0; y < canvas.height; y += sampleRate) {
     for (let x = 0; x < canvas.width; x += sampleRate) {
@@ -533,8 +531,12 @@ const createParticles = (ctx, canvas, text, textX, textY, font, color, alignment
           originalAlpha,
           velocityX: 0,
           velocityY: 0,
-          angle: 0,
           speed: 0,
+          // Organic front: each particle waits a random duration (0–280ms)
+          // before it starts moving, so the dissolution edge is irregular.
+          activationDelay: Math.random() * 0.28,
+          delayAccum: 0,
+          activated: false,
         }
 
         particles.push(particle)
@@ -554,7 +556,7 @@ const updateParticles = (
   MULTIPLIED_VAPORIZE_SPREAD,
   VAPORIZE_DURATION,
   direction,
-  density
+  // density param kept for API compatibility, not used in wind model
 ) => {
   let allParticlesVaporized = true
 
@@ -565,52 +567,33 @@ const updateParticles = (
         : particle.originalX >= vaporizeX
 
     if (shouldVaporize) {
-      if (particle.speed === 0) {
-        particle.angle = Math.random() * Math.PI * 2
-        particle.speed = (Math.random() * 1 + 0.5) * MULTIPLIED_VAPORIZE_SPREAD
-        particle.velocityX = Math.cos(particle.angle) * particle.speed
-        particle.velocityY = Math.sin(particle.angle) * particle.speed
-        particle.shouldFadeQuickly = Math.random() > density
-      }
-
-      if (particle.shouldFadeQuickly) {
-        particle.opacity = Math.max(0, particle.opacity - deltaTime)
-      } else {
-        const dx = particle.originalX - particle.x
-        const dy = particle.originalY - particle.y
-        const distanceFromOrigin = Math.sqrt(dx * dx + dy * dy)
-
-        const dampingFactor = Math.max(
-          0.95,
-          1 - distanceFromOrigin / (100 * MULTIPLIED_VAPORIZE_SPREAD)
-        )
-
-        const randomSpread = MULTIPLIED_VAPORIZE_SPREAD * 3
-        const spreadX = (Math.random() - 0.5) * randomSpread
-        const spreadY = (Math.random() - 0.5) * randomSpread
-
-        particle.velocityX = (particle.velocityX + spreadX + dx * 0.002) * dampingFactor
-        particle.velocityY = (particle.velocityY + spreadY + dy * 0.002) * dampingFactor
-
-        const maxVelocity = MULTIPLIED_VAPORIZE_SPREAD * 2
-        const currentVelocity = Math.sqrt(
-          particle.velocityX * particle.velocityX + particle.velocityY * particle.velocityY
-        )
-
-        if (currentVelocity > maxVelocity) {
-          const scale = maxVelocity / currentVelocity
-          particle.velocityX *= scale
-          particle.velocityY *= scale
+      // Accumulate per-particle delay — organic irregular dissolution front
+      if (!particle.activated) {
+        particle.delayAccum += deltaTime
+        if (particle.delayAccum < particle.activationDelay) {
+          if (particle.opacity > 0.01) allParticlesVaporized = false
+          return
         }
-
-        particle.x += particle.velocityX * deltaTime * 20
-        particle.y += particle.velocityY * deltaTime * 10
-
-        const baseFadeRate = 0.75
-        const durationBasedFadeRate = baseFadeRate * (2000 / VAPORIZE_DURATION)
-
-        particle.opacity = Math.max(0, particle.opacity - deltaTime * durationBasedFadeRate)
+        // Kick with wind-dominant initial velocity (mostly rightward, ±36° spread)
+        particle.activated = true
+        const windAngle = (Math.random() - 0.5) * (Math.PI / 5)
+        const baseSpeed = (Math.random() * 0.6 + 0.7) * MULTIPLIED_VAPORIZE_SPREAD
+        particle.velocityX = Math.cos(windAngle) * baseSpeed * 3.5
+        particle.velocityY = Math.sin(windAngle) * baseSpeed
       }
+
+      // Per-frame turbulence — biased rightward (+), slight vertical spread
+      const turbX = (Math.random() * 0.8 - 0.1) * MULTIPLIED_VAPORIZE_SPREAD
+      const turbY = (Math.random() - 0.5) * MULTIPLIED_VAPORIZE_SPREAD * 0.6
+      particle.velocityX = (particle.velocityX + turbX) * 0.97
+      particle.velocityY = (particle.velocityY + turbY) * 0.97
+
+      particle.x += particle.velocityX * deltaTime * 20
+      particle.y += particle.velocityY * deltaTime * 10
+
+      // Slower fade rate → longer visible trails
+      const fadeRate = 0.5 * (2000 / VAPORIZE_DURATION)
+      particle.opacity = Math.max(0, particle.opacity - deltaTime * fadeRate)
 
       if (particle.opacity > 0.01) {
         allParticlesVaporized = false
@@ -645,6 +628,8 @@ const resetParticles = (particles) => {
     particle.speed = 0
     particle.velocityX = 0
     particle.velocityY = 0
+    particle.activated = false
+    particle.delayAccum = 0
   })
 }
 
