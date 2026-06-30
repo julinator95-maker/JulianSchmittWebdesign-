@@ -8,6 +8,7 @@ import {
   useReducedMotion,
 } from 'motion/react'
 import WindBackground from './WindBackground'
+import WindField3D from './WindField3D'
 import WhatsAppIcon from './WhatsAppIcon'
 import Magnetic from './fx/Magnetic'
 import VaporizeWord from './fx/VaporizeWord'
@@ -60,7 +61,8 @@ export default function Hero() {
       ref={ref}
       className="relative min-h-svh w-full overflow-x-hidden bg-night text-white"
     >
-      <WindBackground />
+      <WindBackground minimal />
+      <WindField3D />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-night" />
 
       <motion.div

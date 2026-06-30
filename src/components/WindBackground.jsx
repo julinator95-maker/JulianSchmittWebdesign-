@@ -2,7 +2,8 @@ import { motion, useReducedMotion } from 'motion/react'
 
 // Mehrschichtiger "Wind"-Hintergrund: driftende Aurora-Schleier,
 // durchziehende Streifen und schwebende Partikel. Rein Transform/Opacity.
-export default function WindBackground({ className = '' }) {
+// minimal=true: nur die Aurora-Farbschleier (Streifen & Partikel übernimmt WindField3D)
+export default function WindBackground({ className = '', minimal = false }) {
   const reduce = useReducedMotion()
 
   const streaks = [
@@ -49,7 +50,7 @@ export default function WindBackground({ className = '' }) {
       />
 
       {/* Wind-Streifen */}
-      {!reduce &&
+      {!minimal && !reduce &&
         streaks.map((s, i) => (
           <motion.div
             key={i}
@@ -68,7 +69,7 @@ export default function WindBackground({ className = '' }) {
         ))}
 
       {/* Schwebende Partikel */}
-      {!reduce &&
+      {!minimal && !reduce &&
         particles.map((p, i) => (
           <motion.span
             key={i}
