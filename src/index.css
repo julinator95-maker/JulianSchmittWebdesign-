@@ -14,8 +14,8 @@
   --color-night: #0E0A0B;
 
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  /* Editorial-Serif für kursive Akzentwörter — verleiht den Headlines Klasse */
-  --font-editorial: Georgia, 'Times New Roman', serif;
+  /* Editorial-Serif für kursive Akzentwörter — modern statt altbacken */
+  --font-editorial: 'Instrument Serif', Georgia, serif;
 }
 
 *, *::before, *::after {

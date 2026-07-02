@@ -1,29 +1,52 @@
 import { useEffect, useState } from 'react'
 import VaporizeTextCycle, { Tag } from './VaporizeText'
 
+// Instrument Serif hat nur weight 400 — kursiv wirkt sie bei Headline-Größen
+// elegant und modern. Der Canvas muss auf die geladene Font warten, sonst
+// sampelt er die Fallback-Schrift und zerstäubt die falschen Pixel.
+const CANVAS_FONT = "'Instrument Serif', Georgia, serif"
+
 function pickFontSize() {
-  if (typeof window === 'undefined') return 72
+  if (typeof window === 'undefined') return 76
   const w = window.innerWidth
-  if (w >= 1024) return 72 // lg:text-7xl
-  if (w >= 768) return 60 // md:text-6xl
-  if (w >= 640) return 48 // sm:text-5xl
-  return 38
+  if (w >= 1024) return 76 // lg:text-7xl
+  if (w >= 768) return 64 // md:text-6xl
+  if (w >= 640) return 52 // sm:text-5xl
+  return 42
 }
 
 export default function VaporizeWord({ words, color = 'rgb(177, 69, 82)' }) {
-  const [fontSize, setFontSize] = useState(72)
+  const [fontSize, setFontSize] = useState(pickFontSize)
+  const [fontReady, setFontReady] = useState(
+    () => typeof document === 'undefined' || !document.fonts?.load
+  )
 
   useEffect(() => {
     const update = () => setFontSize(pickFontSize())
-    update()
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
   }, [])
 
+  useEffect(() => {
+    if (fontReady) return
+    let cancelled = false
+    Promise.all([
+      document.fonts.load(`italic 400 76px 'Instrument Serif'`),
+      document.fonts.ready,
+    ])
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setFontReady(true)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [fontReady])
+
   // Layout span height matches actual text line (keeps headline spacing intact).
   // Canvas span is 3.5× taller, centered absolutely, so particles have room to
   // spread above and below the text without pushing surrounding elements apart.
-  const lineH  = Math.round(fontSize * 1.15)
+  const lineH = Math.round(fontSize * 1.15)
   const canvasH = Math.round(fontSize * 3.5)
 
   return (
@@ -36,21 +59,20 @@ export default function VaporizeWord({ words, color = 'rgb(177, 69, 82)' }) {
         transform: 'translateY(-50%)',
         height: canvasH,
         pointerEvents: 'none',
-        filter: 'blur(0.8px)',
       }}>
-        <VaporizeTextCycle
-          texts={words}
-          // Georgia italic: Serif-Akzent passend zur Editorial-Typo der Seite.
-          // 600 → bold-Strichstärke = dichtere Partikelwolke
-          font={{ fontFamily: 'Georgia, serif', fontSize: `${fontSize}px`, fontWeight: 'italic 600' }}
-          color={color}
-          spread={5}
-          density={5}
-          animation={{ vaporizeDuration: 1, fadeInDuration: 1, waitDuration: 0.5 }}
-          direction="left-to-right"
-          alignment="center"
-          tag={Tag.P}
-        />
+        {fontReady && (
+          <VaporizeTextCycle
+            texts={words}
+            font={{ fontFamily: CANVAS_FONT, fontSize: `${fontSize}px`, fontWeight: 'italic 400' }}
+            color={color}
+            spread={5}
+            density={5}
+            animation={{ vaporizeDuration: 2, fadeInDuration: 1, waitDuration: 0.5 }}
+            direction="left-to-right"
+            alignment="center"
+            tag={Tag.P}
+          />
+        )}
       </span>
     </span>
   )

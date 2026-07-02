@@ -41,7 +41,6 @@ export default function VaporizeTextCycle({
   const canvasRef = useRef(null)
   const wrapperRef = useRef(null)
   const isInView = useIsInView(wrapperRef)
-  const lastFontRef = useRef(null)
   const particlesRef = useRef([])
   const animationFrameRef = useRef(null)
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
@@ -191,13 +190,21 @@ export default function VaporizeTextCycle({
               ? textBoundaries.left + (textBoundaries.width * progress) / 100
               : textBoundaries.right - (textBoundaries.width * progress) / 100
 
-          memoizedUpdateParticles(particlesRef.current, vaporizeX, deltaTime)
+          const allVaporized = memoizedUpdateParticles(
+            particlesRef.current,
+            vaporizeX,
+            deltaTime
+          )
           memoizedRenderParticles(ctx, particlesRef.current)
 
-          // Transition as soon as the wave has swept all pixels — don't wait
-          // for every last particle to reach opacity 0 (that takes 2-4s extra
-          // and is what causes the "stuck at 85%" stall).
-          if (vaporizeProgressRef.current >= 100) {
+          // Original-Semantik: weiter, wenn Welle durch UND Wolke verflogen.
+          // Dank Tinten-Grenzen (actualBoundingBox) erfasst die Welle jetzt
+          // garantiert alle Pixel. Failsafe bei 250: sollte irgendein Browser
+          // seltsame Metriken liefern, kann der Zyklus trotzdem nie einfrieren.
+          if (
+            (vaporizeProgressRef.current >= 100 && allVaporized) ||
+            vaporizeProgressRef.current >= 250
+          ) {
             setCurrentTextIndex((prevIndex) => (prevIndex + 1) % texts.length)
             setAnim('fadingIn')
             fadeOpacityRef.current = 0
@@ -213,7 +220,7 @@ export default function VaporizeTextCycle({
           particlesRef.current.forEach((particle) => {
             const opacity = Math.min(fadeOpacityRef.current, 1) * particle.originalAlpha
             ctx.fillStyle = `rgba(${particle.r},${particle.g},${particle.b},${opacity})`
-            ctx.fillRect(particle.originalX / globalDpr, particle.originalY / globalDpr, 1.5, 1.5)
+            ctx.fillRect(particle.originalX / globalDpr, particle.originalY / globalDpr, 1, 1)
           })
           ctx.restore()
 
@@ -258,6 +265,9 @@ export default function VaporizeTextCycle({
     setAnim,
   ])
 
+  // Kein 1s-"Font nachladen"-Hack mehr nötig: VaporizeWord wartet via
+  // document.fonts, bis die Schrift geladen ist, bevor es hier mountet.
+  // Der Hack hat sonst mitten im ersten Zyklus die Partikel zurückgesetzt.
   useEffect(() => {
     renderCanvas({
       framerProps: { texts, font, color, alignment },
@@ -267,19 +277,6 @@ export default function VaporizeTextCycle({
       globalDpr,
       currentTextIndex,
       transformedDensity,
-    })
-
-    const currentFont = font.fontFamily || 'sans-serif'
-    return handleFontChange({
-      currentFont,
-      lastFontRef,
-      canvasRef,
-      wrapperSize,
-      particlesRef,
-      globalDpr,
-      currentTextIndex,
-      transformedDensity,
-      framerProps: { texts, font, color, alignment },
     })
   }, [texts, font, color, alignment, wrapperSize, currentTextIndex, globalDpr, transformedDensity])
 
@@ -346,61 +343,6 @@ const SeoElement = memo(({ tag = Tag.P, texts }) => {
   return createElement(safeTag, { style }, texts?.join(' ') ?? '')
 })
 SeoElement.displayName = 'SeoElement'
-
-// ------------------------------------------------------------ //
-// FONT HANDLING
-// ------------------------------------------------------------ //
-const handleFontChange = ({
-  currentFont,
-  lastFontRef,
-  canvasRef,
-  wrapperSize,
-  particlesRef,
-  globalDpr,
-  currentTextIndex,
-  transformedDensity,
-  framerProps,
-}) => {
-  if (currentFont !== lastFontRef.current) {
-    lastFontRef.current = currentFont
-
-    const timeoutId = setTimeout(() => {
-      cleanup({ canvasRef, particlesRef })
-      renderCanvas({
-        framerProps,
-        canvasRef,
-        wrapperSize,
-        particlesRef,
-        globalDpr,
-        currentTextIndex,
-        transformedDensity,
-      })
-    }, 1000)
-
-    return () => {
-      clearTimeout(timeoutId)
-      cleanup({ canvasRef, particlesRef })
-    }
-  }
-
-  return undefined
-}
-
-// ------------------------------------------------------------ //
-// CLEANUP
-// ------------------------------------------------------------ //
-const cleanup = ({ canvasRef, particlesRef }) => {
-  const canvas = canvasRef.current
-  const ctx = canvas?.getContext('2d')
-
-  if (canvas && ctx) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-  }
-
-  if (particlesRef.current) {
-    particlesRef.current = []
-  }
-}
 
 // ------------------------------------------------------------ //
 // RENDER CANVAS
@@ -483,21 +425,27 @@ const createParticles = (ctx, canvas, text, textX, textY, font, color, alignment
   }
 
   const metrics = ctx.measureText(text)
-  let textLeft
-  const textWidth = metrics.width
+  const advanceWidth = metrics.width
 
-  if (alignment === 'center') {
-    textLeft = textX - textWidth / 2
-  } else if (alignment === 'left') {
-    textLeft = textX
-  } else {
-    textLeft = textX - textWidth
-  }
+  // Fallbacks relativ zum Anker, falls actualBoundingBox fehlt (alte Browser)
+  const fallbackLeft =
+    alignment === 'center' ? advanceWidth / 2 : alignment === 'left' ? 0 : advanceWidth
+  const fallbackRight =
+    alignment === 'center' ? advanceWidth / 2 : alignment === 'left' ? advanceWidth : 0
+
+  // WICHTIG (Fix für den "d bleibt stehen"-Freeze): metrics.width ist die
+  // Laufweite, nicht die Tinte. Kursive Glyphen malen rechts darüber hinaus —
+  // Partikel dort würden von der Welle nie erfasst, "allVaporized" bliebe
+  // für immer false und der Zyklus fröre ein. Deshalb: echte Tinten-Ausmaße
+  // (actualBoundingBox, relativ zum Anker textX) + Sicherheitsrand.
+  const pad = 8
+  const left = textX - (metrics.actualBoundingBoxLeft ?? fallbackLeft) - pad
+  const right = textX + (metrics.actualBoundingBoxRight ?? fallbackRight) + pad
 
   const textBoundaries = {
-    left: textLeft,
-    right: textLeft + textWidth,
-    width: textWidth,
+    left,
+    right,
+    width: right - left,
   }
 
   ctx.fillText(text, textX, textY)
@@ -529,12 +477,8 @@ const createParticles = (ctx, canvas, text, textX, textY, font, color, alignment
           originalAlpha,
           velocityX: 0,
           velocityY: 0,
+          angle: 0,
           speed: 0,
-          // Organic front: each particle waits a random duration (0–280ms)
-          // before it starts moving, so the dissolution edge is irregular.
-          activationDelay: Math.random() * 0.28,
-          delayAccum: 0,
-          activated: false,
         }
 
         particles.push(particle)
@@ -547,6 +491,8 @@ const createParticles = (ctx, canvas, text, textX, textY, font, color, alignment
   return { particles, textBoundaries }
 }
 
+// Original-Physik der 21st.dev-Demo: 360°-Zerstäuben mit Distanz-Dämpfung,
+// leichter Rückzugskraft und dichteabhängigem Schnell-Fade.
 const updateParticles = (
   particles,
   vaporizeX,
@@ -554,7 +500,7 @@ const updateParticles = (
   MULTIPLIED_VAPORIZE_SPREAD,
   VAPORIZE_DURATION,
   direction,
-  // density param kept for API compatibility, not used in wind model
+  density
 ) => {
   let allParticlesVaporized = true
 
@@ -565,33 +511,52 @@ const updateParticles = (
         : particle.originalX >= vaporizeX
 
     if (shouldVaporize) {
-      // Accumulate per-particle delay — organic irregular dissolution front
-      if (!particle.activated) {
-        particle.delayAccum += deltaTime
-        if (particle.delayAccum < particle.activationDelay) {
-          if (particle.opacity > 0.01) allParticlesVaporized = false
-          return
-        }
-        // Kick with wind-dominant initial velocity (mostly rightward, ±36° spread)
-        particle.activated = true
-        const windAngle = (Math.random() - 0.5) * (Math.PI / 5)
-        const baseSpeed = (Math.random() * 0.6 + 0.7) * MULTIPLIED_VAPORIZE_SPREAD
-        particle.velocityX = Math.cos(windAngle) * baseSpeed * 3.5
-        particle.velocityY = Math.sin(windAngle) * baseSpeed
+      if (particle.speed === 0) {
+        particle.angle = Math.random() * Math.PI * 2
+        particle.speed = (Math.random() * 1 + 0.5) * MULTIPLIED_VAPORIZE_SPREAD
+        particle.velocityX = Math.cos(particle.angle) * particle.speed
+        particle.velocityY = Math.sin(particle.angle) * particle.speed
+        particle.shouldFadeQuickly = Math.random() > density
       }
 
-      // Per-frame turbulence — biased rightward (+), slight vertical spread
-      const turbX = (Math.random() * 0.8 - 0.1) * MULTIPLIED_VAPORIZE_SPREAD
-      const turbY = (Math.random() - 0.5) * MULTIPLIED_VAPORIZE_SPREAD * 0.6
-      particle.velocityX = (particle.velocityX + turbX) * 0.97
-      particle.velocityY = (particle.velocityY + turbY) * 0.97
+      if (particle.shouldFadeQuickly) {
+        particle.opacity = Math.max(0, particle.opacity - deltaTime)
+      } else {
+        const dx = particle.originalX - particle.x
+        const dy = particle.originalY - particle.y
+        const distanceFromOrigin = Math.sqrt(dx * dx + dy * dy)
 
-      particle.x += particle.velocityX * deltaTime * 20
-      particle.y += particle.velocityY * deltaTime * 10
+        const dampingFactor = Math.max(
+          0.95,
+          1 - distanceFromOrigin / (100 * MULTIPLIED_VAPORIZE_SPREAD)
+        )
 
-      // Slow fade → long smoky trails
-      const fadeRate = 0.28 * (2000 / VAPORIZE_DURATION)
-      particle.opacity = Math.max(0, particle.opacity - deltaTime * fadeRate)
+        const randomSpread = MULTIPLIED_VAPORIZE_SPREAD * 3
+        const spreadX = (Math.random() - 0.5) * randomSpread
+        const spreadY = (Math.random() - 0.5) * randomSpread
+
+        particle.velocityX = (particle.velocityX + spreadX + dx * 0.002) * dampingFactor
+        particle.velocityY = (particle.velocityY + spreadY + dy * 0.002) * dampingFactor
+
+        const maxVelocity = MULTIPLIED_VAPORIZE_SPREAD * 2
+        const currentVelocity = Math.sqrt(
+          particle.velocityX * particle.velocityX + particle.velocityY * particle.velocityY
+        )
+
+        if (currentVelocity > maxVelocity) {
+          const scale = maxVelocity / currentVelocity
+          particle.velocityX *= scale
+          particle.velocityY *= scale
+        }
+
+        particle.x += particle.velocityX * deltaTime * 20
+        particle.y += particle.velocityY * deltaTime * 10
+
+        const baseFadeRate = 0.25
+        const durationBasedFadeRate = baseFadeRate * (2000 / VAPORIZE_DURATION)
+
+        particle.opacity = Math.max(0, particle.opacity - deltaTime * durationBasedFadeRate)
+      }
 
       if (particle.opacity > 0.01) {
         allParticlesVaporized = false
@@ -611,7 +576,7 @@ const renderParticles = (ctx, particles, globalDpr) => {
   particles.forEach((particle) => {
     if (particle.opacity > 0) {
       ctx.fillStyle = `rgba(${particle.r},${particle.g},${particle.b},${particle.opacity})`
-      ctx.fillRect(particle.x / globalDpr, particle.y / globalDpr, 1.5, 1.5)
+      ctx.fillRect(particle.x / globalDpr, particle.y / globalDpr, 1, 1)
     }
   })
 
@@ -626,8 +591,6 @@ const resetParticles = (particles) => {
     particle.speed = 0
     particle.velocityX = 0
     particle.velocityY = 0
-    particle.activated = false
-    particle.delayAccum = 0
   })
 }
 
