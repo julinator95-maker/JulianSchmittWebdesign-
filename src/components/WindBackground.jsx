@@ -33,13 +33,13 @@ export default function WindBackground({ className = '', minimal = false }) {
       <motion.div
         className="absolute -top-1/3 -right-1/4 w-[70vw] h-[70vw] max-w-3xl max-h-3xl rounded-full blur-3xl"
         style={{ background: 'radial-gradient(circle, rgba(177,69,82,0.40), transparent 65%)' }}
-        animate={reduce ? {} : { x: [0, -60, 30, 0], y: [0, 40, -30, 0], scale: [1, 1.15, 0.95, 1] }}
+        animate={reduce ? {} : { x: [0, -60, 30, 0], y: [0, 40, -30, 0] }}
         transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div
         className="absolute top-1/4 -left-1/4 w-[60vw] h-[60vw] max-w-2xl max-h-2xl rounded-full blur-3xl"
         style={{ background: 'radial-gradient(circle, rgba(138,46,56,0.34), transparent 65%)' }}
-        animate={reduce ? {} : { x: [0, 80, -20, 0], y: [0, -50, 40, 0], scale: [1, 0.9, 1.1, 1] }}
+        animate={reduce ? {} : { x: [0, 80, -20, 0], y: [0, -50, 40, 0] }}
         transition={{ duration: 32, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.div

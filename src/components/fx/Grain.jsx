@@ -6,7 +6,7 @@ export default function Grain() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[55] opacity-[0.04] mix-blend-overlay"
+      className="pointer-events-none fixed inset-0 z-[55] opacity-[0.03]"
       style={{ backgroundImage: `url("${NOISE}")`, backgroundSize: '160px 160px' }}
     />
   )

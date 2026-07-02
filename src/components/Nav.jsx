@@ -47,7 +47,7 @@ export default function Nav() {
             <a
               key={href}
               href={href}
-              className={`text-sm transition-colors duration-300 ${
+              className={`text-[0.82rem] font-light tracking-wide transition-colors duration-300 ${
                 scrolled
                   ? 'text-muted hover:text-ink'
                   : 'text-ivory/60 hover:text-ivory'

@@ -288,7 +288,7 @@ export default function Services() {
           </Reveal>
           <h2 className="text-ink text-3xl md:text-4xl font-light leading-snug tracking-tight max-w-lg">
             <SplitWords text="Transparente Preise." className="block" />
-            <SplitWords text="Keine versteckten Kosten." className="block" delay={0.12} />
+            <SplitWords text="Keine versteckten Kosten." className="block font-editorial italic" delay={0.12} />
           </h2>
         </div>
 
@@ -308,7 +308,7 @@ export default function Services() {
             </Reveal>
             <h2 className="text-ink text-3xl md:text-4xl font-light leading-snug tracking-tight mb-6">
               <SplitWords text="Was braucht ein schlüsselfertiges Haus?" className="block" />
-              <SplitWords text="Einen Hausmeister." className="block italic" delay={0.18} />
+              <SplitWords text="Einen Hausmeister." className="block font-editorial italic" delay={0.18} />
             </h2>
             <Reveal delay={0.1}>
               <p className="text-muted text-base font-light leading-relaxed">

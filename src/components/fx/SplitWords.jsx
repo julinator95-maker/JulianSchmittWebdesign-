@@ -8,13 +8,15 @@ const container = {
   }),
 }
 
+// Wörter wehen mit leichter Drift von links herein — "frischer Wind"
 const wordVariant = {
-  hidden: { opacity: 0, y: '0.5em', filter: 'blur(8px)' },
+  hidden: { opacity: 0, x: '-0.35em', y: '0.25em', filter: 'blur(8px)' },
   visible: {
     opacity: 1,
+    x: 0,
     y: 0,
     filter: 'blur(0px)',
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
   },
 }
 

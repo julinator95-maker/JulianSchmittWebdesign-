@@ -60,20 +60,19 @@ function Step({ step, index }) {
         </>
       )}
 
-      {/* Ghost number */}
+      {/* Ghost number — deutlich dezenter */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 select-none tabular-nums leading-none font-black italic text-ink/[0.035]"
-        style={{ fontSize: 'clamp(8rem, 22vw, 20rem)' }}
+        className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 select-none tabular-nums leading-none font-black italic text-ink/[0.025]"
+        style={{ fontSize: 'clamp(5rem, 11vw, 9rem)' }}
       >
         {step.num}
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 py-12 md:py-16 grid md:grid-cols-[6rem_1fr] gap-6 md:gap-16 items-start">
-        {/* Step number label */}
+      {/* Nummer · Titel · Beschreibung nebeneinander — schlanke Editorial-Zeile */}
+      <div className="relative z-10 py-8 md:py-10 grid md:grid-cols-[3.5rem_1fr_1.5fr] gap-3 md:gap-12 items-baseline">
         <motion.p
-          className="text-accent text-xs font-medium tracking-[0.3em] uppercase pt-2"
+          className="text-accent text-xs font-medium tracking-[0.3em] uppercase"
           initial={reduce ? false : { opacity: 0, x: -16 }}
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
@@ -81,26 +80,24 @@ function Step({ step, index }) {
           {step.num}
         </motion.p>
 
-        {/* Title + description */}
-        <div>
-          <motion.h3
-            className="text-ink font-extralight leading-[0.92] tracking-tight mb-5"
-            style={{ fontSize: 'clamp(2.8rem, 7vw, 5.5rem)' }}
-            initial={reduce ? false : { opacity: 0, y: 28 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {step.title}
-          </motion.h3>
-          <motion.p
-            className="text-muted text-base font-light leading-relaxed max-w-lg"
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {step.desc}
-          </motion.p>
-        </div>
+        <motion.h3
+          className="text-ink font-extralight leading-none tracking-tight"
+          style={{ fontSize: 'clamp(1.75rem, 3.2vw, 2.5rem)' }}
+          initial={reduce ? false : { opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {step.title}
+        </motion.h3>
+
+        <motion.p
+          className="text-muted text-sm md:text-[0.95rem] font-light leading-relaxed max-w-md"
+          initial={reduce ? false : { opacity: 0, y: 14 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {step.desc}
+        </motion.p>
       </div>
     </div>
   )
@@ -108,10 +105,10 @@ function Step({ step, index }) {
 
 export default function Process() {
   return (
-    <section id="prozess" className="bg-ivory py-24 md:py-32 px-6 md:px-20">
+    <section id="prozess" className="bg-ivory py-20 md:py-28 px-6 md:px-20">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="mb-16 md:mb-20">
+        <div className="mb-12 md:mb-16">
           <Reveal>
             <p className="text-accent text-xs font-medium tracking-[0.2em] uppercase mb-6">
               Wie ich arbeite
@@ -119,7 +116,7 @@ export default function Process() {
           </Reveal>
           <h2 className="text-ink text-3xl md:text-4xl font-light leading-snug tracking-tight">
             <SplitWords text="Vier Schritte." className="block" />
-            <SplitWords text="Kein Overhead." className="block" delay={0.12} />
+            <SplitWords text="Kein Overhead." className="block font-editorial italic" delay={0.12} />
           </h2>
         </div>
 

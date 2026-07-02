@@ -1,8 +1,12 @@
 import { useEffect } from 'react'
-import { motion, useMotionTemplate, useMotionValue, useSpring, animate } from 'motion/react'
+import { motion, useMotionValue, useSpring, animate } from 'motion/react'
 
 // Weicher Lichtschein: auf Desktop folgt er dem Cursor, auf Mobile driftet er
 // autonom und springt zum Touch-Punkt.
+// Perf: fester Kreis, der nur per transform bewegt wird (GPU-Compositing) —
+// kein per-Frame-Repaint eines Vollbild-Gradients wie zuvor.
+const SIZE = 760
+
 export default function SpotlightCursor() {
   const x = useMotionValue(-1000)
   const y = useMotionValue(-1000)
@@ -57,13 +61,21 @@ export default function SpotlightCursor() {
     }
   }, [x, y])
 
-  const background = useMotionTemplate`radial-gradient(380px circle at ${sx}px ${sy}px, rgba(177,69,82,0.14), transparent 72%)`
-
   return (
-    <motion.div
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-40 mix-blend-screen"
-      style={{ background }}
-    />
+    <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-40 overflow-hidden">
+      <motion.div
+        className="absolute rounded-full mix-blend-screen"
+        style={{
+          width: SIZE,
+          height: SIZE,
+          top: -SIZE / 2,
+          left: -SIZE / 2,
+          x: sx,
+          y: sy,
+          background:
+            'radial-gradient(circle, rgba(177,69,82,0.14), transparent 72%)',
+        }}
+      />
+    </div>
   )
 }

@@ -1,10 +1,10 @@
 import Nav from './components/Nav'
 import Hero from './components/Hero'
-import StatsStrip from './components/StatsStrip'
 import About from './components/About'
 import AudienceStrip from './components/AudienceStrip'
 import Process from './components/Process'
 import Services from './components/Services'
+import Growth from './components/Growth'
 import FAQ from './components/FAQ'
 import Contact from './components/Contact'
 import WhatsAppButton from './components/WhatsAppButton'
@@ -21,11 +21,11 @@ export default function App() {
       <Nav />
       <main>
         <Hero />
-        <StatsStrip />
         <About />
-<AudienceStrip />
+        <AudienceStrip />
         <Process />
         <Services />
+        <Growth />
         <FAQ />
         <Contact />
       </main>

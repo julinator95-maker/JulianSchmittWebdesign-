@@ -47,16 +47,14 @@ export default function VaporizeTextCycle({
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
   // animationStateRef keeps the rAF loop in sync without stale closure
   const animationStateRef = useRef('static')
-  const [animationState, setAnimationState] = useState('static')
   const vaporizeProgressRef = useRef(0)
   const fadeOpacityRef = useRef(0)
   const [wrapperSize, setWrapperSize] = useState({ width: 0, height: 0 })
   const transformedDensity = transformValue(density, [0, 10], [0.3, 1], true)
 
-  // Single setter that updates both ref (for rAF loop) and state (for React)
+  // rAF loop reads the ref directly — no React state needed for the cycle
   const setAnim = useCallback((val) => {
     animationStateRef.current = val
-    setAnimationState(val)
   }, [])
 
   const globalDpr = useMemo(() => {

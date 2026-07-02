@@ -45,7 +45,7 @@ export default function About() {
             </Reveal>
             <h2 className="text-ink text-3xl md:text-4xl font-light leading-snug tracking-tight mb-8">
               <SplitWords text="Kein Team, kein Overhead." className="block" />
-              <SplitWords text="Nur ich und Ihre Website." className="block" delay={0.15} />
+              <SplitWords text="Nur ich und Ihre Website." className="block font-editorial italic" delay={0.15} />
             </h2>
             <div className="space-y-4 text-muted text-base font-light leading-relaxed">
               <Reveal delay={0.05}>
@@ -99,7 +99,7 @@ export default function About() {
                   variants={reduce ? undefined : panelItemVariants[i]}
                   className={`py-7 ${i !== 0 ? 'border-t border-white/10' : ''}`}
                 >
-                  <div className="text-3xl font-light italic text-accent-bright mb-2">
+                  <div className="text-3xl font-editorial font-light italic text-accent-bright mb-2">
                     {value}
                   </div>
                   <div className="text-white/45 text-sm font-light leading-relaxed">

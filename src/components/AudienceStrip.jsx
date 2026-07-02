@@ -31,7 +31,7 @@ const ROW2 = [
 
 function Chip({ icon: Icon, label }) {
   return (
-    <div className="mx-2.5 flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-6 py-3.5 backdrop-blur-sm transition-colors hover:border-accent-bright/40">
+    <div className="mx-2.5 flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-6 py-3.5 transition-colors hover:border-accent-bright/40">
       <Icon className="h-5 w-5 shrink-0 text-accent-bright" strokeWidth={1.5} aria-hidden="true" />
       <span className="whitespace-nowrap text-lg font-light text-ivory/85 md:text-xl">
         {label}

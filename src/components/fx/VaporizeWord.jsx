@@ -40,9 +40,9 @@ export default function VaporizeWord({ words, color = 'rgb(177, 69, 82)' }) {
       }}>
         <VaporizeTextCycle
           texts={words}
-          // fontWeight 'italic 600' gives bold-italic strokes on the canvas →
-          // more filled pixels → denser particle cloud (matches 21st.dev demo quality)
-          font={{ fontFamily: 'Inter, sans-serif', fontSize: `${fontSize}px`, fontWeight: 'italic 600' }}
+          // Georgia italic: Serif-Akzent passend zur Editorial-Typo der Seite.
+          // 600 → bold-Strichstärke = dichtere Partikelwolke
+          font={{ fontFamily: 'Georgia, serif', fontSize: `${fontSize}px`, fontWeight: 'italic 600' }}
           color={color}
           spread={5}
           density={5}

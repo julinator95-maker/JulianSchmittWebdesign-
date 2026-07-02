@@ -90,7 +90,7 @@ export default function FAQ() {
             </Reveal>
             <h2 className="text-ink text-3xl md:text-4xl font-light leading-snug tracking-tight">
               <SplitWords text="Fragen," className="block" />
-              <SplitWords text="die ich kenne." className="block" delay={0.12} />
+              <SplitWords text="die ich kenne." className="block font-editorial italic" delay={0.12} />
             </h2>
             <Reveal delay={0.15}>
               <p className="mt-5 text-muted text-sm font-light leading-relaxed max-w-xs">

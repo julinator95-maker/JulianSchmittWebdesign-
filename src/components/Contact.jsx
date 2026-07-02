@@ -23,7 +23,7 @@ export default function Contact() {
           </Reveal>
           <h2 className="text-ivory text-3xl md:text-4xl font-light leading-snug tracking-tight mb-6">
             <SplitWords text="Bereit für Ihre" className="block" />
-            <SplitWords text="neue Website?" className="block" delay={0.12} />
+            <SplitWords text="neue Website?" className="block font-editorial italic" delay={0.12} />
           </h2>
           <Reveal delay={0.1}>
             <p className="text-ivory/50 text-base font-light leading-relaxed mb-10">
