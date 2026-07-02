@@ -10,6 +10,7 @@ import Contact from './components/Contact'
 import WhatsAppButton from './components/WhatsAppButton'
 import ScrollProgress from './components/fx/ScrollProgress'
 import SpotlightCursor from './components/fx/SpotlightCursor'
+import WindCursor from './components/fx/WindCursor'
 import Grain from './components/fx/Grain'
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
     <>
       <ScrollProgress />
       <SpotlightCursor />
+      <WindCursor />
       <Grain />
       <Nav />
       <main>

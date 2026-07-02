@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import VaporizeTextCycle, { Tag } from './VaporizeText'
 
-// Instrument Serif hat nur weight 400 — kursiv wirkt sie bei Headline-Größen
-// elegant und modern. Der Canvas muss auf die geladene Font warten, sonst
-// sampelt er die Fallback-Schrift und zerstäubt die falschen Pixel.
-const CANVAS_FONT = "'Instrument Serif', Georgia, serif"
+// Plus Jakarta Sans 700 Italic (User-Wahl) — dynamischer Sans-Kursiv-Look.
+// Der Canvas muss auf die geladene Font warten, sonst sampelt er die
+// Fallback-Schrift und zerstäubt die falschen Pixel.
+const CANVAS_FONT = "'Plus Jakarta Sans', Inter, sans-serif"
 
 function pickFontSize() {
   if (typeof window === 'undefined') return 76
@@ -31,7 +31,7 @@ export default function VaporizeWord({ words, color = 'rgb(177, 69, 82)' }) {
     if (fontReady) return
     let cancelled = false
     Promise.all([
-      document.fonts.load(`italic 400 76px 'Instrument Serif'`),
+      document.fonts.load(`italic 700 76px 'Plus Jakarta Sans'`),
       document.fonts.ready,
     ])
       .catch(() => {})
@@ -63,11 +63,12 @@ export default function VaporizeWord({ words, color = 'rgb(177, 69, 82)' }) {
         {fontReady && (
           <VaporizeTextCycle
             texts={words}
-            font={{ fontFamily: CANVAS_FONT, fontSize: `${fontSize}px`, fontWeight: 'italic 400' }}
+            font={{ fontFamily: CANVAS_FONT, fontSize: `${fontSize}px`, fontWeight: 'italic 700' }}
             color={color}
             spread={5}
             density={5}
-            animation={{ vaporizeDuration: 2, fadeInDuration: 1, waitDuration: 0.5 }}
+            // fadeIn kurz: das nächste Wort soll fast sofort da sein
+            animation={{ vaporizeDuration: 2, fadeInDuration: 0.4, waitDuration: 0.8 }}
             direction="left-to-right"
             alignment="center"
             tag={Tag.P}

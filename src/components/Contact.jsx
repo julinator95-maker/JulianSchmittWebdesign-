@@ -1,6 +1,7 @@
 import { WA_NUMBER, WA_MSG, EMAIL } from '../config'
 import WhatsAppIcon from './WhatsAppIcon'
 import WindBackground from './WindBackground'
+import WindField3D from './WindField3D'
 import SplitWords from './fx/SplitWords'
 import Reveal from './fx/Reveal'
 import Magnetic from './fx/Magnetic'
@@ -11,7 +12,9 @@ export default function Contact() {
 
   return (
     <section id="kontakt" className="relative overflow-hidden bg-night py-24 md:py-32 px-6 md:px-12">
-      <WindBackground />
+      <WindBackground minimal />
+      {/* Wind-Partikelfeld — schließt den Kreis zum Hero */}
+      <WindField3D count={1700} maxOpacity={0.7} />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-night/60 via-transparent to-night" />
 
       <div className="relative z-10 max-w-6xl mx-auto">

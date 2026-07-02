@@ -6,7 +6,7 @@ import { Renderer, Camera, Geometry, Program, Mesh } from 'ogl'
 // mit Perspektiv-Tiefe und sanfter Maus-Parallaxe. Markenfarben: Weinrot → Rosé.
 // Ersetzt die flache CSS-Variante durch echte 3D-Tiefe.
 
-const COUNT = 3400
+const DEFAULT_COUNT = 3400
 
 const vertex = /* glsl */ `
   attribute vec3 position;   // Basisposition im Volumen
@@ -78,10 +78,11 @@ const fragment = /* glsl */ `
   }
 `
 
-export default function WindField3D({ className = '' }) {
+export default function WindField3D({ className = '', count = DEFAULT_COUNT, maxOpacity = 1 }) {
   const containerRef = useRef(null)
 
   useEffect(() => {
+    const COUNT = count
     const container = containerRef.current
     if (!container) return
 
@@ -187,7 +188,7 @@ export default function WindField3D({ className = '' }) {
 
       // Sanftes Einblenden
       const o = program.uniforms.uOpacity
-      if (o.value < 1) o.value = Math.min(1, o.value + 0.012)
+      if (o.value < maxOpacity) o.value = Math.min(maxOpacity, o.value + 0.012)
 
       renderer.render({ scene: mesh, camera })
 
@@ -208,7 +209,7 @@ export default function WindField3D({ className = '' }) {
       ext?.loseContext()
       if (gl.canvas.parentNode === container) container.removeChild(gl.canvas)
     }
-  }, [])
+  }, [count, maxOpacity])
 
   return (
     <div

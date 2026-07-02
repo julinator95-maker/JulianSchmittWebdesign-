@@ -197,13 +197,13 @@ export default function VaporizeTextCycle({
           )
           memoizedRenderParticles(ctx, particlesRef.current)
 
-          // Original-Semantik: weiter, wenn Welle durch UND Wolke verflogen.
-          // Dank Tinten-Grenzen (actualBoundingBox) erfasst die Welle jetzt
-          // garantiert alle Pixel. Failsafe bei 250: sollte irgendein Browser
-          // seltsame Metriken liefern, kann der Zyklus trotzdem nie einfrieren.
+          // Weiter, wenn Welle durch UND Wolke verflogen — oder bei 135 hart
+          // kappen: da ist der Reststaub unter ~11 % Deckkraft, der Schnitt
+          // unsichtbar, und das nächste Wort kommt spürbar schneller.
+          // (Verhindert nebenbei jeden denkbaren Metrik-Freeze.)
           if (
             (vaporizeProgressRef.current >= 100 && allVaporized) ||
-            vaporizeProgressRef.current >= 250
+            vaporizeProgressRef.current >= 135
           ) {
             setCurrentTextIndex((prevIndex) => (prevIndex + 1) % texts.length)
             setAnim('fadingIn')
@@ -552,7 +552,8 @@ const updateParticles = (
         particle.x += particle.velocityX * deltaTime * 20
         particle.y += particle.velocityY * deltaTime * 10
 
-        const baseFadeRate = 0.25
+        // 0.25 im Original — höher, damit die Restwolke nicht so lange steht
+        const baseFadeRate = 0.55
         const durationBasedFadeRate = baseFadeRate * (2000 / VAPORIZE_DURATION)
 
         particle.opacity = Math.max(0, particle.opacity - deltaTime * durationBasedFadeRate)

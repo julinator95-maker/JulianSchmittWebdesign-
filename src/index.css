@@ -14,8 +14,8 @@
   --color-night: #0E0A0B;
 
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  /* Editorial-Serif für kursive Akzentwörter — modern statt altbacken */
-  --font-editorial: 'Instrument Serif', Georgia, serif;
+  /* Akzent-Font für kursive Headline-Zeilen — modern, dynamisch (User-Wahl) */
+  --font-editorial: 'Plus Jakarta Sans', 'Inter', sans-serif;
 }
 
 *, *::before, *::after {
@@ -36,4 +36,12 @@ body {
 
 #root {
   min-height: 100svh;
+}
+
+/* Custom-Cursor aktiv: nativen Zeiger überall ausblenden (nur Desktop) */
+@media (pointer: fine) {
+  html.wind-cursor,
+  html.wind-cursor * {
+    cursor: none !important;
+  }
 }

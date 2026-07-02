@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion, useInView, useReducedMotion } from 'motion/react'
 import Reveal from './fx/Reveal'
 import SplitWords from './fx/SplitWords'
+import WindField3D from './WindField3D'
 import { waLink } from '../config'
 
 // Wachstums-Leistungen nach dem Launch: SEO, Google, Automatisierung.
@@ -94,8 +95,10 @@ function Row({ item, index }) {
 
 export default function Growth() {
   return (
-    <section id="wachstum" className="bg-night py-20 md:py-28 px-6 md:px-20">
-      <div className="max-w-5xl mx-auto">
+    <section id="wachstum" className="relative overflow-hidden bg-night py-20 md:py-28 px-6 md:px-20">
+      {/* Wind-Partikelfeld — dezenter als im Hero, reagiert auf den Cursor */}
+      <WindField3D count={1900} maxOpacity={0.75} />
+      <div className="relative z-10 max-w-5xl mx-auto">
         <div className="mb-12 md:mb-16">
           <Reveal>
             <p className="text-accent-bright text-xs font-medium tracking-[0.2em] uppercase mb-6">
