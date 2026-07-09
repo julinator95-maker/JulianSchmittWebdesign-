@@ -130,8 +130,8 @@ export default function Hero() {
           transition={{ delay: 0.6, duration: 0.7 }}
           className="mb-10 max-w-md text-center text-sm font-light leading-relaxed text-white/55 md:text-base"
         >
-          Schnelle, edle Websites für Handwerker, Winzer, Gastro & Friseure —
-          schlüsselfertig übergeben, wie ein neu gebautes Haus.
+          Schnelle, schöne Websites für Handwerker, Winzer, Gastro und Friseure.
+          Schlüsselfertig übergeben, so wie man ein neu gebautes Haus bezieht.
         </motion.p>
 
         {/* Portrait: löst sich an allen Rändern weich in die Nacht auf — kein Rahmen, keine Karte */}
@@ -222,8 +222,8 @@ export default function Hero() {
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-2 border-t border-white/10 py-5 sm:justify-between">
             {[
               'Konzept in unter 7 Tagen',
-              '100 % schlüsselfertig übergeben',
-              'Ein Ansprechpartner — immer ich',
+              'Schlüsselfertig übergeben',
+              'Immer der gleiche Ansprechpartner',
             ].map((claim, i) => (
               <motion.span
                 key={claim}

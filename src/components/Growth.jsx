@@ -12,7 +12,7 @@ const SERVICES = [
     num: '01',
     title: 'Lokale Sichtbarkeit',
     tag: 'SEO',
-    desc: 'Gefunden werden, wenn Trier sucht. Lokale Suchbegriffe, saubere Rankings, technische Optimierung — damit aus Suchenden Kundschaft wird.',
+    desc: 'Gefunden werden, wenn Trier sucht. Ich kümmere mich um lokale Suchbegriffe, saubere Rankings und die Technik dahinter, damit aus Suchenden echte Kundschaft wird.',
   },
   {
     num: '02',
@@ -30,7 +30,7 @@ const SERVICES = [
     num: '04',
     title: 'Zahlen & Klarheit',
     tag: 'Reports',
-    desc: 'Monatlicher Bericht in verständlichem Deutsch: Wer war da, was wurde geklickt, was bringt Kundschaft — und was wir als Nächstes verbessern.',
+    desc: 'Einmal im Monat ein Bericht in verständlichem Deutsch: Wer war da, was wurde geklickt, was bringt Kundschaft. Und woran wir als Nächstes arbeiten.',
   },
 ]
 
@@ -111,9 +111,9 @@ export default function Growth() {
           </h2>
           <Reveal delay={0.15}>
             <p className="mt-6 max-w-xl text-ivory/50 text-base font-light leading-relaxed">
-              Die Website ist das Fundament. Danach sorge ich dafür, dass sie
-              arbeitet: sichtbar bei Google, präsent auf Maps, automatisiert im
-              Alltag. Alles auf Anfrage, alles aus einer Hand.
+              Die Website ist das Fundament. Danach sorge ich dafür, dass sie auch
+              arbeitet: sichtbar bei Google, präsent auf Maps und im Alltag
+              automatisiert. Alles auf Anfrage und aus einer Hand.
             </p>
           </Reveal>
         </div>
@@ -126,7 +126,7 @@ export default function Growth() {
 
         <Reveal delay={0.1}>
           <p className="mt-8 text-ivory/30 text-xs font-light">
-            Individuell nach Bedarf — sprechen Sie mich einfach an.
+            Individuell nach Bedarf. Sprechen Sie mich einfach an.
           </p>
         </Reveal>
       </div>

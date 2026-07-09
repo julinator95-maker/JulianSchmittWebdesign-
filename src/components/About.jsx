@@ -3,9 +3,9 @@ import SplitWords from './fx/SplitWords'
 import Reveal from './fx/Reveal'
 
 const STATS = [
-  { value: 'Solo', label: 'Keine Agentur, kein Overhead — nur direkte Arbeit.' },
-  { value: 'Direkt', label: 'Sie sprechen immer mit mir persönlich. Kein Durchreichen.' },
-  { value: 'Trier', label: 'Vor Ort für lokale Betriebe. Nah dran, auch nach dem Launch.' },
+  { value: 'Solo', label: 'Ich arbeite allein an Ihrem Projekt, ohne Agentur dahinter.' },
+  { value: 'Direkt', label: 'Sie sprechen immer mit mir persönlich, nie mit einem Callcenter.' },
+  { value: 'Trier', label: 'Aus Trier, für Trier. Auch nach dem Launch erreichbar.' },
 ]
 
 const panelContainer = {
@@ -44,28 +44,28 @@ export default function About() {
               </p>
             </Reveal>
             <h2 className="text-ink text-3xl md:text-4xl font-light leading-snug tracking-tight mb-8">
-              <SplitWords text="Kein Team, kein Overhead." className="block" />
+              <SplitWords text="Kein Team, keine Agentur." className="block" />
               <SplitWords text="Nur ich und Ihre Website." className="block font-editorial italic" delay={0.15} />
             </h2>
             <div className="space-y-4 text-muted text-base font-light leading-relaxed">
               <Reveal delay={0.05}>
                 <p>
                   Ich bin Julian Schmitt, freier Webdesigner aus Trier. Ich arbeite
-                  ausschließlich solo — das bedeutet keine Agentur-Bürokratie, kein
-                  Durchreichen, keine überraschenden Aufschläge.
+                  allein, ohne Agentur im Rücken. Das heißt für Sie: keine Bürokratie
+                  und keine Rechnung, mit der Sie nicht gerechnet haben.
                 </p>
               </Reveal>
               <Reveal delay={0.12}>
                 <p>
                   Sie sprechen direkt mit der Person, die Ihre Website baut. Das spart
-                  Zeit, schafft Vertrauen und führt zu besseren Ergebnissen.
+                  Zeit und schafft Vertrauen.
                 </p>
               </Reveal>
               <Reveal delay={0.19}>
                 <p>
-                  Ich verstehe die Anforderungen lokaler Betriebe — und ich baue Websites,
-                  die bei echten Menschen auf echten Smartphones funktionieren. Schlüsselfertig
-                  übergeben, wie ein neu gebautes Haus.
+                  Ich kenne die Anforderungen lokaler Betriebe und baue Seiten, die bei
+                  echten Menschen auf echten Handys funktionieren. Am Ende übergebe ich
+                  alles fertig eingerichtet, so wie man ein neu gebautes Haus bezieht.
                 </p>
               </Reveal>
             </div>

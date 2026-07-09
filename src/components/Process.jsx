@@ -7,22 +7,22 @@ const STEPS = [
   {
     num: '01',
     title: 'Gespräch',
-    desc: 'Kostenlos, unverbindlich, persönlich. Ich lerne Ihren Betrieb kennen — was fehlt, was soll besser werden, was muss die Website leisten.',
+    desc: 'Wir setzen uns zusammen, kostenlos und unverbindlich. Ich höre mir an, wo der Schuh drückt: Was fehlt, was soll besser laufen, was muss die Website am Ende können.',
   },
   {
     num: '02',
     title: 'Konzept',
-    desc: 'Struktur, Design-Richtung, Texte — alles aus einer Hand. Kein Agentur-Ping-Pong. Das Konzept liegt innerhalb von 7 Tagen vor.',
+    desc: 'Struktur, Gestaltung und Texte kommen von mir, kein Hin und Her zwischen mehreren Ansprechpartnern. Das erste Konzept liegt nach spätestens 7 Tagen bei Ihnen.',
   },
   {
     num: '03',
     title: 'Umsetzung',
-    desc: 'Saubere Entwicklung, mobiloptimiert, schnell geladen. Sie sehen den Fortschritt jederzeit und bekommen regelmäßige Updates.',
+    desc: 'Ich entwickle sauber, für Handy und Desktop, mit kurzen Ladezeiten. Sie bleiben die ganze Zeit auf dem Laufenden und sehen den Fortschritt.',
   },
   {
     num: '04',
     title: 'Übergabe',
-    desc: 'Schlüsselfertig in maximal 2 Wochen ab dem ersten Gespräch: Domain, Hosting, Launch. Sie müssen sich um nichts kümmern.',
+    desc: 'Spätestens zwei Wochen nach dem ersten Gespräch steht alles: Domain, Hosting, Launch. Um die Technik müssen Sie sich nicht kümmern.',
   },
 ]
 
@@ -116,7 +116,7 @@ export default function Process() {
           </Reveal>
           <h2 className="text-ink text-3xl md:text-4xl font-light leading-snug tracking-tight">
             <SplitWords text="Vier Schritte." className="block" />
-            <SplitWords text="Kein Overhead." className="block font-editorial italic" delay={0.12} />
+            <SplitWords text="Ohne Umwege." className="block font-editorial italic" delay={0.12} />
           </h2>
         </div>
 

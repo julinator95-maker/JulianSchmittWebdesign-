@@ -10,11 +10,11 @@ const FAQS = [
   },
   {
     q: 'Wie lange dauert die Umsetzung?',
-    a: 'Das Konzept liegt innerhalb von 7 Tagen vor. Vom ersten Gespräch bis zur fertigen Website vergehen maximal 2 Wochen. Keine monatelange Wartezeit wie bei Agenturen — ich arbeite fokussiert und liefere pünktlich.',
+    a: 'Das Konzept liegt innerhalb von 7 Tagen vor. Vom ersten Gespräch bis zur fertigen Website vergehen maximal 2 Wochen. Keine monatelange Wartezeit wie bei Agenturen. Ich arbeite konzentriert und liefere pünktlich.',
   },
   {
     q: 'Brauche ich technisches Wissen?',
-    a: 'Kein Gramm. Ich übergebe schlüsselfertig: Domain, Hosting, E-Mail — alles eingerichtet, alles erklärt, alles bereit. Sie kümmern sich um Ihr Handwerk, ich kümmere mich um Ihre Website.',
+    a: 'Kein Gramm. Ich übergebe alles fertig eingerichtet: Domain, Hosting und E-Mail sind startklar, und ich erkläre Ihnen, was Sie wissen müssen. Sie kümmern sich um Ihr Handwerk, ich mich um Ihre Website.',
   },
   {
     q: 'Kann ich die Website später selbst bearbeiten?',
@@ -22,11 +22,11 @@ const FAQS = [
   },
   {
     q: 'Was ist nach dem Launch mit dem Hausmeister-Paket gemeint?',
-    a: 'Die Hausmeister-Pakete ab 59 €/Monat umfassen technische Updates, Backups, Sicherheitspflege und auf Wunsch SEO-Monitoring. Laufzeit 12 Monate. Sie haben immer einen festen Ansprechpartner — mich.',
+    a: 'Die Hausmeister-Pakete ab 59 €/Monat umfassen technische Updates, Backups, Sicherheitspflege und auf Wunsch SEO-Monitoring. Laufzeit 12 Monate. Und Sie haben immer einen festen Ansprechpartner: mich.',
   },
   {
     q: 'Arbeiten Sie auch außerhalb von Trier?',
-    a: 'Ja. Konzept, Design und Entwicklung laufen vollständig digital. Persönlicher Kontakt per WhatsApp, Telefon oder Video. Mein Fokus liegt auf der Region Trier — ich nehme aber auch Kunden aus dem gesamten deutschsprachigen Raum.',
+    a: 'Ja. Konzept, Design und Entwicklung laufen vollständig digital. Persönlicher Kontakt per WhatsApp, Telefon oder Video. Mein Fokus liegt auf der Region Trier, aber ich arbeite genauso für Kunden aus dem gesamten deutschsprachigen Raum.',
   },
 ]
 
@@ -94,7 +94,7 @@ export default function FAQ() {
             </h2>
             <Reveal delay={0.15}>
               <p className="mt-5 text-muted text-sm font-light leading-relaxed max-w-xs">
-                Alles, was Sie wissen wollen — bevor Sie fragen müssen.
+                Alles, was Sie wissen wollen, bevor Sie fragen müssen.
               </p>
             </Reveal>
           </div>

@@ -60,7 +60,7 @@ export default function AudienceStrip() {
         </Reveal>
         <Reveal delay={0.16}>
           <p className="mt-5 max-w-xl text-base font-light leading-relaxed text-ivory/50">
-            Vom Weingut an der Mosel bis zum Friseursalon in der Altstadt — ich baue
+            Vom Weingut an der Mosel bis zum Friseursalon in der Altstadt. Ich baue
             Websites, die zu lokalen Betrieben passen und bei echten Kunden ankommen.
           </p>
         </Reveal>

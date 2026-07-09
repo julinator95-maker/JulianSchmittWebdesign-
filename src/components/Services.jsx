@@ -94,7 +94,7 @@ const hausmeisterTiers = [
       'Alles aus Standard',
       'Monatlicher Performance-Bericht',
       'SEO-Monitoring & Optimierung',
-      'Priorität — ich bin Ihr fester Ansprechpartner',
+      'Priorität: ich bin Ihr fester Ansprechpartner',
     ],
     highlight: false,
   },
@@ -312,10 +312,10 @@ export default function Services() {
             </h2>
             <Reveal delay={0.1}>
               <p className="text-muted text-base font-light leading-relaxed">
-                Ihre Website ist fertig — und genau jetzt fängt die eigentliche Arbeit an.
-                Sicherheitslücken, veraltete Inhalte, technische Probleme: Das alles kostet
-                Sie Zeit und Vertrauen, wenn niemand hinschaut. Ich übernehme das für Sie —
-                zuverlässig, monatlich, ohne Aufwand auf Ihrer Seite. Rundum sorglos.
+                Ihre Website ist fertig, und genau jetzt fängt die eigentliche Arbeit an.
+                Sicherheitslücken, veraltete Inhalte oder technische Probleme kosten Sie
+                Zeit und Vertrauen, wenn niemand hinschaut. Ich kümmere mich darum:
+                zuverlässig, jeden Monat, ohne dass Sie etwas tun müssen.
               </p>
             </Reveal>
           </div>

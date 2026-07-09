@@ -30,8 +30,8 @@ export default function Contact() {
           </h2>
           <Reveal delay={0.1}>
             <p className="text-ivory/50 text-base font-light leading-relaxed mb-10">
-              Schreiben Sie mir auf WhatsApp — kostenlos, unverbindlich und
-              ohne Wartezeit. Ich antworte persönlich.
+              Schreiben Sie mir einfach auf WhatsApp. Kostenlos, unverbindlich
+              und ohne Wartezeit. Ich antworte persönlich.
             </p>
           </Reveal>
 
