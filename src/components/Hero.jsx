@@ -1,12 +1,5 @@
 import { useRef } from 'react'
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValue,
-  useSpring,
-  useReducedMotion,
-} from 'motion/react'
+import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react'
 import WindBackground from './WindBackground'
 import WindField3D from './WindField3D'
 import WhatsAppIcon from './WhatsAppIcon'
@@ -30,20 +23,6 @@ export default function Hero() {
   const contentY = useTransform(scrollYProgress, [0, 1], [0, 36])
   // Fade beginnt erst ab ~35 % Scroll — Bild und CTAs bleiben lange voll sichtbar
   const contentOpacity = useTransform(scrollYProgress, [0.35, 0.95], [1, 0])
-
-  // Sanfte Maus-Neigung der Portrait-Karte
-  const tiltX = useSpring(useMotionValue(0), { stiffness: 120, damping: 14 })
-  const tiltY = useSpring(useMotionValue(0), { stiffness: 120, damping: 14 })
-  const onCardMove = (e) => {
-    if (reduce) return
-    const r = e.currentTarget.getBoundingClientRect()
-    tiltY.set(((e.clientX - (r.left + r.width / 2)) / r.width) * 7)
-    tiltX.set((-(e.clientY - (r.top + r.height / 2)) / r.height) * 7)
-  }
-  const onCardLeave = () => {
-    tiltX.set(0)
-    tiltY.set(0)
-  }
 
   const wordVariants = {
     hidden: { opacity: 0, y: 24, filter: 'blur(10px)' },
@@ -134,61 +113,12 @@ export default function Hero() {
           Schlüsselfertig übergeben, so wie man ein neu gebautes Haus bezieht.
         </motion.p>
 
-        {/* Portrait: löst sich an allen Rändern weich in die Nacht auf — kein Rahmen, keine Karte */}
-        <motion.div
-          className="relative"
-          initial={{ opacity: 0, y: 24, filter: 'blur(12px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ delay: 0.45, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {/* Stiller Glutschein hinter dem Portrait */}
-          <div
-            aria-hidden="true"
-            className="absolute -inset-12 blur-3xl"
-            style={{
-              background:
-                'radial-gradient(ellipse at 50% 45%, rgba(177,69,82,0.30), transparent 68%)',
-            }}
-          />
-
-          {/* Keine Dauer-Schwebe mehr: die zwang Chrome, die Maske jeden Frame
-              neu zu verrechnen (Scroll-Ruckeln). Tilt bleibt, ist Event-basiert. */}
-          <motion.div
-            onMouseMove={onCardMove}
-            onMouseLeave={onCardLeave}
-            style={{
-              ...(reduce ? {} : { rotateX: tiltX, rotateY: tiltY, transformPerspective: 1100 }),
-              // Vertikale Feder (oben/unten) — kombiniert mit der horizontalen
-              // Maske auf dem Bild ergibt das eine weiche Kante ringsum.
-              // Heller als zuvor: das Foto soll klar lesbar bleiben.
-              maskImage:
-                'linear-gradient(to bottom, transparent 0%, black 9%, black 86%, transparent 100%)',
-              WebkitMaskImage:
-                'linear-gradient(to bottom, transparent 0%, black 9%, black 86%, transparent 100%)',
-            }}
-            className="relative w-[300px] sm:w-[340px]"
-          >
-            <img
-              src={julianPortrait}
-              alt="Julian Schmitt, Webdesigner aus Trier"
-              draggable="false"
-              className="w-full h-auto block"
-              style={{
-                maskImage:
-                  'linear-gradient(to right, transparent 0%, black 11%, black 89%, transparent 100%)',
-                WebkitMaskImage:
-                  'linear-gradient(to right, transparent 0%, black 11%, black 89%, transparent 100%)',
-              }}
-            />
-          </motion.div>
-        </motion.div>
-
-        {/* CTA */}
+        {/* CTA direkt unter dem Subtext — klassische Hero-Ordnung */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.95, duration: 0.7 }}
-          className="relative z-10 mt-2 flex flex-col items-center gap-5 sm:flex-row sm:gap-8"
+          transition={{ delay: 0.75, duration: 0.7 }}
+          className="relative z-10 mb-12 flex flex-col items-center gap-5 sm:flex-row sm:gap-8"
         >
           <Magnetic>
             <a
@@ -210,6 +140,49 @@ export default function Hero() {
             <span className="ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
             <span className="absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-accent-bright transition-transform duration-500 ease-out group-hover:scale-x-100" />
           </a>
+        </motion.div>
+
+        {/* Portrait: löst sich an allen Rändern weich in die Nacht auf.
+            Bewusst ohne Tilt/Schwebe: Mousemove-Effekte auf dem maskierten
+            Bild haben beim Scrollen geruckelt (Maske pro Frame neu gerechnet). */}
+        <motion.div
+          className="relative"
+          initial={{ opacity: 0, y: 24, filter: 'blur(12px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ delay: 0.45, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {/* Stiller Glutschein hinter dem Portrait */}
+          <div
+            aria-hidden="true"
+            className="absolute -inset-12 blur-3xl"
+            style={{
+              background:
+                'radial-gradient(ellipse at 50% 45%, rgba(177,69,82,0.30), transparent 68%)',
+            }}
+          />
+
+          <div
+            className="relative w-[300px] sm:w-[340px]"
+            style={{
+              maskImage:
+                'linear-gradient(to bottom, transparent 0%, black 9%, black 86%, transparent 100%)',
+              WebkitMaskImage:
+                'linear-gradient(to bottom, transparent 0%, black 9%, black 86%, transparent 100%)',
+            }}
+          >
+            <img
+              src={julianPortrait}
+              alt="Julian Schmitt, Webdesigner aus Trier"
+              draggable="false"
+              className="w-full h-auto block"
+              style={{
+                maskImage:
+                  'linear-gradient(to right, transparent 0%, black 11%, black 89%, transparent 100%)',
+                WebkitMaskImage:
+                  'linear-gradient(to right, transparent 0%, black 11%, black 89%, transparent 100%)',
+              }}
+            />
+          </div>
         </motion.div>
 
         {/* Feine Meta-Zeile am unteren Rand — ersetzt Scroll-Hinweis und Stats-Sektion */}

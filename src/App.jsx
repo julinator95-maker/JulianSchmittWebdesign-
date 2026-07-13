@@ -28,8 +28,8 @@ export default function App() {
         <AudienceStrip />
         <Process />
         <Services />
-        <Growth />
         <Referral />
+        <Growth />
         <FAQ />
         <Contact />
       </main>
