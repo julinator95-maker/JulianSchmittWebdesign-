@@ -27,9 +27,9 @@ export default function Hero() {
     target: ref,
     offset: ['start start', 'end start'],
   })
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, 70])
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
-  const portraitScale = useTransform(scrollYProgress, [0, 1], [1, 1.06])
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 36])
+  // Fade beginnt erst ab ~35 % Scroll — Bild und CTAs bleiben lange voll sichtbar
+  const contentOpacity = useTransform(scrollYProgress, [0.35, 0.95], [1, 0])
 
   // Sanfte Maus-Neigung der Portrait-Karte
   const tiltX = useSpring(useMotionValue(0), { stiffness: 120, damping: 14 })
@@ -136,7 +136,6 @@ export default function Hero() {
 
         {/* Portrait: löst sich an allen Rändern weich in die Nacht auf — kein Rahmen, keine Karte */}
         <motion.div
-          style={reduce ? undefined : { scale: portraitScale }}
           className="relative"
           initial={{ opacity: 0, y: 24, filter: 'blur(12px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -152,21 +151,22 @@ export default function Hero() {
             }}
           />
 
+          {/* Keine Dauer-Schwebe mehr: die zwang Chrome, die Maske jeden Frame
+              neu zu verrechnen (Scroll-Ruckeln). Tilt bleibt, ist Event-basiert. */}
           <motion.div
             onMouseMove={onCardMove}
             onMouseLeave={onCardLeave}
             style={{
               ...(reduce ? {} : { rotateX: tiltX, rotateY: tiltY, transformPerspective: 1100 }),
               // Vertikale Feder (oben/unten) — kombiniert mit der horizontalen
-              // Maske auf dem Bild ergibt das eine weiche Kante ringsum
+              // Maske auf dem Bild ergibt das eine weiche Kante ringsum.
+              // Heller als zuvor: das Foto soll klar lesbar bleiben.
               maskImage:
-                'linear-gradient(to bottom, transparent 0%, black 14%, black 80%, transparent 99%)',
+                'linear-gradient(to bottom, transparent 0%, black 9%, black 86%, transparent 100%)',
               WebkitMaskImage:
-                'linear-gradient(to bottom, transparent 0%, black 14%, black 80%, transparent 99%)',
+                'linear-gradient(to bottom, transparent 0%, black 9%, black 86%, transparent 100%)',
             }}
-            animate={reduce ? undefined : { y: [0, -7, 0] }}
-            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-            className="relative w-[290px] sm:w-[330px]"
+            className="relative w-[300px] sm:w-[340px]"
           >
             <img
               src={julianPortrait}
@@ -175,20 +175,20 @@ export default function Hero() {
               className="w-full h-auto block"
               style={{
                 maskImage:
-                  'linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%)',
+                  'linear-gradient(to right, transparent 0%, black 11%, black 89%, transparent 100%)',
                 WebkitMaskImage:
-                  'linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%)',
+                  'linear-gradient(to right, transparent 0%, black 11%, black 89%, transparent 100%)',
               }}
             />
           </motion.div>
         </motion.div>
 
-        {/* CTA — Portrait und Buttons überlappen leicht, damit nichts "angehängt" wirkt */}
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.95, duration: 0.7 }}
-          className="relative z-10 -mt-6 flex flex-col items-center gap-5 sm:flex-row sm:gap-8"
+          className="relative z-10 mt-2 flex flex-col items-center gap-5 sm:flex-row sm:gap-8"
         >
           <Magnetic>
             <a

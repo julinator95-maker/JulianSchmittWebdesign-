@@ -5,6 +5,7 @@ import AudienceStrip from './components/AudienceStrip'
 import Process from './components/Process'
 import Services from './components/Services'
 import Growth from './components/Growth'
+import Referral from './components/Referral'
 import FAQ from './components/FAQ'
 import Contact from './components/Contact'
 import WhatsAppButton from './components/WhatsAppButton'
@@ -28,6 +29,7 @@ export default function App() {
         <Process />
         <Services />
         <Growth />
+        <Referral />
         <FAQ />
         <Contact />
       </main>

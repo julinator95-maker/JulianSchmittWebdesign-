@@ -45,7 +45,7 @@ export default function About() {
             </Reveal>
             <h2 className="text-ink text-3xl md:text-4xl font-light leading-snug tracking-tight mb-8">
               <SplitWords text="Kein Team, keine Agentur." className="block" />
-              <SplitWords text="Nur ich und Ihre Website." className="block font-editorial italic" delay={0.15} />
+              <SplitWords text="Nur Ihre Website und ich." className="block font-editorial italic" delay={0.15} />
             </h2>
             <div className="space-y-4 text-muted text-base font-light leading-relaxed">
               <Reveal delay={0.05}>
