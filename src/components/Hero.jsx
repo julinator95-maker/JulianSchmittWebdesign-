@@ -1,5 +1,4 @@
-import { useRef } from 'react'
-import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import WindBackground from './WindBackground'
 import WindField3D from './WindField3D'
 import WhatsAppIcon from './WhatsAppIcon'
@@ -14,15 +13,6 @@ const VAPOR_WORDS = ['Wind', 'Look', 'Style', 'Schwung']
 
 export default function Hero() {
   const reduce = useReducedMotion()
-  const ref = useRef(null)
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start'],
-  })
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, 36])
-  // Fade beginnt erst ab ~35 % Scroll — Bild und CTAs bleiben lange voll sichtbar
-  const contentOpacity = useTransform(scrollYProgress, [0.35, 0.95], [1, 0])
 
   const wordVariants = {
     hidden: { opacity: 0, y: 24, filter: 'blur(10px)' },
@@ -37,17 +27,16 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      ref={ref}
       className="relative min-h-svh w-full overflow-x-hidden bg-night text-white"
     >
       <WindBackground minimal />
       <WindField3D />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-night" />
 
-      <motion.div
-        style={reduce ? undefined : { y: contentY, opacity: contentOpacity }}
-        className="relative z-20 flex min-h-svh flex-col items-center justify-center px-6 pt-28 pb-10 md:px-12 md:pb-32"
-      >
+      {/* Kein scroll-gekoppeltes opacity/transform mehr: das zwang den Browser,
+          das maskierte Portrait bei jedem Scroll-Frame neu zu rastern und war
+          die Ursache fürs "Hängenbleiben" am Bild. Hero scrollt jetzt normal. */}
+      <div className="relative z-20 flex min-h-svh flex-col items-center justify-center px-6 pt-28 pb-10 md:px-12 md:pb-32">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -210,7 +199,7 @@ export default function Hero() {
             ))}
           </div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   )
 }

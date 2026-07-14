@@ -164,16 +164,30 @@ export default function WindField3D({ className = '', count = DEFAULT_COUNT, max
     const io = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting
-        if (visible && raf === null) loop(performance.now())
+        if (visible && !scrolling && raf === null) loop(performance.now())
       },
       { threshold: 0 }
     )
     io.observe(container)
 
+    // Während aktivem Scrollen pausieren → keine GPU-Konkurrenz zum Scroll.
+    // Kurz nach dem letzten Scroll-Event nimmt die Animation wieder auf.
+    let scrolling = false
+    let scrollTimer = null
+    const onScroll = () => {
+      scrolling = true
+      if (scrollTimer) clearTimeout(scrollTimer)
+      scrollTimer = setTimeout(() => {
+        scrolling = false
+        if (visible && raf === null) loop(performance.now())
+      }, 140)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
     let raf = null
     let start = performance.now()
     const loop = (now) => {
-      if (!visible) {
+      if (!visible || scrolling) {
         raf = null
         return
       }
@@ -202,9 +216,11 @@ export default function WindField3D({ className = '', count = DEFAULT_COUNT, max
 
     return () => {
       if (raf) cancelAnimationFrame(raf)
+      if (scrollTimer) clearTimeout(scrollTimer)
       ro.disconnect()
       io.disconnect()
       window.removeEventListener('pointermove', onPointer)
+      window.removeEventListener('scroll', onScroll)
       const ext = gl.getExtension('WEBGL_lose_context')
       ext?.loseContext()
       if (gl.canvas.parentNode === container) container.removeChild(gl.canvas)

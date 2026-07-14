@@ -18,7 +18,7 @@ const FAQS = [
   },
   {
     q: 'Kann ich die Website später selbst bearbeiten?',
-    a: 'Ja. Je nach Paket richten wir ein einfaches CMS ein, mit dem Sie Texte und Bilder selbst aktualisieren können. Alternativ übernehme ich das im Hausmeister-Paket. Was für Sie besser passt, besprechen wir ehrlich.',
+    a: 'Ja. Je nach Paket richten wir ein einfaches CMS ein, mit dem Sie Texte und Bilder selbst aktualisieren können. Alternativ übernehme ich das im Hausmeister-Paket. Was für Sie besser passt, wird offen und ehrlich kommuniziert.',
   },
   {
     q: 'Was ist nach dem Launch mit dem Hausmeister-Paket gemeint?',

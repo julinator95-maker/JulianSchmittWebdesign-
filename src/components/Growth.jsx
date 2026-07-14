@@ -30,7 +30,7 @@ const SERVICES = [
     num: '04',
     title: 'Zahlen & Klarheit',
     tag: 'Reports',
-    desc: 'Einmal im Monat ein Bericht in verständlichem Deutsch: Wer war da, was wurde geklickt, was bringt Kundschaft. Und woran wir als Nächstes arbeiten.',
+    desc: 'Einmal im Monat ein Bericht in verständlichem Deutsch: Wer war da, was wurde geklickt, was bringt Kundschaft. Und was als Nächstes drankommt.',
   },
 ]
 

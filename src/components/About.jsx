@@ -63,9 +63,10 @@ export default function About() {
               </Reveal>
               <Reveal delay={0.19}>
                 <p>
-                  Ich kenne die Anforderungen lokaler Betriebe und baue Seiten, die bei
-                  echten Menschen auf echten Handys funktionieren. Am Ende übergebe ich
-                  alles fertig eingerichtet, so wie man ein neu gebautes Haus bezieht.
+                  Ich kenne die Anforderungen lokaler Betriebe und baue Seiten, die im
+                  Alltag funktionieren: schnell, verständlich und auf dem Handy genauso
+                  gut wie am Rechner. Am Ende übergebe ich alles fertig eingerichtet, so
+                  wie man ein neu gebautes Haus bezieht.
                 </p>
               </Reveal>
             </div>

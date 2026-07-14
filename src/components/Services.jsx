@@ -298,24 +298,25 @@ export default function Services() {
           ))}
         </div>
 
-        {/* Hausmeister */}
-        <div className="mt-24 mb-16 border-t border-border pt-20">
-          <div className="max-w-2xl">
+        {/* Hausmeister — Metapher prominent inszeniert: dunkles Vollband */}
+        <div className="mt-24 mb-16 -mx-6 md:-mx-12 bg-accent-deep px-6 md:px-12 py-20 md:py-28">
+          <div className="max-w-3xl mx-auto text-center">
             <Reveal>
-              <p className="text-accent text-xs font-medium tracking-[0.2em] uppercase mb-6">
+              <p className="text-accent-bright text-xs font-medium tracking-[0.2em] uppercase mb-8">
                 Betreuung & Wartung
               </p>
             </Reveal>
-            <h2 className="text-ink text-3xl md:text-4xl font-light leading-snug tracking-tight mb-6">
-              <SplitWords text="Was braucht ein schlüsselfertiges Haus?" className="block" />
-              <SplitWords text="Einen Hausmeister." className="block font-editorial italic" delay={0.18} />
+            <h2 className="text-ivory font-light leading-[1.05] tracking-tight mb-8" style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' }}>
+              <SplitWords text="Ein Haus baut man einmal." className="block" />
+              <SplitWords text="Bewohnbar bleibt es mit einem Hausmeister." className="block font-editorial italic text-accent-bright" delay={0.18} />
             </h2>
             <Reveal delay={0.1}>
-              <p className="text-muted text-base font-light leading-relaxed">
-                Ihre Website ist fertig, und genau jetzt fängt die eigentliche Arbeit an.
-                Sicherheitslücken, veraltete Inhalte oder technische Probleme kosten Sie
-                Zeit und Vertrauen, wenn niemand hinschaut. Ich kümmere mich darum:
-                zuverlässig, jeden Monat, ohne dass Sie etwas tun müssen.
+              <p className="text-ivory/60 text-base md:text-lg font-light leading-relaxed max-w-2xl mx-auto">
+                Genau so ist es mit Ihrer Website. Sie ist fertig, und jetzt beginnt
+                die eigentliche Arbeit. Sicherheitslücken, veraltete Inhalte oder
+                technische Probleme kosten Sie Zeit und Vertrauen, wenn niemand
+                hinschaut. Ich kümmere mich darum, zuverlässig und jeden Monat, ohne
+                dass Sie etwas tun müssen.
               </p>
             </Reveal>
           </div>
