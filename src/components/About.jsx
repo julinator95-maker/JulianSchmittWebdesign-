@@ -1,31 +1,12 @@
 import { motion, useReducedMotion } from 'motion/react'
 import SplitWords from './fx/SplitWords'
 import Reveal from './fx/Reveal'
+import Portrait from './Portrait'
 
 const STATS = [
   { value: 'Solo', label: 'Ich arbeite allein an Ihrem Projekt, ohne Agentur dahinter.' },
   { value: 'Direkt', label: 'Sie sprechen immer mit mir persönlich, nie mit einem Callcenter.' },
   { value: 'Trier', label: 'Aus Trier, für Trier. Auch nach dem Launch erreichbar.' },
-]
-
-const panelContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.18, delayChildren: 0.1 } },
-}
-
-const panelItemVariants = [
-  {
-    hidden: { opacity: 0, x: -40, filter: 'blur(8px)' },
-    visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } },
-  },
-  {
-    hidden: { opacity: 0, x: 40, filter: 'blur(8px)' },
-    visible: { opacity: 1, x: 0, filter: 'blur(0px)', transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } },
-  },
-  {
-    hidden: { opacity: 0, y: 40, filter: 'blur(8px)' },
-    visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } },
-  },
 ]
 
 export default function About() {
@@ -34,7 +15,7 @@ export default function About() {
   return (
     <section id="ueber-mich" className="bg-ivory py-24 md:py-36 px-6 md:px-12">
       <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-stretch">
 
           {/* Links: Text */}
           <div>
@@ -72,45 +53,43 @@ export default function About() {
             </div>
           </div>
 
-          {/* Rechts: dunkles Stat-Panel — schwebt + Lichtschimmer */}
-          <motion.div
-            animate={reduce ? undefined : { y: [0, -8, 0] }}
-            transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <motion.div
-              className="bg-accent-deep h-full min-h-[340px] p-10 flex flex-col justify-between relative overflow-hidden"
-              variants={panelContainer}
-              initial={reduce ? false : 'hidden'}
-              whileInView="visible"
-              viewport={{ once: true, margin: '-12%' }}
-            >
-              {!reduce && (
-                <motion.div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 w-[60%]"
-                  style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)' }}
-                  initial={{ x: '-100%' }}
-                  animate={{ x: '250%' }}
-                  transition={{ duration: 3.5, delay: 2.5, repeat: Infinity, repeatDelay: 6, ease: 'easeInOut' }}
-                />
-              )}
-              {STATS.map(({ value, label }, i) => (
-                <motion.div
-                  key={value}
-                  variants={reduce ? undefined : panelItemVariants[i]}
-                  className={`py-7 ${i !== 0 ? 'border-t border-white/10' : ''}`}
-                >
-                  <div className="text-3xl font-editorial font-light italic text-accent-bright mb-2">
-                    {value}
-                  </div>
-                  <div className="text-white/45 text-sm font-light leading-relaxed">
-                    {label}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.div>
+          {/* Rechts: dunkles Panel mit freigestelltem Portrait */}
+          <div className="relative bg-accent-deep overflow-hidden min-h-[420px] md:min-h-0 flex items-end justify-center">
+            {/* leichter Lichtschimmer, der durchzieht */}
+            {!reduce && (
+              <motion.div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 w-[55%] z-10"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)' }}
+                initial={{ x: '-120%' }}
+                animate={{ x: '250%' }}
+                transition={{ duration: 3.5, delay: 2.5, repeat: Infinity, repeatDelay: 6, ease: 'easeInOut' }}
+              />
+            )}
+            <Portrait />
+          </div>
 
+        </div>
+
+        {/* Drei Merkmale als feine Zeile unter dem Ganzen */}
+        <div className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-0 sm:divide-x divide-border border-t border-border pt-12">
+          {STATS.map(({ value, label }, i) => (
+            <motion.div
+              key={value}
+              className="sm:px-10 first:sm:pl-0 last:sm:pr-0"
+              initial={reduce ? false : { opacity: 0, y: 18 }}
+              whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-12%' }}
+              transition={{ duration: 0.6, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="text-2xl md:text-3xl font-editorial font-light italic text-accent mb-2">
+                {value}
+              </div>
+              <div className="text-muted text-sm font-light leading-relaxed">
+                {label}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

@@ -8,14 +8,14 @@ import {
 } from 'motion/react'
 import portrait from '../assets/julian-cutout.webp'
 
-// Freigestelltes Hero-Portrait: kein Hintergrund, also kein Rechteck.
-// Julian steht in einem weichen Weinrot-Lichtschein, der auf den Cursor
-// reagiert (Mobile: sanfter Auto-Drift), und läuft unten in die Sektion aus.
-export default function HeroPortrait() {
+// Freigestelltes Portrait (kein Hintergrund → kein Rechteck) für die
+// "Über mich"-Sektion. Julian steht in einem weichen Weinrot-Lichtschein,
+// der auf den Cursor reagiert (Mobile: sanfter Auto-Drift), schwebt leicht
+// und läuft unten in das dunkle Panel aus.
+export default function Portrait() {
   const reduce = useReducedMotion()
   const ref = useRef(null)
 
-  // Cursor-Versatz (−1..1), geglättet — verschiebt den Lichtschein hinter Julian
   const px = useSpring(useMotionValue(0), { stiffness: 90, damping: 20, mass: 0.5 })
   const py = useSpring(useMotionValue(0), { stiffness: 90, damping: 20, mass: 0.5 })
 
@@ -56,16 +56,22 @@ export default function HeroPortrait() {
     return () => cancelAnimationFrame(raf)
   }, [px, py, reduce])
 
-  // Lichtschein ist per -translate zentriert; Cursor verschiebt ihn zusätzlich
   const glowX = useTransform(px, (v) => v * 26)
-  const glowY = useTransform(py, (v) => v * 18)
+  const glowY = useTransform(py, (v) => v * 20)
 
   return (
-    <div ref={ref} className="relative w-[280px] sm:w-[320px] lg:w-[360px]">
-      {/* Weicher Lichtschein hinter Julian — folgt dem Cursor, atmet leicht */}
+    <motion.div
+      ref={ref}
+      className="relative w-[76%] max-w-[360px] self-end"
+      initial={reduce ? false : { opacity: 0, y: 24 }}
+      whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-15%' }}
+      transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {/* Weicher Lichtschein hinter Julian */}
       <div
         aria-hidden="true"
-        className="absolute left-1/2 top-1/2 h-[125%] w-[125%] -translate-x-1/2 -translate-y-[46%]"
+        className="absolute left-1/2 top-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-[48%]"
       >
         <motion.div
           className="h-full w-full blur-3xl"
@@ -73,43 +79,27 @@ export default function HeroPortrait() {
             x: glowX,
             y: glowY,
             background:
-              'radial-gradient(ellipse at center, rgba(177,69,82,0.55), rgba(138,46,56,0.22) 45%, transparent 70%)',
+              'radial-gradient(ellipse at center, rgba(177,69,82,0.6), rgba(138,46,56,0.25) 45%, transparent 70%)',
           }}
           animate={reduce ? undefined : { opacity: [0.7, 1, 0.7] }}
           transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
         />
       </div>
 
-      {/* Julian, freigestellt — leichtes Schweben, Reveal von unten */}
+      {/* Julian, freigestellt — leichtes Schweben */}
       <motion.img
         src={portrait}
         alt="Julian Schmitt, Webdesigner aus Trier"
         draggable="false"
         className="relative w-full h-auto block"
         style={{
-          filter: 'drop-shadow(0 24px 40px rgba(0,0,0,0.55))',
-          // unten weich in die Sektion auslaufen lassen
-          maskImage: 'linear-gradient(to bottom, black 78%, transparent 99%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 78%, transparent 99%)',
+          filter: 'drop-shadow(0 24px 40px rgba(0,0,0,0.5))',
+          maskImage: 'linear-gradient(to bottom, black 82%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 82%, transparent 100%)',
         }}
-        initial={reduce ? false : { opacity: 0, y: 26 }}
-        animate={
-          reduce
-            ? false
-            : { opacity: 1, y: [26, 0, -6, 0] }
-        }
-        transition={{
-          opacity: { delay: 0.4, duration: 1 },
-          y: {
-            delay: 0.4,
-            duration: 8,
-            times: [0, 0.14, 0.57, 1],
-            repeat: Infinity,
-            repeatDelay: 0,
-            ease: 'easeInOut',
-          },
-        }}
+        animate={reduce ? undefined : { y: [0, -8, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
       />
-    </div>
+    </motion.div>
   )
 }

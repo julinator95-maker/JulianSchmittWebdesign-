@@ -4,7 +4,6 @@ import WindField3D from './WindField3D'
 import WhatsAppIcon from './WhatsAppIcon'
 import Magnetic from './fx/Magnetic'
 import VaporizeWord from './fx/VaporizeWord'
-import HeroPortrait from './HeroPortrait'
 import { waLink, CITY } from '../config'
 
 const PRE_WORDS = ['Frischer']
@@ -131,9 +130,6 @@ export default function Hero() {
             <span className="absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-accent-bright transition-transform duration-500 ease-out group-hover:scale-x-100" />
           </a>
         </motion.div>
-
-        {/* Interaktiv inszeniertes Portrait — Cursor-Licht, Sheen, Reveal */}
-        <HeroPortrait />
 
         {/* Feine Meta-Zeile am unteren Rand — ersetzt Scroll-Hinweis und Stats-Sektion */}
         <motion.div
