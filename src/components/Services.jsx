@@ -26,7 +26,7 @@ const packages = [
   {
     id: 'S',
     name: 'Start',
-    price: '850',
+    price: '950',
     tagline: 'Der saubere Einstieg.',
     features: [
       'Bis zu 3 Unterseiten',
@@ -39,8 +39,8 @@ const packages = [
   {
     id: 'M',
     name: 'Mittel',
-    price: '1.150',
-    tagline: 'Für den professionellen Auftritt.',
+    price: '1.450',
+    tagline: 'Der volle Auftritt, mit dem Sie gefunden werden.',
     features: [
       'Bis zu 6 Unterseiten',
       'Mobil-optimiert, Kontaktformular & Maps',
@@ -53,8 +53,8 @@ const packages = [
   {
     id: 'L',
     name: 'Komplett',
-    price: '1.450',
-    tagline: 'Vollständige Online-Präsenz.',
+    price: '1.950',
+    tagline: 'Alles drin für eine wachsende Online-Präsenz.',
     features: [
       'Unbegrenzte Unterseiten',
       'Galerie, SEO-Grundlagen & Google-Profil',
@@ -67,36 +67,27 @@ const packages = [
 
 const hausmeisterTiers = [
   {
-    name: 'Basic',
-    price: '59',
-    features: [
-      'Technische Updates & Sicherheitspflege',
-      'Monatliche Backups',
-      'Reaktionszeit innerhalb 48 Std.',
-    ],
-    highlight: false,
-  },
-  {
     name: 'Standard',
     price: '89',
+    tagline: 'Ihre Website bleibt aktuell und sicher, ohne dass Sie etwas tun müssen.',
     features: [
       'Technische Updates, Backups & Sicherheitspflege',
-      'Texte & Bilder aktualisieren',
-      'Öffnungszeiten, Preise & Angebote anpassen',
-      'Reaktionszeit innerhalb 24 Std.',
+      'Texte, Bilder, Öffnungszeiten & Preise werden für Sie aktualisiert',
+      'Reaktionszeit innerhalb von 24 Stunden',
     ],
-    highlight: true,
+    highlight: false,
   },
   {
     name: 'Premium',
     price: '129',
+    tagline: 'Alles aus Standard, plus aktive Betreuung, die Ihre Website wachsen lässt.',
     features: [
-      'Updates, Backups & Inhaltspflege inklusive',
-      'Monatlicher Performance-Bericht',
-      'SEO-Monitoring & Optimierung',
-      'Priorität: ich bin Ihr fester Ansprechpartner',
+      'Kompletter Standard-Umfang inklusive',
+      'Monatlicher Performance-Bericht in klarem Deutsch',
+      'Laufendes SEO-Monitoring & Optimierung für bessere Sichtbarkeit',
+      'Priorität: Ich bin Ihr fester, bevorzugter Ansprechpartner',
     ],
-    highlight: false,
+    highlight: true,
   },
 ]
 
@@ -236,6 +227,13 @@ function HausmeisterCard({ tier, index }) {
             >
               pro Monat · 12 Monate Laufzeit
             </div>
+            <div
+              className={`text-sm mt-4 font-light leading-snug ${
+                tier.highlight ? 'text-ivory/70' : 'text-muted'
+              }`}
+            >
+              {tier.tagline}
+            </div>
           </div>
 
           <ul className="space-y-3 flex-1 mb-8">
@@ -298,6 +296,14 @@ export default function Services() {
           ))}
         </div>
 
+        {/* Pflichthinweis Kleinunternehmer */}
+        <Reveal delay={0.1}>
+          <p className="mt-6 text-muted text-xs font-light text-center">
+            Alle Preise sind Endpreise. Als Kleinunternehmer gemäß § 19 UStG berechne
+            ich keine Umsatzsteuer.
+          </p>
+        </Reveal>
+
         {/* Hausmeister — Metapher prominent inszeniert: dunkles Vollband */}
         <div className="mt-24 mb-16 -mx-6 md:-mx-12 bg-accent-deep px-6 md:px-12 py-20 md:py-28">
           <div className="max-w-3xl mx-auto text-center">
@@ -322,7 +328,7 @@ export default function Services() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
           {hausmeisterTiers.map((tier, i) => (
             <HausmeisterCard key={tier.name} tier={tier} index={i} />
           ))}
@@ -333,6 +339,33 @@ export default function Services() {
             Alle Betreuungspakete laufen 12 Monate.
           </p>
         </Reveal>
+
+        {/* Mehrfach-Rabatt + Selbstpflege — zwei ruhige Hinweisblöcke */}
+        <div className="mt-16 grid md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
+          <Reveal>
+            <div className="h-full border border-border bg-ivory p-6 md:p-7">
+              <h3 className="text-ink text-lg font-medium mb-2">
+                Mehrere Standorte oder Websites?
+              </h3>
+              <p className="text-muted text-sm font-light leading-relaxed">
+                Wer mehr als eine Website von mir betreuen lässt, zahlt ab der zweiten
+                Seite einen reduzierten Wartungspreis. Sprechen Sie mich an, wir finden
+                die passende Lösung.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <div className="h-full border border-border bg-ivory p-6 md:p-7">
+              <h3 className="text-ink text-lg font-medium mb-2">Lieber selbst pflegen?</h3>
+              <p className="text-muted text-sm font-light leading-relaxed">
+                Wenn Sie technisch affin sind und Ihre Website nach dem Launch selbst
+                betreuen möchten, geht das. Ich baue Ihre Seite so, dass Sie Inhalte
+                eigenständig ändern können, verständlich und ohne Vorkenntnisse.
+                Sprechen Sie mich an, dann finden wir den richtigen Weg für Sie.
+              </p>
+            </div>
+          </Reveal>
+        </div>
 
       </div>
     </section>

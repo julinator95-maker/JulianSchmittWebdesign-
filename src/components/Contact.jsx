@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { WA_NUMBER, WA_MSG, EMAIL } from '../config'
 import WhatsAppIcon from './WhatsAppIcon'
 import WindBackground from './WindBackground'
 import WindField3D from './WindField3D'
+import LegalModal from './LegalModal'
 import SplitWords from './fx/SplitWords'
 import Reveal from './fx/Reveal'
 import Magnetic from './fx/Magnetic'
@@ -9,6 +11,7 @@ import Magnetic from './fx/Magnetic'
 export default function Contact() {
   const waHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MSG)}`
   const mailHref = `mailto:${EMAIL}`
+  const [legal, setLegal] = useState(false)
 
   return (
     <section id="kontakt" className="relative overflow-hidden bg-night py-24 md:py-32 px-6 md:px-12">
@@ -64,10 +67,24 @@ export default function Contact() {
             © {new Date().getFullYear()} Julian Schmitt Webdesign · Trier
           </span>
           <span className="text-ivory/25 text-xs font-light">
-            Impressum · Datenschutz
+            <button
+              onClick={() => setLegal('impressum')}
+              className="transition-colors hover:text-ivory/60"
+            >
+              Impressum
+            </button>
+            {' · '}
+            <button
+              onClick={() => setLegal('datenschutz')}
+              className="transition-colors hover:text-ivory/60"
+            >
+              Datenschutz
+            </button>
           </span>
         </div>
       </div>
+
+      <LegalModal open={legal} onClose={() => setLegal(false)} />
     </section>
   )
 }

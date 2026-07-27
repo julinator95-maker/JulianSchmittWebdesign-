@@ -6,7 +6,7 @@ import SplitWords from './fx/SplitWords'
 const FAQS = [
   {
     q: 'Was kostet eine Website bei Ihnen?',
-    a: 'Meine Pakete sind Festpreise: Start ab 850 €, Mittel 1.150 €, Komplett 1.450 €. Kein Stundensatz, keine Überraschungsrechnung. Was genau Sie brauchen, klären wir kostenlos im Erstgespräch.',
+    a: 'Meine Pakete sind Festpreise: Start ab 950 €, Mittel 1.450 €, Komplett 1.950 €. Kein Stundensatz, keine Überraschungsrechnung. Als Kleinunternehmer gemäß § 19 UStG berechne ich keine Umsatzsteuer, es sind also Endpreise. Was genau Sie brauchen, klären wir kostenlos im Erstgespräch.',
   },
   {
     q: 'Wie lange dauert die Umsetzung?',
@@ -22,7 +22,7 @@ const FAQS = [
   },
   {
     q: 'Was ist nach dem Launch mit dem Hausmeister-Paket gemeint?',
-    a: 'Die Hausmeister-Pakete ab 59 €/Monat umfassen technische Updates, Backups, Sicherheitspflege und auf Wunsch SEO-Monitoring. Laufzeit 12 Monate. Und Sie haben immer einen festen Ansprechpartner: mich.',
+    a: 'Die Hausmeister-Pakete ab 89 €/Monat umfassen technische Updates, Backups, Sicherheitspflege und auf Wunsch SEO-Monitoring. Laufzeit 12 Monate. Und Sie haben immer einen festen Ansprechpartner: mich.',
   },
   {
     q: 'Arbeiten Sie auch außerhalb von Trier?',
