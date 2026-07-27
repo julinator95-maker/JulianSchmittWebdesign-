@@ -4,8 +4,8 @@ import WindField3D from './WindField3D'
 import WhatsAppIcon from './WhatsAppIcon'
 import Magnetic from './fx/Magnetic'
 import VaporizeWord from './fx/VaporizeWord'
+import HeroPortrait from './HeroPortrait'
 import { waLink, CITY } from '../config'
-import julianPortrait from '../assets/julian-hero.webp'
 
 const PRE_WORDS = ['Frischer']
 const POST_WORDS = ['für', 'Ihren', 'digitalen', 'Auftritt.']
@@ -98,8 +98,9 @@ export default function Hero() {
           transition={{ delay: 0.6, duration: 0.7 }}
           className="mb-10 max-w-md text-center text-sm font-light leading-relaxed text-white/55 md:text-base"
         >
-          Schnelle, schöne Websites für Handwerker, Winzer, Gastro und Friseure.
-          Schlüsselfertig übergeben, so wie man ein neu gebautes Haus bezieht.
+          Websites, die verkaufen und im Kopf bleiben, vom lokalen Betrieb bis zum
+          wachsenden Unternehmen. Schlüsselfertig übergeben, so wie man ein neu
+          gebautes Haus bezieht.
         </motion.p>
 
         {/* CTA direkt unter dem Subtext — klassische Hero-Ordnung */}
@@ -131,48 +132,8 @@ export default function Hero() {
           </a>
         </motion.div>
 
-        {/* Portrait: löst sich an allen Rändern weich in die Nacht auf.
-            Bewusst ohne Tilt/Schwebe: Mousemove-Effekte auf dem maskierten
-            Bild haben beim Scrollen geruckelt (Maske pro Frame neu gerechnet). */}
-        <motion.div
-          className="relative"
-          initial={{ opacity: 0, y: 24, filter: 'blur(12px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ delay: 0.45, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {/* Stiller Glutschein hinter dem Portrait */}
-          <div
-            aria-hidden="true"
-            className="absolute -inset-12 blur-3xl"
-            style={{
-              background:
-                'radial-gradient(ellipse at 50% 45%, rgba(177,69,82,0.30), transparent 68%)',
-            }}
-          />
-
-          <div
-            className="relative w-[300px] sm:w-[340px]"
-            style={{
-              maskImage:
-                'linear-gradient(to bottom, transparent 0%, black 9%, black 86%, transparent 100%)',
-              WebkitMaskImage:
-                'linear-gradient(to bottom, transparent 0%, black 9%, black 86%, transparent 100%)',
-            }}
-          >
-            <img
-              src={julianPortrait}
-              alt="Julian Schmitt, Webdesigner aus Trier"
-              draggable="false"
-              className="w-full h-auto block"
-              style={{
-                maskImage:
-                  'linear-gradient(to right, transparent 0%, black 11%, black 89%, transparent 100%)',
-                WebkitMaskImage:
-                  'linear-gradient(to right, transparent 0%, black 11%, black 89%, transparent 100%)',
-              }}
-            />
-          </div>
-        </motion.div>
+        {/* Interaktiv inszeniertes Portrait — Cursor-Licht, Sheen, Reveal */}
+        <HeroPortrait />
 
         {/* Feine Meta-Zeile am unteren Rand — ersetzt Scroll-Hinweis und Stats-Sektion */}
         <motion.div
