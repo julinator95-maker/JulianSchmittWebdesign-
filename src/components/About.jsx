@@ -2,6 +2,7 @@ import { User, MessageCircle, MapPin } from 'lucide-react'
 import SplitWords from './fx/SplitWords'
 import Reveal from './fx/Reveal'
 import Portrait from './Portrait'
+import WindBackground from './WindBackground'
 
 const STATS = [
   {
@@ -24,10 +25,14 @@ const STATS = [
   },
 ]
 
+// Dunkles Rot wie im Hero — die beiden Sektionen gehen farblich ineinander über.
 export default function About() {
   return (
-    <section id="ueber-mich" className="bg-ivory py-24 md:py-36 px-6 md:px-12">
-      <div className="max-w-6xl mx-auto">
+    <section id="ueber-mich" className="relative overflow-hidden bg-night py-24 md:py-36 px-6 md:px-12">
+      <WindBackground minimal />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-night via-transparent to-night" />
+
+      <div className="relative z-10 max-w-6xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
 
           {/* Links: Portrait, freistehend ohne Rahmen */}
@@ -36,15 +41,15 @@ export default function About() {
           {/* Rechts: Text */}
           <div>
             <Reveal>
-              <p className="text-accent text-xs font-medium tracking-[0.2em] uppercase mb-6">
+              <p className="text-accent-bright text-xs font-medium tracking-[0.2em] uppercase mb-6">
                 Über mich
               </p>
             </Reveal>
-            <h2 className="text-ink text-3xl md:text-4xl font-light leading-snug tracking-tight mb-8">
+            <h2 className="text-ivory text-3xl md:text-4xl font-light leading-snug tracking-tight mb-8">
               <SplitWords text="Kein Team, keine Agentur." className="block" />
-              <SplitWords text="Nur Ihre Website und ich." className="block font-editorial italic" delay={0.15} />
+              <SplitWords text="Nur Ihre Website und ich." className="block font-editorial italic text-accent-bright" delay={0.15} />
             </h2>
-            <div className="space-y-4 text-muted text-base font-light leading-relaxed">
+            <div className="space-y-4 text-ivory/55 text-base font-light leading-relaxed">
               <Reveal delay={0.05}>
                 <p>
                   Ich bin Julian Schmitt, freier Webdesigner aus Trier. Ich arbeite
@@ -71,16 +76,16 @@ export default function About() {
 
         </div>
 
-        {/* Drei Merkmale — farbige Icon-Badges statt dünner Textzeile */}
+        {/* Drei Merkmale — farbige Icon-Badges auf dunklen Karten */}
         <div className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
           {STATS.map(({ icon: Icon, color, value, label }, i) => (
             <Reveal key={value} delay={i * 0.1}>
-              <div className="h-full bg-stone border border-border p-6 md:p-7">
+              <div className="h-full bg-white/[0.04] border border-white/10 p-6 md:p-7">
                 <div className={`mb-5 flex h-11 w-11 items-center justify-center ${color}`}>
                   <Icon className="h-5 w-5 text-ivory" strokeWidth={1.75} />
                 </div>
-                <div className="text-ink text-base font-medium mb-1.5">{value}</div>
-                <p className="text-muted text-sm font-light leading-relaxed">{label}</p>
+                <div className="text-ivory text-base font-medium mb-1.5">{value}</div>
+                <p className="text-ivory/45 text-sm font-light leading-relaxed">{label}</p>
               </div>
             </Reveal>
           ))}
