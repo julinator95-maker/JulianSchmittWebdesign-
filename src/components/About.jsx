@@ -1,23 +1,39 @@
-import { motion, useReducedMotion } from 'motion/react'
+import { User, MessageCircle, MapPin } from 'lucide-react'
 import SplitWords from './fx/SplitWords'
 import Reveal from './fx/Reveal'
 import Portrait from './Portrait'
 
 const STATS = [
-  { value: 'Solo', label: 'Ich arbeite allein an Ihrem Projekt, ohne Agentur dahinter.' },
-  { value: 'Direkt', label: 'Sie sprechen immer mit mir persönlich, nie mit einem Callcenter.' },
-  { value: 'Trier', label: 'Aus Trier, für Trier. Auch nach dem Launch erreichbar.' },
+  {
+    icon: User,
+    color: 'bg-accent',
+    value: 'Solo',
+    label: 'Ich arbeite allein an Ihrem Projekt, ohne Agentur dahinter.',
+  },
+  {
+    icon: MessageCircle,
+    color: 'bg-accent-bright',
+    value: 'Direkt',
+    label: 'Sie sprechen immer mit mir persönlich, nie mit einem Callcenter.',
+  },
+  {
+    icon: MapPin,
+    color: 'bg-accent-deep',
+    value: 'Trier',
+    label: 'Aus Trier, für Trier. Auch nach dem Launch erreichbar.',
+  },
 ]
 
 export default function About() {
-  const reduce = useReducedMotion()
-
   return (
     <section id="ueber-mich" className="bg-ivory py-24 md:py-36 px-6 md:px-12">
       <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-stretch">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
 
-          {/* Links: Text */}
+          {/* Links: Portrait, freistehend ohne Rahmen */}
+          <Portrait />
+
+          {/* Rechts: Text */}
           <div>
             <Reveal>
               <p className="text-accent text-xs font-medium tracking-[0.2em] uppercase mb-6">
@@ -53,42 +69,20 @@ export default function About() {
             </div>
           </div>
 
-          {/* Rechts: dunkles Panel mit freigestelltem Portrait */}
-          <div className="relative bg-accent-deep overflow-hidden min-h-[420px] md:min-h-0 flex items-end justify-center">
-            {/* leichter Lichtschimmer, der durchzieht */}
-            {!reduce && (
-              <motion.div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 w-[55%] z-10"
-                style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)' }}
-                initial={{ x: '-120%' }}
-                animate={{ x: '250%' }}
-                transition={{ duration: 3.5, delay: 2.5, repeat: Infinity, repeatDelay: 6, ease: 'easeInOut' }}
-              />
-            )}
-            <Portrait />
-          </div>
-
         </div>
 
-        {/* Drei Merkmale als feine Zeile unter dem Ganzen */}
-        <div className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-0 sm:divide-x divide-border border-t border-border pt-12">
-          {STATS.map(({ value, label }, i) => (
-            <motion.div
-              key={value}
-              className="sm:px-10 first:sm:pl-0 last:sm:pr-0"
-              initial={reduce ? false : { opacity: 0, y: 18 }}
-              whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-12%' }}
-              transition={{ duration: 0.6, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="text-2xl md:text-3xl font-editorial font-light italic text-accent mb-2">
-                {value}
+        {/* Drei Merkmale — farbige Icon-Badges statt dünner Textzeile */}
+        <div className="mt-16 md:mt-20 grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+          {STATS.map(({ icon: Icon, color, value, label }, i) => (
+            <Reveal key={value} delay={i * 0.1}>
+              <div className="h-full bg-stone border border-border p-6 md:p-7">
+                <div className={`mb-5 flex h-11 w-11 items-center justify-center ${color}`}>
+                  <Icon className="h-5 w-5 text-ivory" strokeWidth={1.75} />
+                </div>
+                <div className="text-ink text-base font-medium mb-1.5">{value}</div>
+                <p className="text-muted text-sm font-light leading-relaxed">{label}</p>
               </div>
-              <div className="text-muted text-sm font-light leading-relaxed">
-                {label}
-              </div>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
       </div>
