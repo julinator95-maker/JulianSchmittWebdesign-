@@ -340,11 +340,12 @@ export default function Services() {
           </p>
         </Reveal>
 
-        {/* Mehrfach-Rabatt + Selbstpflege — zwei ruhige Hinweisblöcke */}
-        <div className="mt-16 grid md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
+        {/* Mehrfach-Rabatt + Selbstpflege — zurückhaltende Textnotizen,
+            bewusst ohne Kachel-Optik, damit sie nicht heraustoßen */}
+        <div className="mt-14 max-w-3xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 border-t border-border pt-12">
           <Reveal>
-            <div className="h-full border border-border bg-ivory p-6 md:p-7">
-              <h3 className="text-ink text-lg font-medium mb-2">
+            <div>
+              <h3 className="text-ink text-sm font-medium mb-2">
                 Mehrere Standorte oder Websites?
               </h3>
               <p className="text-muted text-sm font-light leading-relaxed">
@@ -355,13 +356,13 @@ export default function Services() {
             </div>
           </Reveal>
           <Reveal delay={0.08}>
-            <div className="h-full border border-border bg-ivory p-6 md:p-7">
-              <h3 className="text-ink text-lg font-medium mb-2">Lieber selbst pflegen?</h3>
+            <div>
+              <h3 className="text-ink text-sm font-medium mb-2">Lieber selbst pflegen?</h3>
               <p className="text-muted text-sm font-light leading-relaxed">
-                Wenn Sie technisch affin sind und Ihre Website nach dem Launch selbst
-                betreuen möchten, geht das. Ich baue Ihre Seite so, dass Sie Inhalte
-                eigenständig ändern können, verständlich und ohne Vorkenntnisse.
-                Sprechen Sie mich an, dann finden wir den richtigen Weg für Sie.
+                Grundsätzlich möglich: Auf Wunsch baue ich Ihre Seite so, dass sich
+                Inhalte selbst ändern lassen. Sie eigenständig zu pflegen, setzt
+                allerdings etwas technisches Verständnis voraus. Ob das der richtige
+                Weg für Sie ist, klären wir am besten im Gespräch.
               </p>
             </div>
           </Reveal>
