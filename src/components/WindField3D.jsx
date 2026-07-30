@@ -4,7 +4,7 @@ import { Renderer, Camera, Geometry, Program, Mesh } from 'ogl'
 // GPU-Partikel-Windfeld (WebGL via OGL, ~10kb).
 // Tausende Punkte strömen mit Curl-artigem Rauschen nach rechts ("Wind"),
 // mit Perspektiv-Tiefe und sanfter Maus-Parallaxe. Markenfarben: Weinrot → Rosé.
-// Ersetzt die flache CSS-Variante durch echte 3D-Tiefe.
+// Kein Scroll-Bezug: die Animation läuft beim Scrollen bewusst weiter.
 
 const DEFAULT_COUNT = 3400
 
@@ -39,7 +39,8 @@ const vertex = /* glsl */ `
          + sin(p.z * 0.7 + f * 0.7) * 0.25;
     p.z += cos(p.x * 0.4 + f * 0.9 + aSeed * 6.28) * 0.45;
 
-    // Sanfte Maus-Parallaxe (Tiefe verstärkt den Versatz)
+    // Sanfte Maus-Parallaxe (Tiefe verstärkt den Versatz).
+    // Auf Touch bleibt uMouse 0 — dort trägt allein Wind + Turbulenz.
     p.xy += uMouse * (0.4 + (p.z + uRange) / (uRange * 2.0));
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
@@ -159,35 +160,22 @@ export default function WindField3D({ className = '', count = DEFAULT_COUNT, max
     }
     if (!prefersReduced) window.addEventListener('pointermove', onPointer)
 
-    // Nur rendern, wenn sichtbar
+    // Nur rendern, wenn sichtbar. Beim Scrollen läuft die Animation bewusst
+    // weiter — ein Einfrieren der Partikel fällt stärker auf als jede Last.
     let visible = true
     const io = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting
-        if (visible && !scrolling && raf === null) loop(performance.now())
+        if (visible && raf === null) loop(performance.now())
       },
       { threshold: 0 }
     )
     io.observe(container)
 
-    // Während aktivem Scrollen pausieren → keine GPU-Konkurrenz zum Scroll.
-    // Kurz nach dem letzten Scroll-Event nimmt die Animation wieder auf.
-    let scrolling = false
-    let scrollTimer = null
-    const onScroll = () => {
-      scrolling = true
-      if (scrollTimer) clearTimeout(scrollTimer)
-      scrollTimer = setTimeout(() => {
-        scrolling = false
-        if (visible && raf === null) loop(performance.now())
-      }, 140)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-
     let raf = null
-    let start = performance.now()
+    const start = performance.now()
     const loop = (now) => {
-      if (!visible || scrolling) {
+      if (!visible) {
         raf = null
         return
       }
@@ -216,11 +204,9 @@ export default function WindField3D({ className = '', count = DEFAULT_COUNT, max
 
     return () => {
       if (raf) cancelAnimationFrame(raf)
-      if (scrollTimer) clearTimeout(scrollTimer)
       ro.disconnect()
       io.disconnect()
       window.removeEventListener('pointermove', onPointer)
-      window.removeEventListener('scroll', onScroll)
       const ext = gl.getExtension('WEBGL_lose_context')
       ext?.loseContext()
       if (gl.canvas.parentNode === container) container.removeChild(gl.canvas)
