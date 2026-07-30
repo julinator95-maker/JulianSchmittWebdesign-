@@ -13,10 +13,12 @@ import ScrollProgress from './components/fx/ScrollProgress'
 import SpotlightCursor from './components/fx/SpotlightCursor'
 import WindCursor from './components/fx/WindCursor'
 import Grain from './components/fx/Grain'
+import SmoothScroll from './components/fx/SmoothScroll'
 
 export default function App() {
   return (
     <>
+      <SmoothScroll />
       <ScrollProgress />
       <SpotlightCursor />
       <WindCursor />

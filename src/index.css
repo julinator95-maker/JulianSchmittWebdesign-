@@ -22,9 +22,8 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* scroll-behavior: smooth entfernt — Lenis (SmoothScroll.jsx) steuert
+   Anker-Klicks jetzt selbst per JS; beides gleichzeitig würde konkurrieren. */
 
 body {
   margin: 0;
