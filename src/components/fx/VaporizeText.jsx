@@ -316,9 +316,12 @@ export default function VaporizeTextCycle({
   }, [])
 
   return (
-    <div ref={wrapperRef} style={wrapperStyle}>
+    <div ref={wrapperRef} style={wrapperStyle} aria-hidden="true">
       <canvas ref={canvasRef} style={canvasStyle} />
-      <SeoElement tag={tag} texts={texts} />
+      {/* seoTag={false}: der Aufrufer (VaporizeWord) liefert den Textinhalt
+          selbst. Das eingebaute <p> würde hier doppelten Text erzeugen und
+          wäre innerhalb einer <h1> ungültiges Markup. */}
+      {tag !== false && <SeoElement tag={tag} texts={texts} />}
     </div>
   )
 }

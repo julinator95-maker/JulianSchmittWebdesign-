@@ -53,20 +53,34 @@ function DatenschutzBody() {
         </p>
       </div>
       <div>
-        <h4 className="text-ink font-medium mb-1">Erhebung von Daten</h4>
+        <h4 className="text-ink font-medium mb-1">Hosting und Server-Logdaten</h4>
         <p>
-          Diese Website verzichtet auf Tracking und Analyse-Cookies. Beim Aufruf
-          werden durch den Hosting-Anbieter technisch notwendige Server-Logdaten
-          (z. B. IP-Adresse, Zeitpunkt des Zugriffs) verarbeitet, um den Betrieb
-          und die Sicherheit der Seite zu gewährleisten.
+          Diese Website wird bei der Vercel Inc. gehostet. Beim Aufruf werden
+          technisch notwendige Server-Logdaten (z. B. IP-Adresse, Zeitpunkt des
+          Zugriffs, aufgerufene Seite, Browsertyp) verarbeitet, um den Betrieb
+          und die Sicherheit der Seite zu gewährleisten. Rechtsgrundlage ist das
+          berechtigte Interesse an einem sicheren Betrieb (Art. 6 Abs. 1 lit. f
+          DSGVO). Dabei kann eine Übermittlung in die USA stattfinden.
+        </p>
+      </div>
+      <div>
+        <h4 className="text-ink font-medium mb-1">Cookies, Tracking und Schriften</h4>
+        <p>
+          Diese Website setzt keine Cookies, verwendet keine Analyse- oder
+          Tracking-Dienste und bindet keine Werbenetzwerke ein. Alle Schriftarten
+          werden vom eigenen Server geladen; es besteht dabei keine Verbindung zu
+          Google-Servern.
         </p>
       </div>
       <div>
         <h4 className="text-ink font-medium mb-1">Kontaktaufnahme</h4>
         <p>
-          Wenn Sie mich per WhatsApp oder E-Mail kontaktieren, werden die von
-          Ihnen übermittelten Daten ausschließlich zur Bearbeitung Ihrer Anfrage
-          verwendet und nicht an Dritte weitergegeben.
+          Ihre Anfrage nutze ich ausschließlich zur Bearbeitung und gebe sie nicht
+          an Dritte weiter. Die Schaltflächen auf dieser Seite öffnen lediglich Ihr
+          eigenes E-Mail- oder WhatsApp-Programm; es werden dabei keine Daten
+          automatisch an mich übertragen. Wenn Sie den Kontakt über WhatsApp
+          wählen, gelten zusätzlich die Datenschutzbestimmungen der WhatsApp
+          Ireland Ltd.
         </p>
       </div>
       <div>

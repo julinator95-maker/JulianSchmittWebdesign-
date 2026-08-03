@@ -56,11 +56,11 @@ function Tier({ tier, index }) {
             <span className="text-6xl font-extralight tracking-tight text-ivory tabular-nums">
               {tier.count}
             </span>
-            <span className="text-ivory/45 text-sm font-light">Empfehlungen</span>
+            <span className="text-ivory/55 text-sm font-light">Empfehlungen</span>
           </div>
 
           <p className="text-ivory text-lg font-light leading-snug mb-3">{tier.benefit}</p>
-          <p className="text-ivory/40 text-sm font-light leading-relaxed">{tier.note}</p>
+          <p className="text-ivory/55 text-sm font-light leading-relaxed">{tier.note}</p>
         </div>
       </TiltCard>
     </Reveal>
@@ -73,7 +73,7 @@ export default function Referral() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-14 md:mb-16 max-w-2xl">
           <Reveal>
-            <p className="text-accent-bright text-xs font-medium tracking-[0.2em] uppercase mb-6">
+            <p className="text-accent-label text-xs font-medium tracking-[0.2em] uppercase mb-6">
               Empfehlungsprogramm
             </p>
           </Reveal>
@@ -96,7 +96,7 @@ export default function Referral() {
         </div>
 
         <Reveal delay={0.1}>
-          <p className="mt-8 text-ivory/30 text-xs font-light">
+          <p className="mt-8 text-ivory/55 text-xs font-light">
             Eine Empfehlung zählt, sobald die empfohlene Person einen schriftlichen
             Auftrag unterzeichnet hat. Details stehen im Dienstleistungsvertrag.
           </p>

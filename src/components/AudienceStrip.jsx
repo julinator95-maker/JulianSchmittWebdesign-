@@ -49,7 +49,7 @@ export default function AudienceStrip() {
     <section className="relative overflow-hidden bg-night py-20 md:py-28">
       <div className="mx-auto mb-12 max-w-6xl px-6 md:px-12">
         <Reveal>
-          <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-accent-bright">
+          <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-accent-label">
             Für wen ich baue
           </p>
         </Reveal>

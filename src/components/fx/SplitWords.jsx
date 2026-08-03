@@ -40,15 +40,17 @@ export default function SplitWords({
       whileInView="visible"
       viewport={{ once: true, margin: '-10%' }}
     >
+      {/* Echtes Leerzeichen zwischen den Wörtern statt margin-Abstand:
+          sonst extrahieren Suchmaschinen und Screenreader die Überschrift
+          ohne Wortgrenzen ("KeinTeam,keineAgentur."). Die Leerzeichen-Breite
+          entspricht optisch dem bisherigen 0.25em-Abstand. */}
       {words.map((w, i) => (
-        <motion.span
-          key={i}
-          variants={wordVariant}
-          className="inline-block"
-          style={{ marginRight: '0.25em' }}
-        >
-          {w}
-        </motion.span>
+        <span key={i}>
+          <motion.span variants={wordVariant} className="inline-block">
+            {w}
+          </motion.span>
+          {i < words.length - 1 ? ' ' : ''}
+        </span>
       ))}
     </motion.span>
   )

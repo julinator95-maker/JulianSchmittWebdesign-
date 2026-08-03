@@ -41,7 +41,7 @@ export default function About() {
           {/* Rechts: Text */}
           <div>
             <Reveal>
-              <p className="text-accent-bright text-xs font-medium tracking-[0.2em] uppercase mb-6">
+              <p className="text-accent-label text-xs font-medium tracking-[0.2em] uppercase mb-6">
                 Über mich
               </p>
             </Reveal>
@@ -85,7 +85,7 @@ export default function About() {
                   <Icon className="h-5 w-5 text-ivory" strokeWidth={1.75} />
                 </div>
                 <div className="text-ivory text-base font-medium mb-1.5">{value}</div>
-                <p className="text-ivory/45 text-sm font-light leading-relaxed">{label}</p>
+                <p className="text-ivory/55 text-sm font-light leading-relaxed">{label}</p>
               </div>
             </Reveal>
           ))}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seite nicht gefunden | Julian Schmitt Webdesign</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <style>
+      :root {
+        --night: #0e0a0b;
+        --ivory: #f9f7f4;
+        --accent: #8a2e38;
+        --accent-bright: #b14552;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--night);
+        color: var(--ivory);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        text-align: center;
+        padding: 2rem 1.5rem;
+        background-image: radial-gradient(
+          ellipse at 50% 40%,
+          rgba(138, 46, 56, 0.35),
+          transparent 65%
+        );
+      }
+      .code {
+        font-size: 0.7rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--accent-bright);
+        margin-bottom: 1.5rem;
+      }
+      h1 {
+        font-size: clamp(1.9rem, 5vw, 3rem);
+        font-weight: 300;
+        line-height: 1.15;
+        margin: 0 0 1rem;
+      }
+      h1 em {
+        font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        font-weight: 700;
+        color: var(--accent-bright);
+      }
+      p {
+        color: rgba(249, 247, 244, 0.55);
+        font-weight: 300;
+        line-height: 1.6;
+        max-width: 30rem;
+        margin: 0 auto 2.5rem;
+      }
+      a {
+        display: inline-block;
+        background: var(--accent);
+        color: var(--ivory);
+        text-decoration: none;
+        padding: 0.9rem 1.75rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border: 1px solid rgba(177, 69, 82, 0.4);
+        transition: background 0.2s ease;
+      }
+      a:hover { background: var(--accent-bright); }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="code">Fehler 404</p>
+      <h1>Diese Seite ist uns <em>durch die Lappen</em> gegangen.</h1>
+      <p>
+        Die aufgerufene Adresse gibt es nicht (mehr). Vermutlich ein Tippfehler
+        oder ein alter Link.
+      </p>
+      <a href="/">Zurück zur Startseite</a>
+    </main>
+  </body>
+</html>

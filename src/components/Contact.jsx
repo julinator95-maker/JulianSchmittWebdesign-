@@ -23,7 +23,7 @@ export default function Contact() {
       <div className="relative z-10 max-w-6xl mx-auto">
         <div className="max-w-lg">
           <Reveal>
-            <p className="text-accent-bright text-xs font-medium tracking-[0.2em] uppercase mb-6">
+            <p className="text-accent-label text-xs font-medium tracking-[0.2em] uppercase mb-6">
               Kontakt
             </p>
           </Reveal>
@@ -63,10 +63,10 @@ export default function Contact() {
         </div>
 
         <div className="mt-24 pt-8 border-t border-ivory/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <span className="text-ivory/25 text-xs font-light tracking-wide">
+          <span className="text-ivory/55 text-xs font-light tracking-wide">
             © {new Date().getFullYear()} Julian Schmitt Webdesign · Trier
           </span>
-          <span className="text-ivory/25 text-xs font-light">
+          <span className="text-ivory/55 text-xs font-light">
             <button
               onClick={() => setLegal('impressum')}
               className="transition-colors hover:text-ivory/60"

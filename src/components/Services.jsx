@@ -308,13 +308,13 @@ export default function Services() {
         <div className="mt-24 mb-16 -mx-6 md:-mx-12 bg-accent-deep px-6 md:px-12 py-20 md:py-28">
           <div className="max-w-3xl mx-auto text-center">
             <Reveal>
-              <p className="text-accent-bright text-xs font-medium tracking-[0.2em] uppercase mb-8">
+              <p className="text-accent-label text-xs font-medium tracking-[0.2em] uppercase mb-8">
                 Betreuung & Wartung
               </p>
             </Reveal>
             <h2 className="text-ivory font-light leading-[1.05] tracking-tight mb-8" style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' }}>
               <SplitWords text="Ein Haus baut man einmal." className="block" />
-              <SplitWords text="Bewohnbar bleibt es mit einem Hausmeister." className="block font-editorial italic text-accent-bright" delay={0.18} />
+              <SplitWords text="Bewohnbar bleibt es mit einem Hausmeister." className="block font-editorial italic text-accent-label" delay={0.18} />
             </h2>
             <Reveal delay={0.1}>
               <p className="text-ivory/60 text-base md:text-lg font-light leading-relaxed max-w-2xl mx-auto">

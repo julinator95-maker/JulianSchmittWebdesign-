@@ -47,25 +47,29 @@ export default function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-bright opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-accent-bright" />
           </span>
-          <span className="text-xs font-medium tracking-[0.25em] text-accent-bright uppercase">
+          <span className="text-xs font-medium tracking-[0.25em] text-accent-label uppercase">
             Webdesign aus {CITY}
           </span>
         </motion.div>
 
         {/* Headline */}
         <h1 className="mb-6 max-w-3xl text-center text-[2.4rem] font-light leading-[1.08] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          {/* Leerzeichen als Textknoten statt margin — sonst liest ein Crawler
+              die H1 als "fürIhrendigitalenAuftritt" ohne Wortgrenzen */}
           <span className="block">
             {PRE_WORDS.map((word, i) => (
-              <motion.span
-                key={word}
-                custom={i}
-                variants={wordVariants}
-                initial="hidden"
-                animate="show"
-                className="mr-[0.22em] inline-block"
-              >
-                {word}
-              </motion.span>
+              <span key={word}>
+                <motion.span
+                  custom={i}
+                  variants={wordVariants}
+                  initial="hidden"
+                  animate="show"
+                  className="inline-block"
+                >
+                  {word}
+                </motion.span>
+                {i < PRE_WORDS.length - 1 ? ' ' : ''}
+              </span>
             ))}
           </span>
 
@@ -76,16 +80,18 @@ export default function Hero() {
 
           <span className="block">
             {POST_WORDS.map((word, i) => (
-              <motion.span
-                key={word}
-                custom={i + 1}
-                variants={wordVariants}
-                initial="hidden"
-                animate="show"
-                className="mr-[0.22em] inline-block"
-              >
-                {word}
-              </motion.span>
+              <span key={word}>
+                <motion.span
+                  custom={i + 1}
+                  variants={wordVariants}
+                  initial="hidden"
+                  animate="show"
+                  className="inline-block"
+                >
+                  {word}
+                </motion.span>
+                {i < POST_WORDS.length - 1 ? ' ' : ''}
+              </span>
             ))}
           </span>
         </h1>
@@ -149,7 +155,7 @@ export default function Hero() {
                 initial={reduce ? false : { opacity: 0, x: -14 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1.7 + i * 0.18, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="text-[0.65rem] font-light tracking-[0.22em] text-white/35 uppercase"
+                className="text-[0.65rem] font-light tracking-[0.22em] text-white/55 uppercase"
               >
                 {claim}
               </motion.span>

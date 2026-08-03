@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://julian-schmitt-webdesign.vercel.app/sitemap.xml

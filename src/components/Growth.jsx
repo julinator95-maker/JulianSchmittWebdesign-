@@ -65,7 +65,7 @@ function Row({ item, index }) {
         animate={inView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.7, delay: 0.1 + index * 0.06, ease: [0.22, 1, 0.36, 1] }}
       >
-        <p className="text-accent-bright text-xs font-medium tracking-[0.3em] uppercase">
+        <p className="text-accent-label text-xs font-medium tracking-[0.3em] uppercase">
           {item.num}
         </p>
 
@@ -73,12 +73,12 @@ function Row({ item, index }) {
           style={{ fontSize: 'clamp(1.5rem, 2.8vw, 2.1rem)' }}
         >
           {item.title}
-          <span className="ml-3 align-middle text-[0.6rem] font-medium tracking-[0.25em] uppercase text-ivory/30">
+          <span className="ml-3 align-middle text-[0.6rem] font-medium tracking-[0.25em] uppercase text-ivory/55">
             {item.tag}
           </span>
         </h3>
 
-        <p className="text-ivory/45 text-sm font-light leading-relaxed max-w-md">
+        <p className="text-ivory/55 text-sm font-light leading-relaxed max-w-md">
           {item.desc}
         </p>
 
@@ -101,7 +101,7 @@ export default function Growth() {
       <div className="relative z-10 max-w-5xl mx-auto">
         <div className="mb-12 md:mb-16">
           <Reveal>
-            <p className="text-accent-bright text-xs font-medium tracking-[0.2em] uppercase mb-6">
+            <p className="text-accent-label text-xs font-medium tracking-[0.2em] uppercase mb-6">
               Nach dem Launch
             </p>
           </Reveal>
@@ -125,7 +125,7 @@ export default function Growth() {
         </div>
 
         <Reveal delay={0.1}>
-          <p className="mt-8 text-ivory/30 text-xs font-light">
+          <p className="mt-8 text-ivory/55 text-xs font-light">
             Individuell nach Bedarf. Sprechen Sie mich einfach an.
           </p>
         </Reveal>

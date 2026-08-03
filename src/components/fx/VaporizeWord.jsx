@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import VaporizeTextCycle, { Tag } from './VaporizeText'
+import VaporizeTextCycle from './VaporizeText'
 
 // Plus Jakarta Sans 700 Italic (User-Wahl) — dynamischer Sans-Kursiv-Look.
 // Der Canvas muss auf die geladene Font warten, sonst sampelt er die
@@ -51,6 +51,11 @@ export default function VaporizeWord({ words, color = 'rgb(177, 69, 82)' }) {
 
   return (
     <span style={{ display: 'block', width: '100%', height: lineH, position: 'relative' }}>
+      {/* Crawler-/Screenreader-Text: nur das erste Wort, damit die H1 als
+          ganzer Satz lesbar bleibt ("Frischer Wind für Ihren digitalen
+          Auftritt.") statt alle Wechselwörter aneinanderzureihen. Das Canvas
+          daneben ist rein dekorativ. */}
+      <span className="sr-only">{words[0]} </span>
       <span style={{
         position: 'absolute',
         left: 0,
@@ -71,7 +76,7 @@ export default function VaporizeWord({ words, color = 'rgb(177, 69, 82)' }) {
             animation={{ vaporizeDuration: 2, fadeInDuration: 0.4, waitDuration: 0.8 }}
             direction="left-to-right"
             alignment="center"
-            tag={Tag.P}
+            tag={false}
           />
         )}
       </span>

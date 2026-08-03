@@ -18,8 +18,12 @@ export default function Portrait() {
         />
         <img
           src={portrait}
-          alt="Julian Schmitt, Webdesigner aus Trier"
+          alt="Julian Schmitt, Webdesigner aus Trier, vor einer Backsteinwand"
           draggable="false"
+          width="900"
+          height="1124"
+          loading="lazy"
+          decoding="async"
           className="relative w-full h-auto block"
           style={{
             maskImage:
