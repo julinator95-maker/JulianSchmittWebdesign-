@@ -2,8 +2,12 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "julianschmittwebdesign",
   "compatibility_date": "2026-08-05",
+  // Eigener Worker-Einstiegspunkt statt reinem "assets-only"-Modus:
+  // wird für den www->apex-Redirect gebraucht (siehe worker/index.js).
+  "main": "worker/index.js",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     // "404-page" statt "single-page-application": eine unbekannte URL soll
     // einen echten 404 liefern (public/404.html), keine Startseite mit
     // 200-Status vortäuschen. Wichtig für sauberes SEO/Crawling.
