@@ -9,7 +9,7 @@ import { Renderer, Camera, Geometry, Program, Mesh } from 'ogl'
 const DEFAULT_COUNT = 3400
 
 const vertex = /* glsl */ `
-  attribute vec3 position;   // Basisposition im Volumen
+  attribute vec3 position;   // normalisiert -1..1, erst im Shader auf uRange gestreckt
   attribute float aSeed;     // 0..1 Zufallswert pro Partikel
 
   uniform mat4 modelViewMatrix;
@@ -17,21 +17,24 @@ const vertex = /* glsl */ `
   uniform float uTime;
   uniform float uDpr;
   uniform vec2 uMouse;
-  uniform float uRange;
+  uniform vec3 uRange;       // Halb-Ausdehnung des Volumens je Achse
 
   varying float vSeed;
   varying float vDepth;
 
   void main() {
     vSeed = aSeed;
-    vec3 p = position;
+    vec3 p = position * uRange;
 
-    float t = uTime * 0.06;
+    // Drift proportional zur sichtbaren Breite: dadurch wirkt die Strömung
+    // im Hochformat genauso schnell wie im Querformat, obwohl das Volumen
+    // dort deutlich schmaler ist.
+    float t = uTime * 0.06 * (uRange.x / 7.0);
 
     // Kontinuierliche Rechts-Drift (Wind), pro Partikel leicht versetzt
     p.x += t * (0.6 + aSeed * 0.8);
     // Im Volumen umbrechen, damit der Strom endlos wirkt
-    p.x = mod(p.x + uRange, uRange * 2.0) - uRange;
+    p.x = mod(p.x + uRange.x, uRange.x * 2.0) - uRange.x;
 
     // Geschichtete Turbulenz → organisches Wehen
     float f = uTime * 0.5;
@@ -39,9 +42,10 @@ const vertex = /* glsl */ `
          + sin(p.z * 0.7 + f * 0.7) * 0.25;
     p.z += cos(p.x * 0.4 + f * 0.9 + aSeed * 6.28) * 0.45;
 
-    // Sanfte Maus-Parallaxe (Tiefe verstärkt den Versatz).
-    // Auf Touch bleibt uMouse 0 — dort trägt allein Wind + Turbulenz.
-    p.xy += uMouse * (0.4 + (p.z + uRange) / (uRange * 2.0));
+    // Sanfte Parallaxe (Tiefe verstärkt den Versatz). Am Desktop von der Maus
+    // gespeist, auf Touch von einer langsamen Eigenbewegung — sonst stünde
+    // dort die halbe Tiefenwirkung still.
+    p.xy += uMouse * (0.4 + (p.z + uRange.z) / (uRange.z * 2.0));
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     vDepth = -mv.z;
@@ -107,16 +111,22 @@ export default function WindField3D({ className = '', count = DEFAULT_COUNT, max
     gl.canvas.style.height = '100%'
     gl.canvas.style.display = 'block'
 
-    const camera = new Camera(gl, { fov: 45 })
-    camera.position.set(0, 0, 9)
+    const FOV = 45
+    const CAM_Z = 9
+    const camera = new Camera(gl, { fov: FOV })
+    camera.position.set(0, 0, CAM_Z)
 
     const RANGE = 7
+    // Halbe sichtbare Höhe an der Volumen-Mitte. Die Breite folgt daraus dem
+    // Seitenverhältnis — deshalb muss die X-Ausdehnung mitwandern (s. resize).
+    const HALF_H = CAM_Z * Math.tan(((FOV / 2) * Math.PI) / 180)
+
     const positions = new Float32Array(COUNT * 3)
     const seeds = new Float32Array(COUNT)
     for (let i = 0; i < COUNT; i++) {
-      positions[i * 3 + 0] = (Math.random() * 2 - 1) * RANGE
-      positions[i * 3 + 1] = (Math.random() * 2 - 1) * RANGE * 0.62
-      positions[i * 3 + 2] = (Math.random() * 2 - 1) * RANGE * 0.6
+      positions[i * 3 + 0] = Math.random() * 2 - 1
+      positions[i * 3 + 1] = Math.random() * 2 - 1
+      positions[i * 3 + 2] = Math.random() * 2 - 1
       seeds[i] = Math.random()
     }
 
@@ -134,7 +144,7 @@ export default function WindField3D({ className = '', count = DEFAULT_COUNT, max
         uTime: { value: 0 },
         uDpr: { value: dpr },
         uMouse: { value: [0, 0] },
-        uRange: { value: RANGE },
+        uRange: { value: [RANGE, RANGE * 0.62, RANGE * 0.6] },
         uOpacity: { value: 0 },
       },
     })
@@ -144,8 +154,15 @@ export default function WindField3D({ className = '', count = DEFAULT_COUNT, max
     const resize = () => {
       const w = container.clientWidth
       const h = container.clientHeight
+      const aspect = w / h
       renderer.setSize(w, h)
-      camera.perspective({ aspect: w / h })
+      camera.perspective({ aspect })
+
+      // Die vertikale FOV ist fix, also schrumpft die sichtbare Breite im
+      // Hochformat massiv. Bliebe die X-Ausdehnung des Volumens konstant,
+      // läge auf dem Handy der Großteil der Partikel außerhalb des Bildes und
+      // der Strom wirkte fast leer. Deshalb folgt sie dem Seitenverhältnis.
+      program.uniforms.uRange.value[0] = Math.max(HALF_H * aspect * 1.15, 1.5)
     }
     resize()
     const ro = new ResizeObserver(resize)
@@ -154,7 +171,9 @@ export default function WindField3D({ className = '', count = DEFAULT_COUNT, max
     // Maus-Parallaxe (geglättet)
     const mouse = { x: 0, y: 0 }
     const target = { x: 0, y: 0 }
+    let pointerSeen = false
     const onPointer = (e) => {
+      pointerSeen = true
       target.x = (e.clientX / window.innerWidth - 0.5) * 1.4
       target.y = -(e.clientY / window.innerHeight - 0.5) * 1.4
     }
@@ -181,6 +200,13 @@ export default function WindField3D({ className = '', count = DEFAULT_COUNT, max
       }
       const t = (now - start) / 1000
       program.uniforms.uTime.value = t
+
+      // Ohne Zeigegerät (Touch) übernimmt eine langsame Eigenbewegung die
+      // Rolle der Maus, damit die Tiefenstaffelung auch dort atmet.
+      if (!pointerSeen && !prefersReduced) {
+        target.x = Math.sin(t * 0.17) * 0.55
+        target.y = Math.cos(t * 0.12) * 0.34
+      }
 
       // Maus glätten
       mouse.x += (target.x - mouse.x) * 0.04

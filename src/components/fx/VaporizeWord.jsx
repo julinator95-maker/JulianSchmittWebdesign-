@@ -12,7 +12,10 @@ function pickFontSize() {
   if (w >= 1024) return 76 // lg:text-7xl
   if (w >= 768) return 64 // md:text-6xl
   if (w >= 640) return 52 // sm:text-5xl
-  return 42
+  // Unter sm skaliert die Headline per clamp(2.25rem, 10.5vw, 3rem) mit der
+  // Breite mit. Das Canvas muss dem folgen, sonst tanzt das Wechselwort aus
+  // der Zeile: knapp 9 % größer, wie auf den festen Stufen darüber.
+  return Math.round(Math.min(Math.max(w * 0.1145, 39), 52))
 }
 
 export default function VaporizeWord({ words, color = 'rgb(177, 69, 82)' }) {

@@ -53,7 +53,11 @@ export default function Hero() {
         </motion.div>
 
         {/* Headline */}
-        <h1 className="mb-6 max-w-3xl text-center text-[2.4rem] font-light leading-[1.08] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+        {/* Auf dem Handy skaliert die Headline mit der Viewport-Breite statt
+            auf einer festen Größe zu kleben: auf breiten Phones wirkt sie
+            dadurch deutlich präsenter, auf schmalen bricht "für Ihren
+            digitalen" trotzdem nicht um. Ab sm greifen wieder feste Stufen. */}
+        <h1 className="mb-6 max-w-3xl text-center text-[clamp(2.25rem,10.5vw,3rem)] font-light leading-[1.08] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
           {/* Leerzeichen als Textknoten statt margin — sonst liest ein Crawler
               die H1 als "fürIhrendigitalenAuftritt" ohne Wortgrenzen */}
           <span className="block">
@@ -113,7 +117,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.75, duration: 0.7 }}
-          className="relative z-10 mb-12 flex flex-col items-center gap-5 sm:flex-row sm:gap-8"
+          className="relative z-10 mb-8 flex flex-col items-center gap-5 sm:mb-12 sm:flex-row sm:gap-8"
         >
           <Magnetic>
             <a
@@ -142,7 +146,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 1.2 }}
-          className="mt-16 w-full md:mt-0 md:w-auto md:absolute md:bottom-0 md:left-12 md:right-12"
+          className="mt-10 w-full md:mt-0 md:w-auto md:absolute md:bottom-0 md:left-12 md:right-12"
         >
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-2 border-t border-white/10 py-5 sm:justify-between">
             {[
